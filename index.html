@@ -3,1306 +3,1317 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<meta name="theme-color" content="#020202"/>
+<meta name="theme-color" content="#060606"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="description" content="Xeevia — Own Your Social Capital. A real digital economy where every action has weight and every creator gets paid."/>
-<title>XEEVIA — Own Your Social Capital</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<meta name="description" content="Xeevia — The Social Value Layer. One identity. One reputation. Participation with weight."/>
+<title>XEEVIA — The Social Value Layer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none}
 *::-webkit-scrollbar{display:none}
 :root{
-  --black:#020202;--s1:#080808;--s2:#0e0e0e;
-  --white:#ffffff;--off:#e2e2d8;--gray:#5c5c5c;--gray2:#2a2a2a;
-  --lime:#c4f135;--ld:rgba(196,241,53,0.06);--lb:rgba(196,241,53,0.13);--lg:rgba(196,241,53,0.22);--lx:rgba(196,241,53,0.4);
+  --black:#060606;
+  --s1:#0a0a0a;
+  --s2:#111;
+  --white:#fff;
+  --off:#e4e4da;
+  --gray:#5a5a5a;
+  --gray2:#232323;
+  --lime:#c8f53a;
+  --lime-dim:rgba(200,245,58,0.07);
+  --lime-soft:rgba(200,245,58,0.13);
+  --lime-mid:rgba(200,245,58,0.22);
+  --lime-strong:rgba(200,245,58,0.42);
   --font-d:"Bebas Neue",sans-serif;
-  --font-b:"Syne","DM Mono",monospace;
+  --font-b:"Syne",sans-serif;
   --font-m:"DM Mono",monospace;
+  --r:20px;
 }
+
 html{scroll-behavior:smooth}
 body{font-family:var(--font-b);background:var(--black);color:var(--white);line-height:1.6;overflow-x:hidden}
 
-/* ── BACKGROUND ── */
-.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.grid-lines{
+/* ── AMBIENT ── */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-grid{
   position:absolute;inset:0;
   background-image:
-    repeating-linear-gradient(45deg,transparent,transparent 80px,rgba(200,245,66,0.028) 80px,rgba(200,245,66,0.028) 81px),
-    repeating-linear-gradient(-45deg,transparent,transparent 80px,rgba(200,245,66,0.028) 80px,rgba(200,245,66,0.028) 81px);
-  animation:gridShift 20s linear infinite;
+    linear-gradient(rgba(200,245,58,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,245,58,0.025) 1px,transparent 1px);
+  background-size:60px 60px;
 }
-@keyframes gridShift{0%,100%{opacity:0.4}50%{opacity:0.7}}
-.accent-lines{position:absolute;inset:0}
-.h-line,.v-line{
-  position:absolute;
-  background:linear-gradient(90deg,transparent,rgba(200,245,66,0.12),transparent);
-  animation:linePulse 4s ease-in-out infinite;
+.bg-orb{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,245,58,0.055),transparent 70%);
+  filter:blur(80px);pointer-events:none;
 }
-.h-line{left:0;right:0;height:1px}
-.v-line{
-  top:0;bottom:0;width:1px;
-  background:linear-gradient(180deg,transparent,rgba(200,245,66,0.12),transparent);
-}
-.h-line:nth-child(1){top:20%;animation-delay:0s}
-.h-line:nth-child(2){top:50%;animation-delay:1.5s}
-.h-line:nth-child(3){top:80%;animation-delay:3s}
-.v-line:nth-child(4){left:25%;animation-delay:0.5s}
-.v-line:nth-child(5){left:50%;animation-delay:2s}
-.v-line:nth-child(6){left:75%;animation-delay:3.5s}
-@keyframes linePulse{0%,100%{opacity:0.15}50%{opacity:0.5}}
-.node{
-  position:absolute;width:5px;height:5px;
-  background:var(--lime);border-radius:50%;
-  box-shadow:0 0 16px rgba(200,245,66,0.8);
-  animation:nodeGlow 3s ease-in-out infinite;
-}
-@keyframes nodeGlow{
-  0%,100%{transform:scale(1);box-shadow:0 0 16px rgba(200,245,66,0.5)}
-  50%{transform:scale(1.6);box-shadow:0 0 28px rgba(200,245,66,1)}
-}
-.node:nth-child(7){top:20%;left:25%;animation-delay:0s}
-.node:nth-child(8){top:50%;left:50%;animation-delay:1s}
-.node:nth-child(9){top:80%;left:75%;animation-delay:2s}
-.ambient-glow{
-  position:absolute;width:800px;height:800px;
-  background:radial-gradient(circle,rgba(200,245,66,0.04),transparent 70%);
-  filter:blur(100px);
-  animation:glowFloat 25s ease-in-out infinite;
-}
-.ambient-glow:nth-child(10){top:-20%;left:-10%}
-.ambient-glow:nth-child(11){bottom:-20%;right:-10%;animation-delay:12s}
-@keyframes glowFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,-50px)}}
+.bg-orb.a{width:900px;height:900px;top:-30%;right:-15%;animation:orb-a 30s ease-in-out infinite}
+.bg-orb.b{width:700px;height:700px;bottom:-20%;left:-10%;animation:orb-b 25s ease-in-out infinite}
+@keyframes orb-a{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-60px,40px) scale(1.08)}}
+@keyframes orb-b{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-30px) scale(1.05)}}
+
 .wrap{position:relative;z-index:1}
 
 /* ── HEADER ── */
 header{
   position:fixed;top:0;left:0;right:0;z-index:1000;
-  background:rgba(2,2,2,0.82);backdrop-filter:blur(32px) saturate(180%);
-  border-bottom:1px solid var(--lb);
+  background:rgba(6,6,6,0.75);backdrop-filter:blur(28px);
+  border-bottom:1px solid rgba(200,245,58,0.08);
   transition:background .3s;
 }
-nav{display:flex;justify-content:space-between;align-items:center;padding:14px 44px;max-width:1440px;margin:0 auto;gap:32px}
+nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 48px;max-width:1440px;margin:0 auto;
+}
 
-/* LOGO */
-.logo{display:flex;align-items:center;gap:11px;cursor:pointer;text-decoration:none;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;flex-shrink:0}
 .logo-mark{
-  width:36px;height:36px;border-radius:9px;overflow:hidden;flex-shrink:0;
-  background:var(--lime);display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-d);font-size:19px;color:#000;letter-spacing:1px;
-  box-shadow:0 4px 18px rgba(196,241,53,0.3);
+  width:34px;height:34px;border-radius:8px;
+  background:var(--lime);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:18px;color:#000;flex-shrink:0;
+  box-shadow:0 0 20px rgba(200,245,58,0.25);
 }
-.logo-mark img{width:100%;height:100%;object-fit:cover;display:block}
-.logo-mark-fb{font-family:var(--font-d);font-size:19px;color:#000}
-.logo-name{font-family:var(--font-d);font-size:21px;color:var(--lime);letter-spacing:7px;text-shadow:0 0 22px rgba(196,241,53,0.28)}
+.logo-name{
+  font-family:var(--font-d);font-size:19px;color:var(--lime);
+  letter-spacing:7px;
+}
 
-.nav-links{display:flex;gap:28px;align-items:center;flex:1;justify-content:center}
+.nav-links{display:flex;gap:32px;align-items:center}
 .nav-links a{
-  color:var(--gray);font-size:11px;font-weight:700;text-decoration:none;
-  letter-spacing:1px;text-transform:uppercase;transition:color .2s;cursor:pointer;position:relative;
-  font-family:var(--font-m);white-space:nowrap;
+  font-family:var(--font-m);font-size:10.5px;font-weight:500;
+  color:var(--gray);text-decoration:none;text-transform:uppercase;
+  letter-spacing:1.5px;cursor:pointer;transition:color .2s;
 }
-.nav-links a::after{content:"";position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--lime);transition:width .2s}
-.nav-links a:hover{color:var(--lime)}.nav-links a:hover::after{width:100%}
+.nav-links a:hover{color:var(--lime)}
 
 .nav-cta{
-  font-family:var(--font-d);background:var(--lime);color:#000;border:none;
-  padding:9px 26px;border-radius:100px;font-size:13px;letter-spacing:2px;cursor:pointer;
-  transition:all .2s;box-shadow:0 4px 18px rgba(196,241,53,0.22);white-space:nowrap;flex-shrink:0;
+  font-family:var(--font-d);
+  background:var(--lime);color:#000;border:none;
+  padding:9px 28px;border-radius:100px;font-size:13px;letter-spacing:2px;cursor:pointer;
+  transition:all .2s;flex-shrink:0;
+  box-shadow:0 4px 20px rgba(200,245,58,0.2);
 }
-.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(196,241,53,0.42)}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,245,58,0.38)}
 
-/* ── HAMBURGER MENU ── */
 .hamburger{
-  display:none;flex-direction:column;justify-content:center;gap:5px;cursor:pointer;
-  padding:8px;background:none;border:1px solid var(--lb);border-radius:9px;flex-shrink:0;
-  width:40px;height:40px;
+  display:none;flex-direction:column;gap:5px;cursor:pointer;
+  padding:7px;background:none;border:1px solid rgba(200,245,58,0.15);border-radius:8px;
+  width:38px;height:38px;justify-content:center;flex-shrink:0;
 }
 .hamburger span{
-  width:18px;height:1.5px;background:var(--lime);border-radius:2px;
-  transition:all .28s;transform-origin:center;
+  width:16px;height:1.5px;background:var(--lime);border-radius:2px;
+  transition:all .25s;transform-origin:center;
 }
 .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(2){opacity:0}
 .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 
-/* ── MOBILE NAV DRAWER ── */
 .mobile-nav{
-  display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:999;
-  background:rgba(2,2,2,0.97);backdrop-filter:blur(28px);
-  flex-direction:column;align-items:center;justify-content:center;gap:0;
-  animation:fadeNavIn .22s ease;
+  display:none;position:fixed;inset:0;z-index:999;
+  background:rgba(6,6,6,0.97);backdrop-filter:blur(24px);
+  flex-direction:column;align-items:center;justify-content:center;
 }
-.mobile-nav.open{display:flex}
-@keyframes fadeNavIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.mobile-nav.open{display:flex;animation:fadein .2s ease}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
 .mobile-nav a{
-  font-family:var(--font-d);font-size:36px;letter-spacing:4px;color:var(--white);
-  text-decoration:none;padding:16px 0;cursor:pointer;transition:color .2s;width:100%;text-align:center;
-  border-bottom:1px solid rgba(255,255,255,0.04);
+  font-family:var(--font-d);font-size:38px;letter-spacing:4px;color:var(--white);
+  text-decoration:none;padding:14px 0;cursor:pointer;transition:color .2s;
+  width:100%;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);
 }
 .mobile-nav a:hover{color:var(--lime)}
-.mobile-nav .mobile-cta{
-  margin-top:32px;background:var(--lime);color:#000;border:none;
-  font-family:var(--font-d);font-size:22px;letter-spacing:3px;
-  padding:14px 56px;border-radius:100px;cursor:pointer;
-  box-shadow:0 6px 24px rgba(196,241,53,0.3);
+.mobile-nav .mob-cta{
+  margin-top:28px;
+  background:var(--lime);color:#000;border:none;
+  font-family:var(--font-d);font-size:20px;letter-spacing:3px;
+  padding:12px 52px;border-radius:100px;cursor:pointer;
 }
 
 /* ── HERO ── */
 .hero{
-  min-height:100vh;display:flex;align-items:center;
-  padding:clamp(96px,12vw,140px) clamp(18px,4vw,44px) clamp(60px,8vw,90px);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:clamp(120px,13vw,160px) clamp(20px,4vw,48px) clamp(80px,9vw,100px);
   position:relative;overflow:hidden;
 }
-.hero-c{max-width:1440px;margin:0 auto;width:100%}
-
-/* Hero big accent orb */
 .hero::before{
-  content:"";position:absolute;top:-30%;right:-15%;
-  width:min(900px,120vw);height:min(900px,120vw);
-  background:radial-gradient(circle,rgba(196,241,53,0.045) 0%,transparent 60%);
-  pointer-events:none;filter:blur(60px);
+  content:"";position:absolute;bottom:0;left:0;right:0;height:200px;
+  background:linear-gradient(to bottom,transparent,var(--black));
+  pointer-events:none;z-index:1;
 }
+.hero-c{
+  position:relative;z-index:2;
+  width:100%;max-width:1160px;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+}
+
+/* Layer badge */
+.layer-badge{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:8px 20px;
+  border:1px solid rgba(200,245,58,0.18);border-radius:100px;
+  background:rgba(200,245,58,0.05);
+  font-family:var(--font-m);font-size:10px;font-weight:500;letter-spacing:2px;
+  color:var(--lime);text-transform:uppercase;
+  margin-bottom:32px;
+  animation:rise .8s ease both;
+}
+.badge-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--lime);
+  animation:pulse 2s ease-in-out infinite;flex-shrink:0;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(1.6)}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* Hero H1 */
+.hero-h1{
+  font-family:var(--font-d);
+  font-size:clamp(62px,9.5vw,115px);
+  line-height:.88;letter-spacing:-.5px;
+  margin-bottom:30px;text-transform:uppercase;
+  width:100%;max-width:1100px;
+}
+.hero-h1 .ln{display:block;opacity:0;animation:rise .9s ease forwards}
+.hero-h1 .l1{animation-delay:.08s;color:var(--off)}
+.hero-h1 .l2{
+  animation-delay:.2s;
+  color:var(--lime);
+  text-shadow:0 0 50px rgba(200,245,58,0.22),0 0 100px rgba(200,245,58,0.1);
+}
+.hero-h1 .l3{animation-delay:.32s;color:var(--off)}
+
+/* Spacer between H1 lines */
+.hero-h1 .gap{display:block;height:.08em}
+
+/* Hero desc */
+.hero-desc{
+  font-family:var(--font-m);
+  font-size:clamp(13.5px,1.5vw,16px);
+  color:#787870;
+  line-height:2;
+  max-width:620px;
+  margin-bottom:40px;
+  opacity:0;animation:rise .9s ease .5s both;
+}
+.hero-desc strong{color:var(--off)}
+
+/* CTA row */
+.hero-cta{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:64px;
+  opacity:0;animation:rise .9s ease .62s both;
+}
+.btn-primary{
+  font-family:var(--font-d);
+  background:var(--lime);color:#000;border:none;
+  height:54px;padding:0 40px;border-radius:16px;
+  font-size:15px;letter-spacing:2px;cursor:pointer;
+  transition:all .22s;white-space:nowrap;flex-shrink:0;
+  box-shadow:0 8px 28px rgba(200,245,58,0.22);
+  position:relative;overflow:hidden;
+}
+.btn-primary::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(45deg,transparent,rgba(255,255,255,0.18),transparent);
+  transform:translateX(-100%);transition:.45s;
+}
+.btn-primary:hover::before{transform:translateX(100%)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(200,245,58,0.38)}
+
+.btn-secondary{
+  font-family:var(--font-d);
+  background:transparent;color:var(--white);
+  border:1px solid rgba(255,255,255,0.12);
+  height:54px;padding:0 36px;border-radius:16px;
+  font-size:15px;letter-spacing:2px;cursor:pointer;
+  transition:all .22s;white-space:nowrap;flex-shrink:0;
+}
+.btn-secondary:hover{border-color:rgba(200,245,58,0.4);color:var(--lime);background:var(--lime-dim)}
+
+/* Hero pillars */
+.hero-pillars{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  width:100%;max-width:840px;
+  opacity:0;animation:rise .9s ease .78s both;
+}
+.pillar{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:18px;padding:22px 20px;
+  position:relative;overflow:hidden;
+  transition:all .3s;
+}
+.pillar::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,245,58,0.25),transparent);
+}
+.pillar:hover{
+  border-color:rgba(200,245,58,0.16);
+  background:rgba(200,245,58,0.04);
+  transform:translateY(-3px);
+}
+.pillar-icon{
+  font-family:var(--font-d);font-size:28px;color:var(--lime);
+  margin-bottom:8px;line-height:1;
+  text-shadow:0 0 14px rgba(200,245,58,0.2);
+}
+.pillar-label{
+  font-family:var(--font-b);font-size:13px;font-weight:700;color:var(--white);
+  margin-bottom:4px;
+}
+.pillar-sub{
+  font-family:var(--font-m);font-size:10.5px;color:var(--gray);
+  letter-spacing:.5px;line-height:1.6;
+}
+
+/* ── SECTION STRUCTURE ── */
+section{padding:clamp(80px,8vw,120px) clamp(20px,4vw,48px)}
+.con{max-width:1200px;margin:0 auto}
+.con-sm{max-width:900px;margin:0 auto}
+.con-xs{max-width:720px;margin:0 auto}
 
 .eyebrow{
-  display:inline-flex;align-items:center;gap:8px;padding:7px 18px;
-  border:1px solid var(--lb);border-radius:100px;font-size:10px;font-weight:700;
-  color:var(--lime);margin-bottom:28px;letter-spacing:2.5px;text-transform:uppercase;
-  background:var(--ld);font-family:var(--font-m);
-  animation:fu .8s ease both;
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-m);font-size:10px;font-weight:500;
+  color:var(--lime);text-transform:uppercase;letter-spacing:2px;
+  margin-bottom:16px;
 }
-.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);animation:pulse 2s infinite;flex-shrink:0}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(1.6)}}
-@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow-line{width:22px;height:1px;background:var(--lime)}
 
-.hero-h1{
-  font-family:var(--font-d);font-size:clamp(58px,9.5vw,110px);
-  line-height:.9;letter-spacing:-1px;margin-bottom:30px;
+.sec-h{
+  font-family:var(--font-d);
+  font-size:clamp(40px,5.5vw,62px);
+  line-height:.92;letter-spacing:-.5px;
+  margin-bottom:18px;
 }
-.hero-h1 .ln{display:block;opacity:0;animation:fu .9s ease forwards}
-.hero-h1 .l1{animation-delay:.1s}
-.hero-h1 .l2{color:var(--lime);text-shadow:0 0 60px rgba(196,241,53,0.35);animation-delay:.22s}
-.hero-h1 .l3{animation-delay:.34s}
+.sec-h .lime{color:var(--lime);text-shadow:0 0 22px rgba(200,245,58,0.2)}
 
-.hero-sub{
-  font-size:clamp(14px,1.7vw,17px);color:var(--gray);max-width:600px;
-  margin-bottom:40px;line-height:1.9;opacity:0;
-  animation:fu .9s ease .5s both;font-family:var(--font-m);
-}
-.hero-sub strong{color:var(--lime);font-weight:700}
-
-/* ── HERO BUTTONS — always row, never column ── */
-.hero-acts{
-  display:flex;flex-direction:row;gap:14px;
-  opacity:0;animation:fu .9s ease .62s both;
-  flex-wrap:nowrap;
-}
-.btn-p{
-  font-family:var(--font-d);padding:13px 44px;background:var(--lime);color:#000;
-  border:none;border-radius:100px;font-size:15px;letter-spacing:2px;cursor:pointer;
-  transition:all .22s;box-shadow:0 6px 24px rgba(196,241,53,0.32);
-  position:relative;overflow:hidden;white-space:nowrap;flex-shrink:0;
-}
-.btn-p::before{content:"";position:absolute;inset:0;background:linear-gradient(45deg,transparent,rgba(255,255,255,0.22),transparent);transform:translateX(-100%);transition:.5s}
-.btn-p:hover::before{transform:translateX(100%)}
-.btn-p:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(196,241,53,0.52)}
-.btn-o{
-  font-family:var(--font-d);padding:13px 44px;background:transparent;color:var(--white);
-  border:1.5px solid rgba(255,255,255,0.14);border-radius:100px;font-size:15px;letter-spacing:2px;
-  cursor:pointer;transition:all .22s;white-space:nowrap;flex-shrink:0;
-}
-.btn-o:hover{border-color:var(--lime);color:var(--lime);background:var(--ld)}
-
-.hero-stats{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
-  margin-top:68px;max-width:820px;opacity:0;animation:fu .9s ease .8s both;
-}
-.hstat{
-  background:rgba(255,255,255,0.02);border:1px solid var(--lb);border-radius:16px;
-  padding:20px 16px;transition:all .3s;position:relative;overflow:hidden;
-}
-.hstat::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(196,241,53,0.2),transparent)}
-.hstat:hover{border-color:var(--lg);transform:translateY(-3px);background:var(--ld)}
-.hstat-n{font-family:var(--font-d);font-size:clamp(20px,3vw,28px);color:var(--lime);text-shadow:0 0 14px rgba(196,241,53,0.28);line-height:1}
-.hstat-l{font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:1.2px;margin-top:5px;font-weight:700;font-family:var(--font-m)}
-
-/* ── SECTIONS ── */
-section{padding:clamp(68px,7vw,110px) clamp(18px,4vw,44px)}
-.con{max-width:1200px;margin:0 auto}
-.stag{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;font-family:var(--font-m)}
-.stag-line{width:26px;height:1px;background:var(--lime)}
-.sec-h{font-family:var(--font-d);font-size:clamp(36px,5.5vw,58px);line-height:.94;letter-spacing:-.5px;margin-bottom:14px}
-.sec-h .ac{color:var(--lime);text-shadow:0 0 28px rgba(196,241,53,0.25)}
-.sec-sub{font-size:clamp(13px,1.6vw,15px);color:var(--gray);max-width:580px;line-height:1.85;margin-bottom:48px;font-family:var(--font-m)}
-
-.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px}
-.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
-
-.gl{
-  background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.058);
-  border-radius:18px;padding:clamp(22px,3vw,34px);transition:all .32s;
-}
-.gl:hover{border-color:var(--lg);background:rgba(196,241,53,0.012);transform:translateY(-4px)}
-.gl h3{font-family:"Syne",sans-serif;font-size:18px;font-weight:700;margin-bottom:9px}
-.gl p{font-size:13px;color:var(--gray);line-height:1.82;font-family:var(--font-m)}
-
-.icon-wrap{
-  width:52px;height:52px;border-radius:13px;background:var(--ld);border:1px solid var(--lb);
-  display:flex;align-items:center;justify-content:center;margin-bottom:18px;
-  transition:all .28s;
-}
-.gl:hover .icon-wrap{background:rgba(196,241,53,0.1);border-color:var(--lg)}
-.icon-wrap svg{width:24px;height:24px}
-
-/* ── DIVIDER — beautiful, not just a line ── */
-.sec-div{
-  width:100%;margin:0;height:1px;position:relative;overflow:visible;
-  background:linear-gradient(90deg,transparent 0%,rgba(196,241,53,0.04) 20%,rgba(196,241,53,0.18) 50%,rgba(196,241,53,0.04) 80%,transparent 100%);
-}
-.sec-div::before{
-  content:"";position:absolute;top:-3px;left:50%;transform:translateX(-50%);
-  width:60px;height:7px;
-  background:radial-gradient(ellipse at center,rgba(196,241,53,0.35) 0%,transparent 70%);
-  filter:blur(3px);
-}
-.sec-div::after{
-  content:"";position:absolute;top:-1px;left:50%;transform:translateX(-50%);
-  width:8px;height:3px;border-radius:50%;
-  background:var(--lime);box-shadow:0 0 10px rgba(196,241,53,0.8),0 0 24px rgba(196,241,53,0.4);
+.sec-sub{
+  font-family:var(--font-m);font-size:clamp(13px,1.5vw,15px);
+  color:var(--gray);line-height:1.9;max-width:560px;
+  margin-bottom:52px;
 }
 
-/* ── XRC ── */
-.xrc-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;margin-bottom:30px}
-.xc{background:var(--ld);border:1px solid var(--lb);border-radius:15px;padding:22px;transition:all .28s}
-.xc:hover{border-color:var(--lg);transform:translateY(-3px)}
-.xc-code{font-family:var(--font-d);font-size:28px;color:var(--lime);letter-spacing:1px;margin-bottom:7px;text-shadow:0 0 14px rgba(196,241,53,0.22)}
-.xc h4{font-family:"Syne",sans-serif;font-size:14px;font-weight:700;margin-bottom:5px}
-.xc p{font-size:12px;color:var(--gray);line-height:1.72;font-family:var(--font-m)}
-
-.more-btn{
-  font-family:var(--font-d);display:inline-flex;align-items:center;gap:7px;
-  padding:10px 28px;background:transparent;color:var(--lime);
-  border:1px solid var(--lb);border-radius:100px;font-size:13px;letter-spacing:2px;cursor:pointer;transition:all .22s;
+/* Divider */
+.divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,245,58,0.14) 30%,rgba(200,245,58,0.14) 70%,transparent);
+  position:relative;
 }
-.more-btn:hover{border-color:var(--lime);background:var(--ld)}
-
-/* ── ECONOMY ── */
-.ep-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,148px),1fr));gap:11px;margin-top:32px}
-.ep-c{background:var(--ld);border:1px solid var(--lb);border-radius:13px;padding:16px 12px;text-align:center;transition:all .28s}
-.ep-c:hover{border-color:var(--lg);transform:translateY(-2px)}
-.ep-v{font-family:var(--font-d);font-size:26px;color:var(--lime);display:block}
-.ep-l{font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;display:block;margin-top:3px;font-family:var(--font-m)}
-.ep-n{font-size:9px;color:var(--gray2);margin-top:2px;display:block;line-height:1.4;font-family:var(--font-m)}
-
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,268px),1fr));gap:14px}
-.step{background:var(--ld);border:1px solid var(--lb);border-radius:16px;padding:26px;position:relative;overflow:hidden;transition:all .32s}
-.step:hover{border-color:var(--lg);transform:translateY(-3px)}
-.step-n{font-family:var(--font-d);font-size:66px;color:rgba(196,241,53,0.07);line-height:1;position:absolute;top:10px;right:14px}
-.step h3{font-family:"Syne",sans-serif;font-size:17px;font-weight:700;margin:10px 0 7px}
-.step p{font-size:12px;color:var(--gray);line-height:1.8;font-family:var(--font-m)}
-
-/* ── TEAM ── */
-.team-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,248px),1fr));gap:18px}
-.tc{
-  background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);
-  border-radius:20px;padding:28px;text-align:center;transition:all .32s;position:relative;overflow:hidden;
-  box-shadow:0 1px 0 0 rgba(255,255,255,0.06) inset;
+.divider::after{
+  content:"";position:absolute;top:-2px;left:50%;transform:translateX(-50%);
+  width:6px;height:5px;background:var(--lime);border-radius:50%;
+  box-shadow:0 0 8px rgba(200,245,58,0.7);
 }
-.tc::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)}
-.tc::after{content:"";position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(180deg,rgba(255,255,255,0.03),transparent);pointer-events:none;border-radius:20px 20px 0 0}
-.tc:hover{border-color:var(--lg);transform:translateY(-5px);box-shadow:0 16px 44px rgba(196,241,53,0.07)}
-.av-ring{
-  width:92px;height:92px;border-radius:50%;margin:0 auto 16px;
-  border:2px solid var(--lb);background:var(--ld);
-  display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;transition:all .28s;
+
+/* ── PROBLEM ── */
+.problem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:2px}
+.problem-item{
+  padding:clamp(24px,3vw,40px);
+  background:var(--s1);
+  border:1px solid rgba(255,255,255,0.04);
+  transition:all .3s;
+  position:relative;overflow:hidden;
 }
-.tc:hover .av-ring{border-color:var(--lime);box-shadow:0 0 26px rgba(196,241,53,0.2)}
-.av-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.av-fb{font-family:var(--font-d);font-size:36px;color:var(--lime);position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.t-name{font-family:"Syne",sans-serif;font-size:17px;font-weight:700;margin-bottom:3px}
-.t-role{font-size:10px;color:var(--lime);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:10px;font-family:var(--font-m)}
-.t-bio{font-size:12px;color:var(--gray);line-height:1.72;margin-bottom:14px;font-family:var(--font-m)}
-.read-m{font-size:11px;color:var(--lime);cursor:pointer;font-weight:700;font-family:var(--font-m)}
-.read-m:hover{opacity:.7}
-.t-soc{display:flex;gap:7px;justify-content:center}
-.t-sb{flex:1;font-size:10px;font-weight:700;padding:7px 10px;background:transparent;border:1px solid rgba(255,255,255,0.07);border-radius:8px;color:var(--gray);cursor:pointer;text-decoration:none;text-align:center;transition:all .2s;font-family:var(--font-m)}
-.t-sb:hover{border-color:var(--lime);color:var(--lime)}
+.problem-item::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:transparent;transition:background .3s;
+}
+.problem-item:hover{background:rgba(200,245,58,0.025)}
+.problem-item:hover::before{background:var(--lime)}
+.problem-item:first-child{border-radius:var(--r) 0 0 0}
+.problem-item:nth-child(2){border-radius:0 var(--r) 0 0}
+.problem-item:nth-child(3){border-radius:0 0 0 var(--r)}
+.problem-item:last-child{border-radius:0 0 var(--r) 0}
+.prob-num{
+  font-family:var(--font-d);font-size:48px;color:rgba(200,245,58,0.1);
+  line-height:1;margin-bottom:10px;
+}
+.prob-title{
+  font-family:var(--font-b);font-size:16px;font-weight:700;
+  margin-bottom:10px;color:var(--white);
+}
+.prob-body{font-family:var(--font-m);font-size:12.5px;color:var(--gray);line-height:1.84}
 
-/* ── TOKENS ── */
-.tok-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:18px}
-.tok{background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.055);border-radius:22px;padding:clamp(24px,4vw,42px);transition:all .35s}
-.tok:hover{border-color:var(--lg);transform:translateY(-5px);box-shadow:0 18px 50px rgba(196,241,53,0.07)}
-.tok-icon{width:clamp(60px,10vw,76px);height:clamp(60px,10vw,76px);background:var(--lime);color:#000;border-radius:18px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:clamp(28px,5vw,34px);margin-bottom:22px;box-shadow:0 8px 26px rgba(196,241,53,0.28)}
-.tok h3{font-family:"Syne",sans-serif;font-size:24px;font-weight:800;margin-bottom:10px}
-.tok>p{font-size:13px;color:var(--gray);line-height:1.85;margin-bottom:22px;font-family:var(--font-m)}
-.feats{list-style:none}
-.feats li{font-size:12px;color:var(--gray);padding:10px 0;border-bottom:1px solid rgba(196,241,53,0.055);display:flex;gap:9px;align-items:flex-start;font-family:var(--font-m)}
-.feats li:last-child{border-bottom:none}
-.ck{color:var(--lime);flex-shrink:0;margin-top:1px}
+/* ── WHAT IS XEEVIA ── */
+.thesis-wrap{
+  background:var(--s1);border:1px solid rgba(200,245,58,0.08);
+  border-radius:var(--r);padding:clamp(28px,5vw,72px) clamp(20px,4vw,64px);
+  position:relative;overflow:hidden;
+}
+.thesis-wrap::before{
+  content:"";position:absolute;top:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,245,58,0.3),transparent);
+}
+.thesis-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);align-items:start}
+.thesis-left .tagline{
+  font-family:var(--font-d);font-size:clamp(32px,3.5vw,52px);
+  line-height:.95;letter-spacing:-.5px;margin-bottom:24px;
+  color:var(--off);
+}
+.thesis-left .tagline .lime{color:var(--lime)}
+.thesis-left .thesis-body{
+  font-family:var(--font-m);font-size:13.5px;color:var(--gray);
+  line-height:1.92;margin-bottom:20px;
+}
+.thesis-right{display:flex;flex-direction:column;gap:14px}
+.thesis-point{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 16px;
+  background:rgba(200,245,58,0.04);border:1px solid rgba(200,245,58,0.08);
+  border-radius:12px;transition:all .25s;
+}
+.thesis-point:hover{background:rgba(200,245,58,0.07);border-color:rgba(200,245,58,0.14)}
+.tp-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--lime-dim);border:1px solid var(--lime-soft);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  margin-top:1px;
+}
+.tp-icon svg{width:16px;height:16px}
+.tp-text h4{
+  font-family:var(--font-b);font-size:13px;font-weight:700;
+  color:var(--white);margin-bottom:4px;
+}
+.tp-text p{font-family:var(--font-m);font-size:11.5px;color:var(--gray);line-height:1.72}
 
-/* ── ALLOC ── */
-.al-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,278px),1fr));gap:12px}
-.al-c{background:var(--ld);border:1px solid var(--lb);border-radius:15px;padding:20px 18px;transition:all .28s}
-.al-c:hover{border-color:var(--lg);transform:translateY(-2px)}
-.al-t{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
-.al-name{font-family:"Syne",sans-serif;font-size:13px;font-weight:700}
-.al-pct{font-family:var(--font-d);font-size:28px;color:var(--lime)}
-.al-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;margin-bottom:7px}
-.al-fill{height:100%;background:linear-gradient(90deg,var(--lime),rgba(196,241,53,0.3));border-radius:2px;transition:width 1.4s cubic-bezier(.34,1,.64,1)}
-.al-desc{font-size:11px;color:var(--gray);font-family:var(--font-m)}
+/* ── HOW IT WORKS (PARTICIPATION ECONOMY) ── */
+.economy-header{text-align:center;max-width:640px;margin:0 auto 56px}
+.economy-header .sec-sub{max-width:100%}
+.flow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;margin-bottom:40px}
+.flow-step{
+  background:var(--s1);border:1px solid rgba(255,255,255,0.055);
+  border-radius:var(--r);padding:28px 24px;
+  position:relative;overflow:hidden;transition:all .3s;
+}
+.flow-step::after{
+  content:"";position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(200,245,58,0),transparent);
+  transition:background .3s;
+}
+.flow-step:hover{border-color:rgba(200,245,58,0.14);transform:translateY(-4px)}
+.flow-step:hover::after{
+  background:linear-gradient(90deg,transparent,rgba(200,245,58,0.3),transparent);
+}
+.step-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:8px;
+  background:var(--lime);color:#000;
+  font-family:var(--font-d);font-size:16px;
+  margin-bottom:16px;flex-shrink:0;
+  box-shadow:0 4px 12px rgba(200,245,58,0.25);
+}
+.step-title{
+  font-family:var(--font-b);font-size:17px;font-weight:700;
+  margin-bottom:10px;color:var(--white);
+}
+.step-body{font-family:var(--font-m);font-size:12.5px;color:var(--gray);line-height:1.85;max-width:300px}
+
+/* EP quick stats */
+.ep-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:10px}
+.ep-stat{
+  background:var(--lime-dim);border:1px solid var(--lime-soft);
+  border-radius:14px;padding:16px 14px;text-align:center;
+  transition:all .25s;
+}
+.ep-stat:hover{background:rgba(200,245,58,0.1);border-color:var(--lime-mid);transform:translateY(-2px)}
+.ep-val{
+  font-family:var(--font-d);font-size:26px;color:var(--lime);
+  display:block;margin-bottom:4px;
+  text-shadow:0 0 10px rgba(200,245,58,0.15);
+}
+.ep-lbl{font-family:var(--font-m);font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;display:block}
+.ep-note{font-family:var(--font-m);font-size:9px;color:#3a3a3a;display:block;margin-top:2px;line-height:1.4}
+
+/* ── XRC PROTOCOL ── */
+.xrc-section{background:var(--s1)}
+.xrc-inner{max-width:1200px;margin:0 auto;padding:clamp(80px,8vw,120px) clamp(20px,4vw,48px)}
+.xrc-top{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:start;margin-bottom:40px}
+.xrc-chains{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px}
+.chain{
+  background:var(--lime-dim);border:1px solid var(--lime-soft);
+  border-radius:14px;padding:20px 18px;transition:all .28s;
+}
+.chain:hover{background:rgba(200,245,58,0.1);border-color:var(--lime-mid);transform:translateY(-3px)}
+.chain-code{
+  font-family:var(--font-d);font-size:26px;color:var(--lime);
+  letter-spacing:1px;margin-bottom:6px;
+  text-shadow:0 0 10px rgba(200,245,58,0.15);
+}
+.chain h4{font-family:var(--font-b);font-size:13px;font-weight:700;margin-bottom:6px}
+.chain p{font-family:var(--font-m);font-size:11.5px;color:var(--gray);line-height:1.72}
+.xrc-perf{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.perf-card{
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.055);
+  border-radius:12px;padding:18px 16px;text-align:center;
+}
+.perf-val{font-family:var(--font-d);font-size:30px;color:var(--lime);display:block;margin-bottom:4px}
+.perf-lbl{font-family:var(--font-m);font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
+
+/* ── TOKEN DESIGN ── */
+.token-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+.token-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.055);
+  border-radius:var(--r);padding:clamp(28px,4vw,44px);transition:all .35s;
+}
+.token-card:hover{border-color:rgba(200,245,58,0.14);transform:translateY(-5px);box-shadow:0 20px 50px rgba(200,245,58,0.05)}
+.token-badge{
+  width:clamp(60px,8vw,72px);height:clamp(60px,8vw,72px);
+  background:var(--lime);color:#000;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:clamp(26px,4vw,32px);
+  margin-bottom:22px;
+  box-shadow:0 8px 24px rgba(200,245,58,0.25);
+}
+.token-card h3{font-family:var(--font-b);font-size:22px;font-weight:800;margin-bottom:10px}
+.token-card>p{font-family:var(--font-m);font-size:13px;color:var(--gray);line-height:1.86;margin-bottom:22px}
+.token-feats{list-style:none}
+.token-feats li{
+  font-family:var(--font-m);font-size:12px;color:var(--gray);
+  padding:10px 0;border-bottom:1px solid rgba(200,245,58,0.06);
+  display:flex;gap:10px;align-items:flex-start;line-height:1.72;
+}
+.token-feats li:last-child{border-bottom:none}
+.feat-check{color:var(--lime);flex-shrink:0;font-size:12px;margin-top:1px}
+
+/* ── ALLOCATION ── */
+.alloc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px}
+.alloc-item{
+  background:var(--lime-dim);border:1px solid var(--lime-soft);
+  border-radius:14px;padding:20px 18px;transition:all .28s;
+}
+.alloc-item:hover{border-color:var(--lime-mid);transform:translateY(-2px)}
+.alloc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.alloc-name{font-family:var(--font-b);font-size:13px;font-weight:700}
+.alloc-pct{font-family:var(--font-d);font-size:28px;color:var(--lime);line-height:1}
+.alloc-bar{height:2px;background:rgba(255,255,255,0.05);border-radius:1px;overflow:hidden;margin-bottom:8px}
+.alloc-fill{height:100%;background:linear-gradient(90deg,var(--lime),rgba(200,245,58,0.25));border-radius:1px;transition:width 1.4s cubic-bezier(.34,1,.64,1)}
+.alloc-desc{font-family:var(--font-m);font-size:11px;color:var(--gray)}
 
 /* ── REVENUE ── */
-.rev-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
-.rev-c{background:var(--ld);border:1px solid var(--lb);border-radius:17px;padding:26px}
-.rev-c h3{font-family:"Syne",sans-serif;font-size:16px;font-weight:700;margin-bottom:15px}
-.rev-r{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(196,241,53,0.055)}
-.rev-r:last-child{border-bottom:none}
-.rev-l{font-size:12px;color:var(--gray);font-family:var(--font-m)}
-.rev-v{font-family:var(--font-d);font-size:18px;color:var(--lime)}
+.rev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.rev-card{
+  background:var(--lime-dim);border:1px solid var(--lime-soft);
+  border-radius:var(--r);padding:28px;
+}
+.rev-card h3{font-family:var(--font-b);font-size:15px;font-weight:700;margin-bottom:16px}
+.rev-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;border-bottom:1px solid rgba(200,245,58,0.06);
+}
+.rev-row:last-child{border-bottom:none}
+.rev-label{font-family:var(--font-m);font-size:12px;color:var(--gray)}
+.rev-val{font-family:var(--font-d);font-size:18px;color:var(--lime)}
+
+/* ── MANIFESTO BREAK ── */
+.manifesto{
+  padding:clamp(80px,8vw,120px) clamp(20px,4vw,48px);
+  text-align:center;
+  background:linear-gradient(180deg,transparent,rgba(200,245,58,0.025),transparent);
+  border-top:1px solid rgba(200,245,58,0.06);
+  border-bottom:1px solid rgba(200,245,58,0.06);
+}
+.manifesto-lines{max-width:860px;margin:0 auto}
+.mline{
+  display:block;
+  font-family:var(--font-d);
+  font-size:clamp(28px,4.5vw,52px);
+  line-height:1.05;letter-spacing:-.2px;
+  color:rgba(255,255,255,0.12);
+  margin-bottom:4px;
+  transition:color .5s;
+}
+.mline.dim{color:rgba(255,255,255,0.06)}
+.mline.bright{color:var(--off)}
+.mline.lime-l{color:var(--lime);text-shadow:0 0 28px rgba(200,245,58,0.18)}
+.manifesto-sub{
+  font-family:var(--font-m);font-size:13px;color:var(--gray);
+  margin-top:32px;letter-spacing:.5px;
+}
 
 /* ── FAQ ── */
-.faq-w{max-width:780px;margin:0 auto}
-.fq{background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.055);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:border-color .22s}
-.fq.on{border-color:rgba(196,241,53,0.28)}
-.fq-q{width:100%;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;background:transparent;border:none;cursor:pointer;text-align:left}
-.fq-q h3{font-family:"Syne",sans-serif;font-size:15px;font-weight:700;color:var(--white)}
-.fq-ic{color:var(--lime);font-size:17px;transition:transform .22s;flex-shrink:0}
-.fq.on .fq-ic{transform:rotate(45deg)}
-.fq-a{max-height:0;overflow:hidden;transition:max-height .32s}
-.fq.on .fq-a{max-height:280px}
-.fq-a p{padding:0 22px 18px;font-size:13px;color:var(--gray);line-height:1.85;font-family:var(--font-m)}
+.faq-list{max-width:760px;margin:0 auto}
+.faq-item{
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);
+  border-radius:14px;margin-bottom:10px;overflow:hidden;transition:border-color .22s;
+}
+.faq-item.open{border-color:rgba(200,245,58,0.22)}
+.faq-q{
+  width:100%;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;
+  background:transparent;border:none;cursor:pointer;text-align:left;gap:16px;
+}
+.faq-q h3{font-family:var(--font-b);font-size:15px;font-weight:700;color:var(--white)}
+.faq-ic{color:var(--lime);font-size:18px;transition:transform .22s;flex-shrink:0}
+.faq-item.open .faq-ic{transform:rotate(45deg)}
+.faq-ans{max-height:0;overflow:hidden;transition:max-height .32s}
+.faq-item.open .faq-ans{max-height:280px}
+.faq-ans p{padding:0 22px 18px;font-family:var(--font-m);font-size:13px;color:var(--gray);line-height:1.88}
+
+/* ── CTA FINALE ── */
+.cta-finale{
+  padding:clamp(80px,8vw,120px) clamp(20px,4vw,48px);
+  text-align:center;
+}
+.cta-box{
+  max-width:720px;margin:0 auto;
+  background:var(--s1);border:1px solid rgba(200,245,58,0.1);
+  border-radius:24px;padding:clamp(44px,6vw,72px) clamp(28px,5vw,56px);
+  position:relative;overflow:hidden;
+}
+.cta-box::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,245,58,0.06),transparent 60%);
+  pointer-events:none;
+}
+.cta-box::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,245,58,0.32),transparent);
+}
+.cta-box h2{
+  font-family:var(--font-d);font-size:clamp(38px,5vw,58px);
+  line-height:.9;letter-spacing:-.5px;margin-bottom:16px;
+}
+.cta-box p{
+  font-family:var(--font-m);font-size:13.5px;color:var(--gray);
+  line-height:1.88;max-width:480px;margin:0 auto 32px;
+}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
 /* ── FOOTER ── */
-footer{padding:68px 44px 32px;border-top:1px solid transparent;
-  background:linear-gradient(180deg,transparent,rgba(196,241,53,0.01));
+footer{
+  padding:60px 48px 28px;
+  border-top:1px solid rgba(200,245,58,0.06);
   position:relative;
 }
 footer::before{
   content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent 0%,rgba(196,241,53,0.04) 20%,rgba(196,241,53,0.18) 50%,rgba(196,241,53,0.04) 80%,transparent 100%);
+  background:linear-gradient(90deg,transparent,rgba(200,245,58,0.12) 40%,rgba(200,245,58,0.12) 60%,transparent);
 }
-.ft-in{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:44px;max-width:1440px;margin:0 auto 44px}
-.ft-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.ft-logo-ic{width:34px;height:34px;border-radius:9px;overflow:hidden;background:var(--lime);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:15px;color:#000;flex-shrink:0}
-.ft-logo-ic img{width:100%;height:100%;object-fit:cover}
-.ft-logo-ic-fb{font-family:var(--font-d);font-size:15px;color:#000}
-.ft-logo-t{font-family:var(--font-d);font-size:20px;color:var(--lime);letter-spacing:5px}
-.ft-tag{font-size:12px;color:var(--gray);line-height:1.72;margin-bottom:18px;font-family:var(--font-m)}
-.ft-col h4{font-family:"Syne",sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;color:var(--off)}
+.ft-inner{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:40px;max-width:1440px;margin:0 auto 44px}
+.ft-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ft-logo-mark{
+  width:32px;height:32px;border-radius:8px;background:var(--lime);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:16px;color:#000;flex-shrink:0;
+}
+.ft-logo-name{font-family:var(--font-d);font-size:18px;color:var(--lime);letter-spacing:5px}
+.ft-tagline{font-family:var(--font-m);font-size:12px;color:var(--gray);line-height:1.72;margin-bottom:6px}
+.ft-col h4{
+  font-family:var(--font-b);font-size:10px;font-weight:800;
+  text-transform:uppercase;letter-spacing:1.5px;color:var(--off);margin-bottom:14px;
+}
 .ft-col ul{list-style:none}
-.ft-col ul li{margin-bottom:9px}
-.ft-col ul li a{font-size:12px;color:var(--gray);text-decoration:none;transition:color .2s;cursor:pointer;font-family:var(--font-m)}
+.ft-col ul li{margin-bottom:8px}
+.ft-col ul li a{
+  font-family:var(--font-m);font-size:12px;color:var(--gray);
+  text-decoration:none;cursor:pointer;transition:color .2s;
+}
 .ft-col ul li a:hover{color:var(--lime)}
-.ft-bot{max-width:1440px;margin:0 auto;padding-top:22px;border-top:1px solid var(--lb);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--gray2);font-family:var(--font-m)}
+.ft-bottom{
+  max-width:1440px;margin:0 auto;
+  padding-top:20px;border-top:1px solid rgba(200,245,58,0.06);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--font-m);font-size:10.5px;color:#333;
+}
 
 /* ── MODALS ── */
-.ov{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(16px);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
-.ov.on{display:flex;animation:fdi .26s ease}
-@keyframes fdi{from{opacity:0}to{opacity:1}}
-@keyframes slu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.bio-m{background:rgba(8,8,8,.98);border:1px solid rgba(196,241,53,0.18);border-radius:20px;max-width:560px;width:100%;max-height:82vh;overflow-y:auto;animation:slu .3s ease;box-shadow:0 20px 60px rgba(196,241,53,0.09)}
-.bio-mh{padding:26px 26px 20px;border-bottom:1px solid rgba(196,241,53,0.09);position:relative}
-.bio-cl{position:absolute;top:20px;right:20px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);color:var(--gray);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.bio-cl:hover{color:var(--lime);border-color:var(--lime);transform:rotate(90deg)}
-.bio-av{width:84px;height:84px;border-radius:50%;border:2px solid var(--lime);overflow:hidden;margin:0 auto 12px;background:var(--ld);display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(196,241,53,0.18)}
-.bio-av img{width:100%;height:100%;object-fit:cover}
-.bio-av-fb{font-family:var(--font-d);font-size:34px;color:var(--lime)}
-.bio-mn{font-family:"Syne",sans-serif;font-size:22px;font-weight:700;text-align:center;margin-bottom:3px}
-.bio-mr{font-size:11px;color:var(--lime);text-transform:uppercase;letter-spacing:2px;font-weight:700;text-align:center;font-family:var(--font-m)}
-.bio-mb{padding:22px 26px 26px;font-size:13px;color:var(--gray);line-height:1.9;font-family:var(--font-m)}
-.bio-mb p{margin-bottom:14px}.bio-mb p:last-child{margin-bottom:0}
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(14px);
+  z-index:5000;display:none;align-items:center;justify-content:center;padding:20px;
+}
+.overlay.on{display:flex;animation:fadein .24s ease}
+
+.install-modal{
+  background:rgba(10,10,10,0.98);border:1px solid rgba(200,245,58,0.14);
+  border-radius:18px;max-width:370px;width:100%;
+  animation:slideup .28s ease;
+  box-shadow:0 24px 60px rgba(0,0,0,.85);
+}
+@keyframes slideup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.im-head{padding:20px 20px 16px;border-bottom:1px solid rgba(200,245,58,0.07);display:flex;gap:12px;align-items:flex-start;position:relative}
+.im-icon{
+  width:48px;height:48px;border-radius:12px;background:var(--lime);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:20px;color:#000;flex-shrink:0;
+}
+.im-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--gray);font-size:18px;cursor:pointer;transition:color .2s}
+.im-close:hover{color:var(--white)}
+.im-body{padding:16px 20px 20px}
+.im-feats{
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);
+  border-radius:10px;padding:10px;margin-bottom:14px;
+}
+.im-feat{display:flex;align-items:center;gap:8px;padding:4px 0;font-family:var(--font-m);font-size:12px;color:#bbb}
+.im-feat-dot{
+  width:14px;height:14px;border-radius:50%;background:var(--lime-dim);
+  color:var(--lime);display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;
+}
+.im-btns{display:flex;gap:8px}
+.im-btn{
+  flex:1;padding:11px 14px;border-radius:10px;font-family:var(--font-m);font-size:12px;
+  font-weight:700;cursor:pointer;border:none;transition:all .2s;
+}
+.im-btn.p{background:var(--lime);color:#000;box-shadow:0 4px 12px rgba(200,245,58,0.2)}
+.im-btn.p:hover{transform:translateY(-1px)}
+.im-btn.s{background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.07)}
 
 /* ── FULL VIEWS ── */
 .fv{position:fixed;inset:0;background:var(--black);z-index:2000;overflow-y:auto;display:none}
-.fv.on{display:block;animation:slr .36s ease}
-@keyframes slr{from{transform:translateX(100%)}to{transform:translateX(0)}}
-.fv-hd{position:sticky;top:0;background:rgba(2,2,2,.96);backdrop-filter:blur(24px);border-bottom:1px solid var(--lb);z-index:100;padding:13px 32px;display:flex;align-items:center;gap:14px}
-.bk-btn{font-family:var(--font-d);display:inline-flex;align-items:center;gap:7px;padding:7px 22px;background:transparent;color:var(--lime);border:1px solid var(--lb);border-radius:100px;font-size:13px;letter-spacing:2px;cursor:pointer;transition:all .22s}
-.bk-btn:hover{border-color:var(--lime);background:var(--ld)}
-.fv-body{max-width:1100px;margin:0 auto;padding:60px 32px 72px}
-
-/* ── INSTALL ── */
-.ins-m{background:rgba(10,10,10,.98);border:1px solid rgba(196,241,53,0.15);border-radius:18px;max-width:380px;width:100%;animation:slu .36s ease;box-shadow:0 20px 56px rgba(0,0,0,.8)}
-.ins-h{padding:22px 20px 16px;border-bottom:1px solid rgba(196,241,53,0.08);display:flex;align-items:flex-start;gap:12px;position:relative}
-.ins-ic{width:50px;height:50px;border-radius:12px;background:var(--lime);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:20px;color:#000;flex-shrink:0;overflow:hidden}
-.ins-ic img{width:100%;height:100%;object-fit:cover}
-.ins-ic-fb{font-family:var(--font-d);font-size:20px;color:#000}
-.ins-cl{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--gray);font-size:18px;cursor:pointer;transition:color .2s}
-.ins-cl:hover{color:var(--white)}
-.ins-bd{padding:16px 20px 20px}
-.ins-fs{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:11px;padding:11px;margin-bottom:14px}
-.ins-f{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;color:#bbb;font-family:var(--font-m)}
-.ins-fd{width:15px;height:15px;border-radius:50%;background:rgba(196,241,53,0.1);color:var(--lime);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
-.ins-bs{display:flex;gap:8px}
-.ins-b{flex:1;padding:12px 16px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:var(--font-m)}
-.ins-b.p{background:var(--lime);color:#000;box-shadow:0 4px 14px rgba(196,241,53,0.22)}.ins-b.p:hover{transform:translateY(-1px)}
-.ins-b.s{background:rgba(255,255,255,0.04);color:var(--gray);border:1px solid rgba(255,255,255,0.07)}
-
-
-  /* ─────────────────────────────
-   HERO — POWER REBUILD
-   Add BELOW your current hero css
-───────────────────────────── */
-
-/* HERO STRUCTURE */
-.hero{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  overflow:hidden;
-  padding:
-    clamp(110px,12vw,160px)
-    clamp(18px,4vw,48px)
-    clamp(70px,8vw,90px);
+.fv.on{display:block;animation:slideleft .32s ease}
+@keyframes slideleft{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.fv-bar{
+  position:sticky;top:0;background:rgba(6,6,6,.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(200,245,58,0.08);
+  z-index:100;padding:12px 32px;display:flex;align-items:center;gap:14px;
 }
-
-/* darker cinematic depth */
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,0.15) 0%,
-      rgba(0,0,0,0.45) 55%,
-      rgba(0,0,0,0.72) 100%
-    );
-  pointer-events:none;
-  z-index:0;
+.fv-back{
+  font-family:var(--font-d);display:inline-flex;align-items:center;gap:6px;
+  padding:7px 20px;background:transparent;color:var(--lime);
+  border:1px solid rgba(200,245,58,0.15);border-radius:100px;font-size:12px;letter-spacing:2px;cursor:pointer;transition:all .2s;
 }
+.fv-back:hover{border-color:var(--lime);background:var(--lime-dim)}
+.fv-content{max-width:1100px;margin:0 auto;padding:56px 32px 72px}
 
-/* CENTER THE ENTIRE HERO */
-.hero-c{
-  position:relative;
-  z-index:2;
-  width:100%;
-  max-width:1200px;
-
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-
-  text-align:center;
+/* ── UTILITY ── */
+.more-btn{
+  font-family:var(--font-d);display:inline-flex;align-items:center;gap:7px;
+  padding:10px 26px;background:transparent;color:var(--lime);
+  border:1px solid rgba(200,245,58,0.18);border-radius:100px;
+  font-size:12px;letter-spacing:2px;cursor:pointer;transition:all .22s;
 }
+.more-btn:hover{border-color:var(--lime);background:var(--lime-dim)}
 
-/* EYEBROW */
-.eyebrow{
-  margin-bottom:24px;
-
-  padding:9px 18px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(196,241,53,0.08),
-      rgba(196,241,53,0.03)
-    );
-
-  border:1px solid rgba(196,241,53,0.14);
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    0 0 30px rgba(196,241,53,0.06);
-
-  backdrop-filter:blur(14px);
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.card{
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.055);
+  border-radius:var(--r);padding:clamp(22px,3vw,32px);transition:all .3s;
 }
-
-/* HERO TITLE */
-.hero-h1{
-  width:100%;
-  max-width:1050px;
-
-  font-family:var(--font-d);
-
-  /* REDUCED SIZE */
-  font-size:clamp(54px,7vw,92px);
-
-  line-height:0.88;
-  letter-spacing:-1.5px;
-
-  margin-bottom:28px;
-
-  text-transform:uppercase;
+.card:hover{border-color:rgba(200,245,58,0.12);background:rgba(200,245,58,0.015);transform:translateY(-4px)}
+.card-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:var(--lime-dim);border:1px solid var(eee--lime-soft);
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+  transition:all .28s;
 }
+.card:hover .card-icon{background:rgba(200,245,58,0.09);border-color:var(--lime-mid)}
+.card h3{font-family:var(--font-b);font-size:16px;font-weight:700;margin-bottom:8px}
+.card p{font-family:var(--font-m);font-size:12.5px;color:var(--gray);line-height:1.82}
 
-/* EACH LINE */
-.hero-h1 .ln{
-  display:block;
-  position:relative;
+/* ── XRC ORACLE ── */
+.oracle-section{
+  background:linear-gradient(180deg,var(--s1),rgba(6,6,6,0));
+  border-top:1px solid rgba(200,245,58,0.07);
+  border-bottom:1px solid rgba(200,245,58,0.07);
 }
-
-/* MAIN POWER LINE */
-.hero-h1 .l2{
-  color:var(--lime);
-
-  text-shadow:
-    0 0 18px rgba(196,241,53,0.18),
-    0 0 42px rgba(196,241,53,0.14);
-
-  transform:scale(1.03);
+.oracle-inner{max-width:1200px;margin:0 auto;padding:clamp(80px,8vw,120px) clamp(20px,4vw,48px)}
+.oracle-top{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center;margin-bottom:52px}
+.oracle-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:100px;
+  background:rgba(200,245,58,0.08);border:1px solid rgba(200,245,58,0.18);
+  font-family:var(--font-m);font-size:10px;letter-spacing:2px;color:var(--lime);
+  text-transform:uppercase;margin-bottom:16px;
 }
-
-/* subtle separation */
-.hero-h1 .l1,
-.hero-h1 .l3{
-  opacity:0.96;
+.oracle-badge-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--lime);
+  box-shadow:0 0 6px rgba(200,245,58,0.8);
+  animation:pulse 1.8s ease-in-out infinite;
 }
-
-/* HERO DESCRIPTION */
-.hero-sub{
-  max-width:760px;
-
-  font-size:clamp(14px,1.2vw,17px);
-
-  line-height:1.95;
-
-  color:#9d9d9d;
-
-  margin-bottom:38px;
-
-  font-family:var(--font-m);
+.oracle-live-strip{
+  display:flex;flex-direction:column;gap:10px;
 }
-
-/* stronger readable emphasis */
-.hero-sub strong{
-  color:#fff;
-  font-weight:700;
+.oracle-stat-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;
+  background:rgba(200,245,58,0.04);border:1px solid rgba(200,245,58,0.08);
+  border-radius:12px;transition:all .25s;
 }
-
-/* BUTTON CONTAINER */
-.hero-acts{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  gap:14px;
-  flex-wrap:wrap;
-
-  margin-bottom:58px;
+.oracle-stat-row:hover{background:rgba(200,245,58,0.07);border-color:rgba(200,245,58,0.14)}
+.oracle-stat-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:var(--lime-dim);border:1px solid var(--lime-soft);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-
-/* PRIMARY BUTTON */
-.btn-p{
-  height:56px;
-  padding:0 34px;
-
-  border-radius:18px;
-
-  font-size:14px;
-  letter-spacing:2px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #d7ff5f 0%,
-      #b9e52d 100%
-    );
-
-  box-shadow:
-    0 10px 30px rgba(196,241,53,0.20),
-    inset 0 1px 0 rgba(255,255,255,0.22);
-
-  transition:
-    transform .22s ease,
-    box-shadow .22s ease;
+.oracle-stat-icon svg{width:17px;height:17px}
+.oracle-stat-body{flex:1}
+.oracle-stat-label{font-family:var(--font-m);font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:1.2px}
+.oracle-stat-val{font-family:var(--font-d);font-size:22px;color:var(--lime);line-height:1.1;text-shadow:0 0 10px rgba(200,245,58,0.15)}
+.oracle-ticker{
+  font-family:var(--font-m);font-size:9.5px;color:rgba(200,245,58,0.5);
+  letter-spacing:.5px;
 }
-
-.btn-p:hover{
-  transform:translateY(-4px);
-
-  box-shadow:
-    0 16px 44px rgba(196,241,53,0.32),
-    inset 0 1px 0 rgba(255,255,255,0.22);
+.oracle-chains-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.oracle-chain{
+  background:var(--s1);border:1px solid rgba(255,255,255,0.05);
+  border-radius:14px;padding:18px 14px;transition:all .28s;
+  position:relative;overflow:hidden;
 }
-
-/* SECONDARY BUTTON */
-.btn-o{
-  height:56px;
-  padding:0 30px;
-
-  border-radius:18px;
-
-  background:
-    rgba(255,255,255,0.03);
-
-  border:1px solid rgba(255,255,255,0.09);
-
-  backdrop-filter:blur(10px);
-
-  color:#fff;
+.oracle-chain::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,245,58,0.18),transparent);
 }
-
-.btn-o:hover{
-  border-color:rgba(196,241,53,0.35);
-
-  background:
-    rgba(196,241,53,0.05);
-
-  box-shadow:
-    0 0 30px rgba(196,241,53,0.08);
+.oracle-chain:hover{border-color:rgba(200,245,58,0.13);transform:translateY(-2px)}
+.oc-code{font-family:var(--font-d);font-size:22px;color:var(--lime);letter-spacing:.5px;margin-bottom:5px;text-shadow:0 0 8px rgba(200,245,58,0.12)}
+.oc-name{font-family:var(--font-b);font-size:12px;font-weight:700;margin-bottom:4px}
+.oc-desc{font-family:var(--font-m);font-size:10.5px;color:var(--gray);line-height:1.65}
+.oc-status{
+  display:inline-flex;align-items:center;gap:5px;margin-top:8px;
+  font-family:var(--font-m);font-size:9px;color:var(--lime);text-transform:uppercase;letter-spacing:1px;
 }
+.oc-status-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);box-shadow:0 0 5px rgba(200,245,58,0.7);animation:pulse 2s infinite}
 
-/* HERO STATS */
-.hero-stats{
-  width:100%;
-  max-width:920px;
-
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-
-  gap:16px;
-}
-
-/* PREMIUM GLASS CARDS */
-.hstat{
-  position:relative;
-
-  padding:24px 18px;
-
-  border-radius:22px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.04),
-      rgba(255,255,255,0.015)
-    );
-
+/* ── TEAM ── */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
+.team-card{
+  background:rgba(255,255,255,0.02);
   border:1px solid rgba(255,255,255,0.06);
-
-  backdrop-filter:blur(18px);
-
-  overflow:hidden;
-
-  transition:
-    transform .25s ease,
-    border-color .25s ease,
-    background .25s ease;
+  border-radius:22px;padding:28px 24px;
+  text-align:center;transition:all .32s;
+  position:relative;overflow:hidden;
 }
-
-/* top glow line */
-.hstat::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:1px;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(196,241,53,0.35),
-      transparent
-    );
+.team-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);
 }
-
-.hstat:hover{
+.team-card:hover{
+  border-color:rgba(200,245,58,0.15);
   transform:translateY(-5px);
-
-  border-color:
-    rgba(196,241,53,0.18);
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(196,241,53,0.06),
-      rgba(255,255,255,0.02)
-    );
+  box-shadow:0 20px 50px rgba(200,245,58,0.06);
 }
-
-/* STAT NUMBER */
-.hstat-n{
-  font-size:clamp(24px,2.2vw,34px);
-
-  margin-bottom:7px;
-
-  color:var(--lime);
-
-  text-shadow:
-    0 0 18px rgba(196,241,53,0.18);
+.av-ring{
+  width:88px;height:88px;border-radius:50%;
+  margin:0 auto 16px;
+  border:2px solid rgba(200,245,58,0.18);
+  background:var(--lime-dim);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;transition:all .28s;
 }
-
-/* STAT LABEL */
-.hstat-l{
-  font-size:10px;
-
-  letter-spacing:2px;
-
-  color:#7c7c7c;
+.team-card:hover .av-ring{border-color:var(--lime);box-shadow:0 0 22px rgba(200,245,58,0.18)}
+.av-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.av-fb{font-family:var(--font-d);font-size:34px;color:var(--lime)}
+.t-name{font-family:var(--font-b);font-size:16px;font-weight:700;margin-bottom:3px}
+.t-role{
+  font-family:var(--font-m);font-size:9.5px;color:var(--lime);
+  text-transform:uppercase;letter-spacing:1.8px;font-weight:500;margin-bottom:10px;
 }
-
-/* ─────────────────────────────
-   DESKTOP BEAUTY
-───────────────────────────── */
-@media(min-width:1200px){
-
-  .hero{
-    padding-top:150px;
-  }
-
-  .hero-h1{
-    font-size:92px;
-  }
-
-  .hero-sub{
-    max-width:760px;
-  }
-
-  .hero-stats{
-    margin-top:6px;
-  }
-
-  .hstat{
-    min-height:130px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-  }
+.t-bio{font-family:var(--font-m);font-size:11.5px;color:var(--gray);line-height:1.72;margin-bottom:14px}
+.t-read{font-family:var(--font-m);font-size:10.5px;color:var(--lime);cursor:pointer;font-weight:500;transition:opacity .2s}
+.t-read:hover{opacity:.7}
+.t-links{display:flex;gap:6px;justify-content:center;margin-top:12px}
+.t-link{
+  flex:1;font-family:var(--font-m);font-size:10px;font-weight:500;
+  padding:7px 10px;background:transparent;
+  border:1px solid rgba(255,255,255,0.07);border-radius:8px;
+  color:var(--gray);cursor:pointer;text-decoration:none;text-align:center;
+  transition:all .2s;
 }
+.t-link:hover{border-color:var(--lime);color:var(--lime)}
 
-/* ─────────────────────────────
-   TABLET
-───────────────────────────── */
-@media(max-width:900px){
-
-  .hero{
-    min-height:auto;
-    padding-top:120px;
-  }
-
-  .hero-h1{
-    font-size:clamp(50px,10vw,78px);
-
-    line-height:0.92;
-  }
-
-  .hero-sub{
-    max-width:650px;
-  }
-
-  .hero-stats{
-    grid-template-columns:repeat(2,1fr);
-  }
+/* Bio modal */
+.bio-ov{
+  position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(16px);
+  z-index:5000;display:none;align-items:center;justify-content:center;padding:20px;
 }
-
-/* ─────────────────────────────
-   MOBILE — BEAUTIFUL BUILD
-───────────────────────────── */
-@media(max-width:600px){
-
-  .hero{
-    padding:
-      110px
-      16px
-      56px;
-  }
-
-  .hero-c{
-    align-items:flex-start;
-    text-align:left;
-  }
-
-  .eyebrow{
-    font-size:9px;
-    letter-spacing:1.5px;
-
-    padding:8px 14px;
-
-    margin-bottom:18px;
-  }
-
-  .hero-h1{
-    font-size:clamp(42px,15vw,64px);
-
-    line-height:0.93;
-
-    margin-bottom:22px;
-  }
-
-  .hero-h1 .l2{
-    transform:none;
-  }
-
-  .hero-sub{
-    font-size:13px;
-
-    line-height:1.85;
-
-    margin-bottom:30px;
-
-    max-width:100%;
-  }
-
-  .hero-acts{
-    width:100%;
-
-    justify-content:flex-start;
-
-    gap:10px;
-
-    margin-bottom:36px;
-  }
-
-  .btn-p,
-  .btn-o{
-    height:50px;
-
-    padding:0 18px;
-
-    border-radius:14px;
-
-    font-size:11px;
-
-    letter-spacing:1px;
-  }
-
-  .hero-stats{
-    grid-template-columns:1fr 1fr;
-
-    gap:10px;
-  }
-
-  .hstat{
-    padding:18px 14px;
-
-    border-radius:18px;
-  }
-
-  .hstat-n{
-    font-size:22px;
-  }
-
-  .hstat-l{
-    font-size:8px;
-    letter-spacing:1.3px;
-  }
+.bio-ov.on{display:flex;animation:fadein .24s ease}
+.bio-modal{
+  background:rgba(10,10,10,.98);border:1px solid rgba(200,245,58,0.16);
+  border-radius:20px;max-width:520px;width:100%;max-height:82vh;overflow-y:auto;
+  animation:slideup .28s ease;box-shadow:0 20px 60px rgba(200,245,58,0.07);
 }
-
-/* ─────────────────────────────
-   EXTRA SMALL DEVICES
-───────────────────────────── */
-@media(max-width:380px){
-
-  .hero-h1{
-    font-size:38px;
-  }
-
-  .hero-stats{
-    grid-template-columns:1fr;
-  }
-
-  .hero-acts{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .btn-p,
-  .btn-o{
-    width:100%;
-  }
+.bio-mh{padding:24px 24px 18px;border-bottom:1px solid rgba(200,245,58,0.08);position:relative}
+.bio-close{
+  position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--gray);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
 }
-  
-  /* ── RESPONSIVE ── */
+.bio-close:hover{color:var(--lime);border-color:var(--lime);transform:rotate(90deg)}
+.bio-av{
+  width:80px;height:80px;border-radius:50%;border:2px solid var(--lime);
+  overflow:hidden;margin:0 auto 12px;
+  background:var(--lime-dim);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 22px rgba(200,245,58,0.16);
+}
+.bio-av img{width:100%;height:100%;object-fit:cover}
+.bio-av-fb{font-family:var(--font-d);font-size:32px;color:var(--lime)}
+.bio-name{font-family:var(--font-b);font-size:20px;font-weight:700;text-align:center;margin-bottom:3px}
+.bio-role{font-family:var(--font-m);font-size:10px;color:var(--lime);text-transform:uppercase;letter-spacing:2px;font-weight:500;text-align:center}
+.bio-body{padding:20px 24px 24px;font-family:var(--font-m);font-size:13px;color:var(--gray);line-height:1.88}
+.bio-body p{margin-bottom:12px}.bio-body p:last-child{margin-bottom:0}
+
+/* ── RESPONSIVE ── */
 @media(max-width:1024px){
-  nav{padding:13px 24px;gap:20px}
-  .nav-links{gap:20px}
+  nav{padding:13px 24px}
+  .nav-links{gap:22px}
+  .thesis-grid{grid-template-columns:1fr}
+  .xrc-top{grid-template-columns:1fr}
+  .oracle-top{grid-template-columns:1fr}
+  .ft-inner{grid-template-columns:1fr 1fr;gap:28px}
 }
 @media(max-width:768px){
-  nav{padding:12px 18px}
+  nav{padding:11px 18px}
   .nav-links{display:none}
   .nav-cta{display:none}
   .hamburger{display:flex}
-  .hero{padding:88px 18px 56px}
-  .hero-stats{grid-template-columns:repeat(2,1fr);gap:11px;margin-top:48px}
-  /* Buttons stay ROW on mobile — just smaller padding */
-  .hero-acts{gap:10px}
-  .btn-p{padding:11px 24px;font-size:13px}
-  .btn-o{padding:11px 24px;font-size:13px}
-  .ft-in{grid-template-columns:1fr 1fr;gap:28px}
-  footer{padding:48px 18px 24px}
-  .fv-hd{padding:12px 18px}.fv-body{padding:40px 18px 56px}
+  .hero-pillars{grid-template-columns:1fr}
+  .problem-item:first-child{border-radius:var(--r) var(--r) 0 0}
+  .problem-item:nth-child(2){border-radius:0}
+  .problem-item:nth-child(3){border-radius:0}
+  .problem-item:last-child{border-radius:0 0 var(--r) var(--r)}
+  .oracle-chains-grid{grid-template-columns:repeat(2,1fr)}
+  footer{padding:44px 18px 24px}
+  .ft-inner{grid-template-columns:1fr}
+  .ft-bottom{flex-direction:column;gap:7px;text-align:center}
 }
-@media(max-width:480px){
-  nav{padding:11px 14px}
-  .hero{padding:80px 14px 48px}
-  /* On very small screens buttons still stay ROW with minimal padding */
-  .hero-acts{gap:8px}
-  .btn-p{padding:10px 18px;font-size:12px;letter-spacing:1px}
-  .btn-o{padding:10px 18px;font-size:12px;letter-spacing:1px}
-  .hero-stats{grid-template-columns:1fr 1fr;gap:9px}
-  .ep-g{grid-template-columns:repeat(2,1fr)}
-  .ft-in{grid-template-columns:1fr}
-  .ft-bot{flex-direction:column;gap:7px;text-align:center}
-  section{padding:52px 14px}
+@media(max-width:540px){
+  nav{padding:10px 14px}
+  .hero-cta{gap:10px}
+  .btn-primary{height:48px;padding:0 22px;font-size:13px}
+  .btn-secondary{height:48px;padding:0 20px;font-size:13px}
+  .ep-stats{grid-template-columns:repeat(3,1fr)}
+  .xrc-perf{grid-template-columns:repeat(3,1fr)}
+  .oracle-chains-grid{grid-template-columns:1fr 1fr}
+  section{padding:56px 14px}
+  .oracle-inner{padding:56px 14px}
+  .fv-content{padding:40px 16px 56px}
+}
+@media(max-width:380px){
+  .hero-cta{flex-direction:column;align-items:stretch}
+  .btn-primary,.btn-secondary{width:100%;text-align:center}
+  .hero-pillars{grid-template-columns:1fr}
+  .ep-stats{grid-template-columns:repeat(2,1fr)}
+  .oracle-chains-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<div class="bg-layer">
-  <div class="grid-lines"></div>
-  <div class="accent-lines">
-    <div class="h-line"></div>
-    <div class="h-line"></div>
-    <div class="h-line"></div>
-    <div class="v-line"></div>
-    <div class="v-line"></div>
-    <div class="v-line"></div>
-    <div class="node"></div>
-    <div class="node"></div>
-    <div class="node"></div>
-    <div class="ambient-glow"></div>
-    <div class="ambient-glow"></div>
-  </div>
+<div class="bg">
+  <div class="bg-grid"></div>
+  <div class="bg-orb a"></div>
+  <div class="bg-orb b"></div>
 </div>
 
 <div class="wrap">
 
-<!-- ── NAV ── -->
+<!-- NAV -->
 <header id="site-header">
 <nav>
   <a class="logo" onclick="scrollToTop()">
-    <div class="logo-mark" id="nav-logo-mark">
-      <!-- LOGO IMAGE: Set LOGO_URL in the script below to your logo URL. Fallback shows "X". -->
-      <img src="" alt="Xeevia" id="nav-logo-img" style="display:none;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';document.getElementById('nav-logo-fb').style.display='flex'">
-      <span class="logo-mark-fb" id="nav-logo-fb">X</span>
-    </div>
+    <div class="logo-mark">X</div>
     <span class="logo-name">XEEVIA</span>
   </a>
   <div class="nav-links">
     <a onclick="showXRCFull()">Protocol</a>
-    <a onclick="showTeamFull()">Team</a>
+    <a href="#economy">Economy</a>
     <a href="#tokens">Token</a>
-    <a href="#mechanics">Economy</a>
+    <a href="#allocation">Allocation</a>
     <a href="#faq">FAQ</a>
   </div>
-  <button class="nav-cta" onclick="openInstall()">Join the Economy</button>
+  <button class="nav-cta" onclick="enterXeevia()">Join the Economy</button>
   <button class="hamburger" id="hamburger-btn" onclick="toggleMobileNav()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 </header>
 
-<!-- ── MOBILE NAV DRAWER ── -->
+<!-- MOBILE NAV -->
 <nav class="mobile-nav" id="mobile-nav">
   <a onclick="closeMobileNav();showXRCFull()">Protocol</a>
-  <a onclick="closeMobileNav();showTeamFull()">Team</a>
+  <a href="#economy" onclick="closeMobileNav()">Economy</a>
   <a href="#tokens" onclick="closeMobileNav()">Token</a>
-  <a href="#mechanics" onclick="closeMobileNav()">Economy</a>
   <a href="#faq" onclick="closeMobileNav()">FAQ</a>
-  <button class="mobile-cta" onclick="closeMobileNav();openInstall()">Join the Economy</button>
+  <button class="mob-cta" onclick="closeMobileNav();enterXeevia()">Join the Economy</button>
 </nav>
 
-<!-- ── HERO ── -->
-<section class="hero">
+<!-- HERO -->
+<section class="hero" id="top">
 <div class="hero-c">
 
-  <div class="eyebrow">
-    <span class="eyebrow-dot"></span>
-    Welcome to the future of digital life
+  <div class="layer-badge">
+    <span class="badge-dot"></span>
+    The Social Value Layer
   </div>
 
   <h1 class="hero-h1">
-    <span class="ln l1">Built for Real People.</span>
-    <span class="ln l2">Not Algorithms.</span>
-    <span class="ln l3">Not Bots.</span>
+    <span class="ln l1">One Identity.</span>
+    <span class="gap"></span>
+    <span class="ln l2">Participation</span>
+    <span class="ln l2">With Weight.</span>
+    <span class="gap"></span>
+    <span class="ln l3">Value in Motion.</span>
   </h1>
 
-  <p class="hero-sub">
-    Xeevia is a next-generation social ecosystem where
-    <strong>community, identity, creativity, and participation</strong>
-    finally have real value.
-    <br><br>
-    Join communities. Stream live. Share moments. Send meaningful gifts.
-    Build an audience that actually belongs to you.
-    <strong>A cleaner, more human internet — designed for the people creating it.</strong>
+  <p class="hero-desc">
+    You've built audiences on five platforms. None of them belong to you.
+    Xeevia is the infrastructure layer where <strong>identity unifies, participation matters,
+    and value flows to the people creating it</strong> — not the platforms extracting it.
   </p>
 
-  <div class="hero-acts">
-    <button class="btn-p" onclick="openInstall()">
-      Enter Xeevia
-    </button>
-
-    <button class="btn-o"
-      onclick="document.getElementById('insight').scrollIntoView({behavior:'smooth'})">
-      Explore the Vision
-    </button>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="enterXeevia()">Enter Xeevia</button>
+    <button class="btn-secondary" onclick="document.getElementById('what').scrollIntoView({behavior:'smooth'})">Explore the Vision</button>
   </div>
 
-  <div class="hero-stats">
-
-    <div class="hstat">
-      <div class="hstat-n">Communities</div>
-      <div class="hstat-l">Built Around People</div>
+  <div class="hero-pillars">
+    <div class="pillar">
+      <div class="pillar-icon">01</div>
+      <div class="pillar-label">Unified Identity</div>
+      <div class="pillar-sub">One profile. One reputation. Connected to every network you're already on.</div>
     </div>
-
-    <div class="hstat">
-      <div class="hstat-n">Live Streaming</div>
-      <div class="hstat-l">Audio & Video Spaces</div>
+    <div class="pillar">
+      <div class="pillar-icon">02</div>
+      <div class="pillar-label">Weighted Engagement</div>
+      <div class="pillar-sub">Every action carries consequence. No bots. No noise. Only real signal.</div>
     </div>
-
-    <div class="hstat">
-      <div class="hstat-n">Meaningful Engagement</div>
-      <div class="hstat-l">Real Interaction</div>
+    <div class="pillar">
+      <div class="pillar-icon">03</div>
+      <div class="pillar-label">Liquid Value</div>
+      <div class="pillar-sub">Earn from day one. Convert, stake, withdraw. Your work. Your ownership.</div>
     </div>
-
-    <div class="hstat">
-      <div class="hstat-n">Digital Ownership</div>
-      <div class="hstat-l">Participation That Matters</div>
-    </div>
-
   </div>
 
 </div>
 </section>
 
-<div class="sec-div"></div>
+<div class="divider"></div>
 
-<!-- ── INSIGHT ── -->
-<section id="insight">
+<!-- THE PROBLEM -->
+<section id="problem">
 <div class="con">
-  <div class="stag"><span class="stag-line"></span> The Vision</div>
-  <h2 class="sec-h">Why Xeevia <span class="ac">Exists</span></h2>
-  <p class="sec-sub">Social media gave everyone a voice. But only the platform got paid. That ends here.</p>
-  <div class="g3">
-    <div class="gl">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M6.5 9h11l1 12H5.5L6.5 9z"/><path d="M9 9V7"/><path d="M15 9V7"/></svg>
-      </div>
-      <h3>Engagement Has Weight</h3>
-      <p>Free engagement is worthless engagement. When every action costs something, every action means something. Xeevia makes your attention too valuable to waste on bots.</p>
+  <div class="eyebrow"><span class="eyebrow-line"></span>The Problem</div>
+  <h2 class="sec-h">The internet solved <span class="lime">connection.</span><br>It never solved unification.</h2>
+  <p class="sec-sub">Every platform creates its own identity system, social graph, and economic model. The more connected the internet becomes, the more fragmented your participation becomes.</p>
+  <div class="problem-grid">
+    <div class="problem-item">
+      <div class="prob-num">01</div>
+      <div class="prob-title">Fragmented Identity</div>
+      <p class="prob-body">An Instagram self. An X self. A LinkedIn self. A TikTok self. None of them yours. None of them travel. You rebuild from zero every time.</p>
     </div>
-    <div class="gl">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c1.5-2 3-3 4.5-3s3 2 4.5 2 3-3 4.5-3 3 1 4.5 3"/><path d="M2 17c1.5-2 3-3 4.5-3s3 2 4.5 2 3-3 4.5-3 3 1 4.5 3"/><path d="M2 7c1.5-2 3-3 4.5-3s3 2 4.5 2 3-3 4.5-3 3 1 4.5 3"/></svg>
-      </div>
-      <h3>Liquid from Day One</h3>
-      <p>Value doesn't wait to vest. The economy flows from the first deposit. Every creator earns real EP backed by a liquidity pool that grows with every single user.</p>
+    <div class="problem-item">
+      <div class="prob-num">02</div>
+      <div class="prob-title">Worthless Engagement</div>
+      <p class="prob-body">Free engagement is zero-value engagement. Likes, follows, comments — all free, all meaningless. Bots dominate, signals vanish. Metrics lie.</p>
     </div>
-    <div class="gl">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M21 2l-9.6 9.6"/><path d="M15.5 7.5l3 3"/><path d="M18 5l2 2"/></svg>
-      </div>
-      <h3>True Ownership</h3>
-      <p>Your followers, your content, your earnings — on an immutable record chain. No algorithm can erase what you built. No platform can shut off your income.</p>
+    <div class="problem-item">
+      <div class="prob-num">03</div>
+      <div class="prob-title">Value Flows Up, Not Down</div>
+      <p class="prob-body">Platforms earn billions from ad auctions built on your data. You get nothing. The people doing all the work never owned the outcome.</p>
+    </div>
+    <div class="problem-item">
+      <div class="prob-num">04</div>
+      <div class="prob-title">One Update, Gone</div>
+      <p class="prob-body">Algorithm changes, account bans, demonetisation — overnight. What you built on a platform belongs to the platform. There's no recourse.</p>
     </div>
   </div>
 </div>
 </section>
 
-<div class="sec-div"></div>
+<div class="divider"></div>
 
-<!-- ── PROBLEM ── -->
-<section>
+<!-- WHAT IS XEEVIA -->
+<section id="what">
 <div class="con">
-  <div class="stag"><span class="stag-line"></span> The Problem</div>
-  <h2 class="sec-h">What We're <span class="ac">Fixing</span></h2>
-  <p class="sec-sub">Every platform before Xeevia had one thing in common — the people doing all the work never owned the outcome.</p>
-  <div class="g3">
-    <div class="gl">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><circle cx="9" cy="14" r="1.5" fill="var(--lime)"/><circle cx="15" cy="14" r="1.5" fill="var(--lime)"/><path d="M9 18h6"/><path d="M12 3v2"/></svg>
+  <div class="thesis-wrap">
+    <div class="thesis-grid">
+      <div class="thesis-left">
+        <div class="eyebrow" style="margin-bottom:20px"><span class="eyebrow-line"></span>The Xeevia Thesis</div>
+        <div class="tagline">
+          Human participation<br>creates <span class="lime">value.</span><br>
+          Most digital systems<br>fail to recognize it.
+        </div>
+        <p class="thesis-body">
+          Xeevia is the Social Value Layer — infrastructure for a more valuable digital society. Not a social network replacing others. A coordination layer that connects them.
+        </p>
+        <p class="thesis-body">
+          One identity linked to every platform you use. One reputation that compounds across everything you do. One source of truth for your digital life — owned entirely by you.
+        </p>
       </div>
-      <h3>Botted Ecosystems</h3>
-      <p>When engagement is free, bots dominate. Fake followers, fake likes, fake reach. Xeevia charges for engagement — making every interaction provably real.</p>
-    </div>
-    <div class="gl">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/><path d="M3 19h18"/><path d="M7 19v-4"/><path d="M17 19v-4"/></svg>
+      <div class="thesis-right">
+        <div class="thesis-point">
+          <div class="tp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div class="tp-text">
+            <h4>Identity should be unified</h4>
+            <p>One core profile. One reputation layer. One social hub — while connecting to all the external networks you already live on.</p>
+          </div>
+        </div>
+        <div class="thesis-point">
+          <div class="tp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="tp-text">
+            <h4>Participation should matter</h4>
+            <p>When actions carry cost, they carry meaning. Every like, comment, and follow becomes a deliberate signal — not noise.</p>
+          </div>
+        </div>
+        <div class="thesis-point">
+          <div class="tp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="tp-text">
+            <h4>Value flows between people</h4>
+            <p>Not upward to platforms. Creator tips keep 84%. Communities earn when they create value. Finance is native to participation.</p>
+          </div>
+        </div>
+        <div class="thesis-point">
+          <div class="tp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="tp-text">
+            <h4>Reputation should compound</h4>
+            <p>Every contribution adds to a permanent, cryptographically-linked record. Your history is yours. Irrevocable.</p>
+          </div>
+        </div>
       </div>
-      <h3>Value Flows Up, Not Down</h3>
-      <p>Platforms earn billions from ad auctions built on your data. You get nothing. Xeevia routes 84% of every tip directly to creators. The contract is written in code.</p>
-    </div>
-    <div class="gl">
-      <div class="icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-      </div>
-      <h3>One Update, Gone</h3>
-      <p>Algorithm changes, account bans, demonetisation — overnight. Xeevia's XRC protocol makes your record permanent and your earnings irrevocable. No rug pulls.</p>
     </div>
   </div>
 </div>
 </section>
 
-<div class="sec-div"></div>
+<div class="divider"></div>
 
-<!-- ── XRC ── -->
-<section id="xrc">
+<!-- HOW THE ECONOMY WORKS -->
+<section id="economy">
 <div class="con">
-  <div class="stag"><span class="stag-line"></span> Protocol</div>
-  <h2 class="sec-h">XRC <span class="ac">Protocol</span></h2>
-  <p class="sec-sub">Off-chain, blockchain-grade verifiability. Every event cryptographically linked. Every record immutable and instant.</p>
-  <div class="xrc-g">
-    <div class="xc"><div class="xc-code">XTRC</div><h4>Transaction Records</h4><p>All value flows — transfers, tips, rewards, fees. Permanent and queryable.</p></div>
-    <div class="xc"><div class="xc-code">XERC</div><h4>Engagement Records</h4><p>Likes, comments, shares — verified and weighted. No bots pass through.</p></div>
-    <div class="xc"><div class="xc-code">XARC</div><h4>Account Records</h4><p>Identity timeline. Every login, every verification, every security event.</p></div>
-    <div class="xc"><div class="xc-code">XCRC</div><h4>Content Records</h4><p>Authorship and lifecycle. Your content is yours — provably and permanently.</p></div>
+  <div class="economy-header">
+    <div class="eyebrow" style="justify-content:center"><span class="eyebrow-line"></span>The Participation Economy</div>
+    <h2 class="sec-h">How the <span class="lime">economy</span> works</h2>
+    <p class="sec-sub" style="max-width:100%">Simple on the surface. Engineered for long-term stability underneath. Built to reward real participation from day one.</p>
   </div>
-  <button class="more-btn" onclick="showXRCFull()">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    Full Protocol Spec
-  </button>
-</div>
-</section>
-
-<div class="sec-div"></div>
-
-<!-- ── TEAM ── -->
-<section id="team">
-<div class="con">
-  <div class="stag"><span class="stag-line"></span> The People</div>
-  <h2 class="sec-h">Meet The <span class="ac">Team</span></h2>
-  <p class="sec-sub">Building the infrastructure the next generation of creators deserves.</p>
-  <div class="team-g" id="teamGrid">
-    <!-- Team cards injected by JS — loads live avatars from Xeevia Supabase -->
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="step-badge">1</div>
+      <div class="step-title">Deposit &amp; Activate</div>
+      <p class="step-body">$1 gets you 100 EP and enters the liquidity pool — the reserve backing every EP in circulation. The economy grows as deposits grow. Liquid from the first transaction.</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-badge">2</div>
+      <div class="step-title">Engage &amp; Earn</div>
+      <p class="step-body">Login daily for EP. Publish content for EP. Earn the weekly quality bonus when your work generates real engagement. Receive tips directly — you keep 84%. Zero deposit required to start earning.</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-badge">3</div>
+      <div class="step-title">Convert &amp; Own</div>
+      <p class="step-body">40% of monthly EP earnings auto-convert to $XEV — hard-capped at 1 trillion, immutable supply. Stake for governance, withdraw as real value. What you built, you own. Completely.</p>
+    </div>
   </div>
-  <div style="text-align:center;margin-top:32px">
-    <button class="more-btn" onclick="showTeamFull()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      View Full Team
-    </button>
+  <div class="ep-stats">
+    <div class="ep-stat"><span class="ep-val">+1 EP</span><span class="ep-lbl">Daily Login</span><span class="ep-note">Every day you show up</span></div>
+    <div class="ep-stat"><span class="ep-val">+1 EP</span><span class="ep-lbl">Post Published</span><span class="ep-note">Up to 5 per day</span></div>
+    <div class="ep-stat"><span class="ep-val">+10 EP</span><span class="ep-lbl">Weekly Bonus</span><span class="ep-note">Real engagement required</span></div>
+    <div class="ep-stat"><span class="ep-val">84%</span><span class="ep-lbl">Creator Tips</span><span class="ep-note">Of every EP tip received</span></div>
+    <div class="ep-stat"><span class="ep-val">2%</span><span class="ep-lbl">Protocol Fee</span><span class="ep-note">On all transactions</span></div>
+    <div class="ep-stat"><span class="ep-val">$1</span><span class="ep-lbl">Activation</span><span class="ep-note">= 100 EP. One time.</span></div>
   </div>
 </div>
 </section>
 
-<div class="sec-div"></div>
+<div class="divider"></div>
 
-<!-- ── TOKENS ── -->
+<!-- XRC PROTOCOL -->
+<div class="xrc-section">
+<div class="xrc-inner" id="xrc">
+  <div class="xrc-top">
+    <div>
+      <div class="eyebrow"><span class="eyebrow-line"></span>Protocol</div>
+      <h2 class="sec-h">XRC — Xeevia<br><span class="lime">Record Chain</span></h2>
+      <p class="sec-sub" style="margin-bottom:28px">Off-chain, blockchain-grade verifiability. Every event cryptographically linked. Every record immutable and instantly queryable. No blockchain cost. No blockchain latency.</p>
+      <div class="xrc-perf">
+        <div class="perf-card"><span class="perf-val">&lt;50ms</span><span class="perf-lbl">Write</span></div>
+        <div class="perf-card"><span class="perf-val">&lt;10ms</span><span class="perf-lbl">Read</span></div>
+        <div class="perf-card"><span class="perf-val">&lt;5ms</span><span class="perf-lbl">Verify</span></div>
+      </div>
+      <div style="margin-top:20px">
+        <button class="more-btn" onclick="showXRCFull()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Full Protocol Spec
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="xrc-chains">
+        <div class="chain"><div class="chain-code">XTRC</div><h4>Transaction Records</h4><p>All value flows — transfers, tips, rewards, fees. Permanent and queryable.</p></div>
+        <div class="chain"><div class="chain-code">XERC</div><h4>Engagement Records</h4><p>Likes, comments, shares — verified and weighted. No bots pass through.</p></div>
+        <div class="chain"><div class="chain-code">XARC</div><h4>Account Records</h4><p>Identity timeline. Every login, every verification, every security event.</p></div>
+        <div class="chain"><div class="chain-code">XCRC</div><h4>Content Records</h4><p>Authorship and lifecycle. Your content is yours — provably, permanently.</p></div>
+        <div class="chain"><div class="chain-code">XPRC</div><h4>Permission Records</h4><p>Role grants, revocations, moderation. Every authority decision on record.</p></div>
+        <div class="chain"><div class="chain-code">XSRC</div><h4>System Records</h4><p>Protocol upgrades, rule changes. No hidden governance.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- TOKEN DESIGN -->
 <section id="tokens">
 <div class="con">
-  <div class="stag"><span class="stag-line"></span> Economy</div>
-  <h2 class="sec-h">Dual <span class="ac">Token</span> Design</h2>
+  <div class="eyebrow"><span class="eyebrow-line"></span>Economy</div>
+  <h2 class="sec-h">Dual <span class="lime">Token</span> Design</h2>
   <p class="sec-sub">Two tokens. Two jobs. One ecosystem where value actually flows.</p>
-  <div class="tok-g">
-    <div class="tok">
-      <div class="tok-icon">EP</div>
+  <div class="token-grid">
+    <div class="token-card">
+      <div class="token-badge">EP</div>
       <h3>Engagement Points</h3>
-      <p>Social energy. Minted on deposit. Burned when spent. Every EP in existence is backed by a real dollar in the liquidity pool.</p>
-      <ul class="feats">
-        <li><span class="ck">✓</span> $1 = 100 EP — transparent and fixed</li>
-        <li><span class="ck">✓</span> Burned on use — zero inflation by design</li>
-        <li><span class="ck">✓</span> Not traded externally — pure utility</li>
-        <li><span class="ck">✓</span> 2% protocol fee on all EP transactions</li>
+      <p>Social energy. Minted on deposit. Burned when spent. Every EP in existence is backed by a real dollar in the liquidity pool. Not speculation — utility.</p>
+      <ul class="token-feats">
+        <li><span class="feat-check">✓</span> $1 = 100 EP — transparent and fixed</li>
+        <li><span class="feat-check">✓</span> Burned on use — zero inflation by design</li>
+        <li><span class="feat-check">✓</span> Not traded externally — pure utility</li>
+        <li><span class="feat-check">✓</span> 2% protocol fee on all EP transactions</li>
       </ul>
     </div>
-    <div class="tok">
-      <div class="tok-icon">XEV</div>
+    <div class="token-card">
+      <div class="token-badge">XEV</div>
       <h3>$XEV Token</h3>
-      <p>Stored value. Fixed supply of 1 trillion. Earned through participation. Stakeable for governance. Withdrawable as real value.</p>
-      <ul class="feats">
-        <li><span class="ck">✓</span> 1,000,000,000,000 $XEV — hard cap, forever</li>
-        <li><span class="ck">✓</span> 40% of EP earnings convert monthly</li>
-        <li><span class="ck">✓</span> Governance, staking, and real ownership</li>
-        <li><span class="ck">✓</span> 2% fee on EP↔XEV conversion and withdrawals</li>
+      <p>Stored value. Fixed supply. Earned through participation. Stakeable for governance. Withdrawable as real value. No new coins ever. No inflation.</p>
+      <ul class="token-feats">
+        <li><span class="feat-check">✓</span> 1,000,000,000,000 $XEV — hard cap, forever</li>
+        <li><span class="feat-check">✓</span> 40% of EP earnings convert monthly</li>
+        <li><span class="feat-check">✓</span> Governance, staking, and real ownership</li>
+        <li><span class="feat-check">✓</span> 2% fee on EP↔XEV conversion and withdrawals</li>
       </ul>
     </div>
   </div>
 </div>
 </section>
 
-<div class="sec-div"></div>
+<div class="divider"></div>
 
-<!-- ── MECHANICS ── -->
-<section id="mechanics">
-<div class="con">
-  <div class="stag"><span class="stag-line"></span> Mechanics</div>
-  <h2 class="sec-h">How the <span class="ac">Economy</span> Works</h2>
-  <p class="sec-sub">Simple on the surface. Engineered for long-term stability underneath.</p>
-  <div class="steps">
-    <div class="step"><div class="step-n">1</div><h3>Deposit &amp; Activate</h3><p>$1 gets you 100 EP and enters the liquidity pool — the reserve backing every EP in circulation. The economy grows as deposits grow.</p></div>
-    <div class="step"><div class="step-n">2</div><h3>Engage &amp; Earn</h3><p>Login daily: +1 EP. Publish: +1 EP per post (capped). Weekly quality bonus: +10 EP with real engagement. Tips: keep 84%. 2% protocol fee on all transactions.</p></div>
-    <div class="step"><div class="step-n">3</div><h3>Convert &amp; Own</h3><p>40% of monthly EP earnings auto-convert to $XEV. Stake, govern, or withdraw. You own what you built. Completely.</p></div>
+<!-- MANIFESTO BREAK -->
+<div class="manifesto">
+  <div class="manifesto-lines" id="manifesto-lines">
+    <span class="mline bright">The future is not one platform</span>
+    <span class="mline bright">replacing all others.</span>
+    <span class="mline" style="height:1.4em;display:block"></span>
+    <span class="mline lime-l">The future is coordination.</span>
+    <span class="mline" style="height:1.4em;display:block"></span>
+    <span class="mline">One identity.</span>
+    <span class="mline">Multiple destinations.</span>
+    <span class="mline">One reputation.</span>
+    <span class="mline">Multiple ecosystems.</span>
+    <span class="mline">One source of truth.</span>
   </div>
-  <div class="ep-g">
-    <div class="ep-c"><span class="ep-v">+1 EP</span><span class="ep-l">Daily Login</span><span class="ep-n">Every day you show up</span></div>
-    <div class="ep-c"><span class="ep-v">+1 EP</span><span class="ep-l">Post Published</span><span class="ep-n">Up to 5 per day</span></div>
-    <div class="ep-c"><span class="ep-v">+10 EP</span><span class="ep-l">Weekly Bonus</span><span class="ep-n">≥2 genuine engagements</span></div>
-    <div class="ep-c"><span class="ep-v">84%</span><span class="ep-l">Creator Tips</span><span class="ep-n">Of every EP tip</span></div>
-    <div class="ep-c"><span class="ep-v">2%</span><span class="ep-l">Protocol Fee</span><span class="ep-n">On all transactions</span></div>
-    <div class="ep-c"><span class="ep-v">$1</span><span class="ep-l">Entry</span><span class="ep-n">One-time activation</span></div>
-  </div>
+  <p class="manifesto-sub">This is what Xeevia is building.</p>
 </div>
-</section>
 
-<div class="sec-div"></div>
+<div class="divider"></div>
 
-<!-- ── ALLOCATION ── -->
+<!-- ALLOCATION -->
 <section id="allocation">
 <div class="con">
-  <div class="stag"><span class="stag-line"></span> Distribution</div>
-  <h2 class="sec-h">Token <span class="ac">Allocation</span></h2>
+  <div class="eyebrow"><span class="eyebrow-line"></span>Distribution</div>
+  <h2 class="sec-h">Token <span class="lime">Allocation</span></h2>
   <p class="sec-sub">Built to last. The majority of supply returns to the people building and using the ecosystem.</p>
-  <div class="al-g">
-    <div class="al-c"><div class="al-t"><div class="al-name">Ecosystem Rewards</div><div class="al-pct">38%</div></div><div class="al-bar"><div class="al-fill" style="width:38%"></div></div><p class="al-desc">Staking rewards and creator incentives.</p></div>
-    <div class="al-c"><div class="al-t"><div class="al-name">Treasury</div><div class="al-pct">22%</div></div><div class="al-bar"><div class="al-fill" style="width:22%"></div></div><p class="al-desc">Partnerships, marketing, development.</p></div>
-    <div class="al-c"><div class="al-t"><div class="al-name">Team</div><div class="al-pct">12%</div></div><div class="al-bar"><div class="al-fill" style="width:12%"></div></div><p class="al-desc">12–18 month cliff. 48–60 month vesting.</p></div>
-    <div class="al-c"><div class="al-t"><div class="al-name">Investors</div><div class="al-pct">10%</div></div><div class="al-bar"><div class="al-fill" style="width:10%"></div></div><p class="al-desc">Strategic partners and early capital.</p></div>
-    <div class="al-c"><div class="al-t"><div class="al-name">Community</div><div class="al-pct">10%</div></div><div class="al-bar"><div class="al-fill" style="width:10%"></div></div><p class="al-desc">Early adopters, builders, airdrop recipients.</p></div>
-    <div class="al-c"><div class="al-t"><div class="al-name">Governance</div><div class="al-pct">5%</div></div><div class="al-bar"><div class="al-fill" style="width:5%"></div></div><p class="al-desc">Protocol upgrade votes.</p></div>
-    <div class="al-c"><div class="al-t"><div class="al-name">R&amp;D</div><div class="al-pct">3%</div></div><div class="al-bar"><div class="al-fill" style="width:3%"></div></div><p class="al-desc">Research and innovation fund.</p></div>
+  <div class="alloc-grid">
+    <div class="alloc-item"><div class="alloc-top"><div class="alloc-name">Ecosystem Rewards</div><div class="alloc-pct">38%</div></div><div class="alloc-bar"><div class="alloc-fill" style="width:38%"></div></div><p class="alloc-desc">Staking rewards and creator incentives.</p></div>
+    <div class="alloc-item"><div class="alloc-top"><div class="alloc-name">Treasury</div><div class="alloc-pct">22%</div></div><div class="alloc-bar"><div class="alloc-fill" style="width:22%"></div></div><p class="alloc-desc">Partnerships, marketing, development.</p></div>
+    <div class="alloc-item"><div class="alloc-top"><div class="alloc-name">Team</div><div class="alloc-pct">12%</div></div><div class="alloc-bar"><div class="alloc-fill" style="width:12%"></div></div><p class="alloc-desc">12–18 month cliff. 48–60 month vesting.</p></div>
+    <div class="alloc-item"><div class="alloc-top"><div class="alloc-name">Investors</div><div class="alloc-pct">10%</div></div><div class="alloc-bar"><div class="alloc-fill" style="width:10%"></div></div><p class="alloc-desc">Strategic partners and early capital.</p></div>
+    <div class="alloc-item"><div class="alloc-top"><div class="alloc-name">Community</div><div class="alloc-pct">10%</div></div><div class="alloc-bar"><div class="alloc-fill" style="width:10%"></div></div><p class="alloc-desc">Early adopters, builders, airdrop recipients.</p></div>
+    <div class="alloc-item"><div class="alloc-top"><div class="alloc-name">Governance</div><div class="alloc-pct">5%</div></div><div class="alloc-bar"><div class="alloc-fill" style="width:5%"></div></div><p class="alloc-desc">Protocol upgrade votes.</p></div>
+    <div class="alloc-item"><div class="alloc-top"><div class="alloc-name">R&D</div><div class="alloc-pct">3%</div></div><div class="alloc-bar"><div class="alloc-fill" style="width:3%"></div></div><p class="alloc-desc">Research and innovation fund.</p></div>
   </div>
 </div>
 </section>
 
-<div class="sec-div"></div>
+<div class="divider"></div>
 
-<!-- ── REVENUE ── -->
+<!-- REVENUE -->
 <section id="revenue">
 <div class="con">
-  <div class="stag"><span class="stag-line"></span> Revenue</div>
-  <h2 class="sec-h">Where the <span class="ac">Money Goes</span></h2>
-  <p class="sec-sub">No secrets. Every flow defined before we write a line of code.</p>
-  <div class="rev-g">
-    <div class="rev-c"><h3>Ecosystem Return (45%)</h3><div class="rev-r"><span class="rev-l">Staked $XEV Holders</span><span class="rev-v">20%</span></div><div class="rev-r"><span class="rev-l">Creator Pool</span><span class="rev-v">20%</span></div><div class="rev-r"><span class="rev-l">Global Impact</span><span class="rev-v">5%</span></div></div>
-    <div class="rev-c"><h3>Platform Operations (54%)</h3><div class="rev-r"><span class="rev-l">Founder</span><span class="rev-v">10%</span></div><div class="rev-r"><span class="rev-l">Operations</span><span class="rev-v">20%</span></div><div class="rev-r"><span class="rev-l">Treasury</span><span class="rev-v">24%</span></div></div>
-    <div class="rev-c"><h3>Creator Share</h3><div class="rev-r"><span class="rev-l">Subscribed Creators</span><span class="rev-v">84%</span></div><div class="rev-r"><span class="rev-l">Standard Creators</span><span class="rev-v">80%</span></div><div class="rev-r"><span class="rev-l">Protocol Fee (all tx)</span><span class="rev-v">2%</span></div></div>
-  </div>
-</div>
-</section>
-
-<div class="sec-div"></div>
-
-<!-- ── FAQ ── -->
-<section id="faq">
-<div class="con">
-  <div class="stag" style="justify-content:center"><span class="stag-line"></span> Questions <span class="stag-line"></span></div>
-  <h2 class="sec-h" style="text-align:center">Common <span class="ac">Questions</span></h2>
-  <div style="margin-bottom:44px"></div>
-  <div class="faq-w">
-    <div class="fq"><button class="fq-q" onclick="toggleFAQ(this)"><h3>What is Xeevia?</h3><span class="fq-ic">+</span></button><div class="fq-a"><p>Xeevia is a social network built as a real economy. EP powers intentional engagement. XEV stores long-term value. No ads, no data selling — a clean ecosystem where value flows to the people creating it.</p></div></div>
-    <div class="fq"><button class="fq-q" onclick="toggleFAQ(this)"><h3>Why does engagement cost EP?</h3><span class="fq-ic">+</span></button><div class="fq-a"><p>Because free engagement has no value. When it costs something, it means something. Bots can't afford to operate at scale. Every like and comment becomes a deliberate signal — not noise.</p></div></div>
-    <div class="fq"><button class="fq-q" onclick="toggleFAQ(this)"><h3>How does the liquidity pool work?</h3><span class="fq-ic">+</span></button><div class="fq-a"><p>Every deposit ($1 = 100 EP) enters the ecosystem liquidity pool. This backs every EP in circulation — so creator earnings are real and redeemable. No printing. No inflation. The pool grows with every user from day one.</p></div></div>
-    <div class="fq"><button class="fq-q" onclick="toggleFAQ(this)"><h3>What is the 2% protocol fee?</h3><span class="fq-ic">+</span></button><div class="fq-a"><p>A 2% fee applies on all ecosystem transactions — EP tips, gift card purchases, EP↔XEV conversions, withdrawals. Fixed, transparent, and small enough that real users never feel it.</p></div></div>
-    <div class="fq"><button class="fq-q" onclick="toggleFAQ(this)"><h3>How do I earn without spending?</h3><span class="fq-ic">+</span></button><div class="fq-a"><p>Login daily (+1 EP). Publish content (+1 EP per post, up to 5/day). Earn the weekly quality bonus (+10 EP when your content gets genuine engagement). Receive tips from followers (you keep 84%). Real earnings — no deposit required to start.</p></div></div>
-    <div class="fq"><button class="fq-q" onclick="toggleFAQ(this)"><h3>What makes this different from crypto projects that died?</h3><span class="fq-ic">+</span></button><div class="fq-a"><p>They built speculation first. Xeevia builds utility first. EP is backed by real deposits. XEV has a hard-capped supply. The economy doesn't depend on new users to survive — it's sustainable from the first transaction.</p></div></div>
-  </div>
-</div>
-</section>
-
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="ft-in">
-    <div>
-      <div class="ft-logo">
-        <div class="ft-logo-ic" id="ft-logo-ic">
-          <img src="" alt="Xeevia" id="ft-logo-img" style="display:none;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';document.getElementById('ft-logo-fb').style.display='flex'">
-          <span class="ft-logo-ic-fb" id="ft-logo-fb">X</span>
-        </div>
-        <span class="ft-logo-t">XEEVIA</span>
-      </div>
-      <p class="ft-tag">A real digital economy.<br/>Intentional engagement. Liquid value. True ownership.</p>
+  <div class="eyebrow"><span class="eyebrow-line"></span>Revenue</div>
+  <h2 class="sec-h">Where the <span class="lime">money goes</span></h2>
+  <p class="sec-sub">No secrets. Every flow defined before a line of code is written.</p>
+  <div class="rev-grid">
+    <div class="rev-card">
+      <h3>Ecosystem Return (45%)</h3>
+      <div class="rev-row"><span class="rev-label">Staked $XEV Holders</span><span class="rev-val">20%</span></div>
+      <div class="rev-row"><span class="rev-label">Creator Pool</span><span class="rev-val">20%</span></div>
+      <div class="rev-row"><span class="rev-label">Global Impact</span><span class="rev-val">5%</span></div>
     </div>
-    <div class="ft-col"><h4>Platform</h4><ul><li><a href="#insight">Vision</a></li><li><a href="#xrc">Protocol</a></li><li><a href="#tokens">Token</a></li><li><a href="#mechanics">Economy</a></li></ul></div>
-    <div class="ft-col"><h4>Resources</h4><ul><li><a href="#">Whitepaper</a></li><li><a href="#">Documentation</a></li><li><a href="#">Blog</a></li><li><a href="#">Community</a></li></ul></div>
-    <div class="ft-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Contact</a></li></ul></div>
+    <div class="rev-card">
+      <h3>Platform Operations (54%)</h3>
+      <div class="rev-row"><span class="rev-label">Founder</span><span class="rev-val">10%</span></div>
+      <div class="rev-row"><span class="rev-label">Operations</span><span class="rev-val">20%</span></div>
+      <div class="rev-row"><span class="rev-label">Treasury</span><span class="rev-val">24%</span></div>
+    </div>
+    <div class="rev-card">
+      <h3>Creator Share</h3>
+      <div class="rev-row"><span class="rev-label">Subscribed Creators</span><span class="rev-val">84%</span></div>
+      <div class="rev-row"><span class="rev-label">Standard Creators</span><span class="rev-val">80%</span></div>
+      <div class="rev-row"><span class="rev-label">Protocol Fee (all tx)</span><span class="rev-val">2%</span></div>
+    </div>
   </div>
-  <div class="ft-bot">
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section id="faq">
+<div class="con-sm">
+  <div class="eyebrow" style="justify-content:center"><span class="eyebrow-line"></span>Questions</div>
+  <h2 class="sec-h" style="text-align:center;margin-bottom:48px">Common <span class="lime">Questions</span></h2>
+  <div class="faq-list">
+    <div class="faq-item"><button class="faq-q" onclick="toggleFAQ(this)"><h3>What exactly is Xeevia?</h3><span class="faq-ic">+</span></button><div class="faq-ans"><p>Xeevia is the Social Value Layer — infrastructure that sits above existing social networks and unifies your identity, reputation, and earnings across all of them. EP powers intentional engagement. XEV stores long-term value. No ads, no data selling — a real economy where value flows to the people creating it.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggleFAQ(this)"><h3>Why does engagement cost EP?</h3><span class="faq-ic">+</span></button><div class="faq-ans"><p>Because free engagement has no value. When it costs something, it means something. Bots can't afford to operate at scale. Every like and comment becomes a deliberate signal — not noise. This is the foundation of a platform where metrics actually mean what they say.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggleFAQ(this)"><h3>How does the liquidity pool work?</h3><span class="faq-ic">+</span></button><div class="faq-ans"><p>Every deposit ($1 = 100 EP) enters the ecosystem liquidity pool. This backs every EP in circulation — so creator earnings are real and redeemable. No printing. No inflation. The pool grows with every user from day one. Creator earnings are provably redeemable.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggleFAQ(this)"><h3>Can I earn without spending anything?</h3><span class="faq-ic">+</span></button><div class="faq-ans"><p>Yes. Login daily (+1 EP). Publish content (+1 EP per post, up to 5/day). Earn the weekly quality bonus (+10 EP when your content gets genuine engagement). Receive tips from followers (you keep 84%). Real earnings — no deposit required to start.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggleFAQ(this)"><h3>What makes this different from crypto projects that died?</h3><span class="faq-ic">+</span></button><div class="faq-ans"><p>They built speculation first. Xeevia builds utility first. EP is backed by real deposits. XEV has a hard-capped supply. The economy doesn't depend on new users to survive — it's sustainable from the first transaction. No token hype. Just a working economic model.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggleFAQ(this)"><h3>What is the XRC Protocol?</h3><span class="faq-ic">+</span></button><div class="faq-ans"><p>XRC is Xeevia's off-chain verification protocol providing blockchain-grade traceability without blockchain cost or latency. Every event is cryptographically linked — producing immutable, query-optimized history across the entire ecosystem. Writes in under 50ms. Verification in under 5ms.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="toggleFAQ(this)"><h3>What is the 2% protocol fee?</h3><span class="faq-ic">+</span></button><div class="faq-ans"><p>A 2% fee applies on all ecosystem transactions — EP tips, gift card purchases, EP↔XEV conversions, withdrawals. Fixed, transparent, and small enough that real users never feel it. These fees sustain the protocol and flow back into the ecosystem reward pool.</p></div></div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA FINALE -->
+<div class="cta-finale">
+<div class="cta-box">
+  <h2>Join the<br><span style="color:var(--lime)">Economy</span></h2>
+  <p>The internet has enough platforms. It has one Xeevia. Be part of building the Social Value Layer — where participation has weight and value moves between people.</p>
+  <div class="cta-btns">
+    <button class="btn-primary" onclick="enterXeevia()">Enter Xeevia</button>
+    <button class="btn-secondary" onclick="showXRCFull()">Read the Protocol</button>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-inner">
+    <div>
+      <div class="ft-brand-logo">
+        <div class="ft-logo-mark">X</div>
+        <span class="ft-logo-name">XEEVIA</span>
+      </div>
+      <p class="ft-tagline">The Social Value Layer.<br>One identity. One reputation. Participation with weight.</p>
+    </div>
+    <div class="ft-col"><h4>Platform</h4><ul>
+      <li><a href="#what">Vision</a></li>
+      <li><a onclick="showXRCFull()" style="cursor:pointer">Protocol</a></li>
+      <li><a href="#tokens">Token</a></li>
+      <li><a href="#economy">Economy</a></li>
+    </ul></div>
+    <div class="ft-col"><h4>Resources</h4><ul>
+      <li><a href="#">Whitepaper</a></li>
+      <li><a href="#">Documentation</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Community</a></li>
+    </ul></div>
+    <div class="ft-col"><h4>Legal</h4><ul>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Use</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul></div>
+  </div>
+  <div class="ft-bottom">
     <span>© 2025 XEEVIA. All rights reserved.</span>
     <span>Built on intention. Owned by creators.</span>
   </div>
@@ -1310,297 +1321,154 @@ footer::before{
 
 </div><!-- .wrap -->
 
-<!-- ── XRC FULL VIEW ── -->
+<!-- XRC FULL VIEW -->
 <div class="fv" id="xrcFull">
-  <div class="fv-hd">
-    <button class="bk-btn" onclick="hideXRCFull()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+  <div class="fv-bar">
+    <button class="fv-back" onclick="hideXRCFull()">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       Back
     </button>
-    <span style="font-family:var(--font-d);font-size:17px;letter-spacing:2px;color:#fff">XRC Protocol</span>
+    <span style="font-family:var(--font-d);font-size:16px;letter-spacing:2px;color:#fff">XRC Protocol</span>
   </div>
-  <div class="fv-body">
-    <div class="stag"><span class="stag-line"></span> Specification</div>
-    <h2 class="sec-h" style="margin-bottom:18px">XRC — Xeevia <span class="ac">Record Chain</span></h2>
-    <p style="font-size:15px;color:var(--gray);line-height:1.86;margin-bottom:32px;max-width:760px;font-family:var(--font-m)">A deterministic, off-chain verification protocol providing blockchain-grade traceability without blockchain cost or latency. Every event is cryptographically linked — producing immutable, query-optimized history for the entire Xeevia ecosystem.</p>
-    <h3 style="font-family:'Syne';font-size:20px;font-weight:700;margin-bottom:12px;margin-top:32px">Core Principles</h3>
-    <div class="g3" style="margin-bottom:32px">
-      <div class="gl"><h3>Deterministic Truth</h3><p>Every record is provable. No ambiguity. No trust required. Verify it yourself at any time.</p></div>
-      <div class="gl"><h3>Instant Retrieval</h3><p>Verification under 5ms. Reads are free. Built to serve billions of queries without slowing down.</p></div>
-      <div class="gl"><h3>Modular Design</h3><p>New chain types added without a protocol redesign. The architecture grows as the ecosystem grows.</p></div>
+  <div class="fv-content">
+    <div class="eyebrow"><span class="eyebrow-line"></span>Specification</div>
+    <h2 class="sec-h" style="margin-bottom:18px">XRC — Xeevia <span class="lime">Record Chain</span></h2>
+    <p style="font-family:var(--font-m);font-size:14.5px;color:var(--gray);line-height:1.88;margin-bottom:36px;max-width:760px">A deterministic, off-chain verification protocol providing blockchain-grade traceability without blockchain cost or latency. Every event is cryptographically linked — producing immutable, query-optimized history for the entire Xeevia ecosystem.</p>
+    <h3 style="font-family:var(--font-b);font-size:18px;font-weight:700;margin-bottom:14px">Core Principles</h3>
+    <div class="g3" style="margin-bottom:36px">
+      <div class="card"><h3>Deterministic Truth</h3><p>Every record is provable. No ambiguity. No trust required. Verify it yourself at any time.</p></div>
+      <div class="card"><h3>Instant Retrieval</h3><p>Verification under 5ms. Reads are free. Built to serve billions of queries without slowing down.</p></div>
+      <div class="card"><h3>Modular Design</h3><p>New chain types added without a protocol redesign. The architecture grows as the ecosystem grows.</p></div>
     </div>
-    <h3 style="font-family:'Syne';font-size:20px;font-weight:700;margin-bottom:12px">Chain Architecture</h3>
-    <div class="xrc-g">
-      <div class="xc"><div class="xc-code">XTRC</div><h4>Transaction Chain</h4><p>All value transfers, tips, gift cards, fees, withdrawals. Every satoshi accounted for.</p></div>
-      <div class="xc"><div class="xc-code">XERC</div><h4>Engagement Chain</h4><p>Likes, comments, shares — weighted and verified. No synthetic signals pass through.</p></div>
-      <div class="xc"><div class="xc-code">XARC</div><h4>Account Chain</h4><p>Signup, verification, device binding, security events. Your identity history, immutable.</p></div>
-      <div class="xc"><div class="xc-code">XCRC</div><h4>Content Chain</h4><p>Creation, edits, ownership, deletion. Proof of authorship for everything you make.</p></div>
-      <div class="xc"><div class="xc-code">XPRC</div><h4>Permission Chain</h4><p>Role grants, revocations, moderation. Every authority decision on record.</p></div>
-      <div class="xc"><div class="xc-code">XSRC</div><h4>System Chain</h4><p>Protocol upgrades, rule changes, policy deployments. No hidden governance.</p></div>
+    <h3 style="font-family:var(--font-b);font-size:18px;font-weight:700;margin-bottom:14px">Chain Architecture</h3>
+    <div class="xrc-chains" style="margin-bottom:36px">
+      <div class="chain"><div class="chain-code">XTRC</div><h4>Transaction Chain</h4><p>All value transfers, tips, gift cards, fees, withdrawals. Every satoshi accounted for.</p></div>
+      <div class="chain"><div class="chain-code">XERC</div><h4>Engagement Chain</h4><p>Likes, comments, shares — weighted and verified. No synthetic signals pass through.</p></div>
+      <div class="chain"><div class="chain-code">XARC</div><h4>Account Chain</h4><p>Signup, verification, device binding, security events. Your identity history, immutable.</p></div>
+      <div class="chain"><div class="chain-code">XCRC</div><h4>Content Chain</h4><p>Creation, edits, ownership, deletion. Proof of authorship for everything you make.</p></div>
+      <div class="chain"><div class="chain-code">XPRC</div><h4>Permission Chain</h4><p>Role grants, revocations, moderation. Every authority decision on record.</p></div>
+      <div class="chain"><div class="chain-code">XSRC</div><h4>System Chain</h4><p>Protocol upgrades, rule changes, policy deployments. No hidden governance.</p></div>
     </div>
-    <h3 style="font-family:'Syne';font-size:20px;font-weight:700;margin:32px 0 12px">Performance</h3>
+    <h3 style="font-family:var(--font-b);font-size:18px;font-weight:700;margin-bottom:14px">Performance</h3>
     <div class="g3">
-      <div class="gl"><h3>Write &lt;50ms</h3><p>Records written in under 50ms. Real-time for human-scale interaction.</p></div>
-      <div class="gl"><h3>Read &lt;10ms</h3><p>Near-instant retrieval. Built on indexed hash maps and sharded streams.</p></div>
-      <div class="gl"><h3>Verify &lt;5ms</h3><p>Cryptographic proof in under 5ms. Fast enough to be completely invisible to users.</p></div>
+      <div class="card"><h3>Write &lt;50ms</h3><p>Records written in under 50ms. Real-time for human-scale interaction.</p></div>
+      <div class="card"><h3>Read &lt;10ms</h3><p>Near-instant retrieval. Built on indexed hash maps and sharded streams.</p></div>
+      <div class="card"><h3>Verify &lt;5ms</h3><p>Cryptographic proof in under 5ms. Fast enough to be completely invisible to users.</p></div>
     </div>
   </div>
 </div>
 
-<!-- ── TEAM FULL VIEW ── -->
-<div class="fv" id="teamFull">
-  <div class="fv-hd">
-    <button class="bk-btn" onclick="hideTeamFull()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Back
-    </button>
-    <span style="font-family:var(--font-d);font-size:17px;letter-spacing:2px;color:#fff">Full Team</span>
-  </div>
-  <div class="fv-body">
-    <div class="stag"><span class="stag-line"></span> The People</div>
-    <h2 class="sec-h" style="margin-bottom:32px">The Complete <span class="ac">Team</span></h2>
-    <div class="team-g" id="teamGridFull"></div>
-  </div>
-</div>
-
-<!-- ── BIO MODAL ── -->
-<div class="ov" id="bioOv" onclick="if(event.target===this)closeBio()">
-  <div class="bio-m">
-    <div class="bio-mh">
-      <button class="bio-cl" onclick="closeBio()">×</button>
-      <div class="bio-av" id="bioAv"><span class="bio-av-fb" id="bioFb"></span></div>
-      <div class="bio-mn" id="bioName"></div>
-      <div class="bio-mr" id="bioRole"></div>
-    </div>
-    <div class="bio-mb" id="bioBody"></div>
-  </div>
-</div>
-
-<!-- ── INSTALL MODAL ── -->
-<div class="ov" id="insOv" onclick="if(event.target===this)closeInstall()">
-  <div class="ins-m">
-    <div class="ins-h">
-      <div class="ins-ic" id="ins-ic">
-        <img src="" alt="Xeevia" id="ins-logo-img" style="display:none;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';document.getElementById('ins-logo-fb').style.display='flex'">
-        <span class="ins-ic-fb" id="ins-logo-fb">X</span>
-      </div>
+<!-- INSTALL MODAL -->
+<div class="overlay" id="install-ov" onclick="if(event.target===this)closeInstall()">
+  <div class="install-modal">
+    <div class="im-head">
+      <div class="im-icon">X</div>
       <div>
-        <div style="font-family:var(--font-d);font-size:20px;color:#fff;letter-spacing:1px;margin-bottom:2px">Add Xeevia</div>
-        <div style="font-size:11px;color:var(--gray);font-family:var(--font-m)">Install for the full app experience</div>
+        <div style="font-family:var(--font-d);font-size:18px;letter-spacing:1px;color:#fff;margin-bottom:2px">Add Xeevia</div>
+        <div style="font-family:var(--font-m);font-size:11px;color:var(--gray)">Install for the full app experience</div>
       </div>
-      <button class="ins-cl" onclick="closeInstall()">×</button>
+      <button class="im-close" onclick="closeInstall()">×</button>
     </div>
-    <div class="ins-bd">
-      <div class="ins-fs">
-        <div class="ins-f"><div class="ins-fd">✓</div>Launch from home screen instantly</div>
-        <div class="ins-f"><div class="ins-fd">✓</div>Works offline with cached content</div>
-        <div class="ins-f"><div class="ins-fd">✓</div>Real-time push notifications</div>
-        <div class="ins-f"><div class="ins-fd">✓</div>Native app-like speed and feel</div>
+    <div class="im-body">
+      <div class="im-feats">
+        <div class="im-feat"><div class="im-feat-dot">✓</div>Launch from home screen instantly</div>
+        <div class="im-feat"><div class="im-feat-dot">✓</div>Works offline with cached content</div>
+        <div class="im-feat"><div class="im-feat-dot">✓</div>Real-time push notifications</div>
+        <div class="im-feat"><div class="im-feat-dot">✓</div>Native app-like speed and feel</div>
       </div>
-      <div class="ins-bs">
-        <button class="ins-b s" onclick="closeInstall()">Not Now</button>
-        <button class="ins-b p" id="installBtn">Add to Home Screen</button>
+      <div class="im-btns">
+        <button class="im-btn s" onclick="closeInstall()">Not Now</button>
+        <button class="im-btn p" id="installBtn">Add to Home Screen</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// ── LOGO ──────────────────────────────────────────────────────────────────────
-// Paste your logo URL here. If blank, "X" shows as fallback everywhere.
-const LOGO_URL = ''; // ← e.g. 'https://your-cdn.com/xeevia-logo.png'
-if (LOGO_URL) {
-  [['nav-logo-img','nav-logo-fb'],['ft-logo-img','ft-logo-fb'],['ins-logo-img','ins-logo-fb']].forEach(([imgId,fbId]) => {
-    const img = document.getElementById(imgId);
-    const fb  = document.getElementById(fbId);
-    if (img) { img.src = LOGO_URL; img.style.display = 'block'; if (fb) fb.style.display = 'none'; }
-  });
+// ── MOBILE NAV ──
+function toggleMobileNav(){
+  const nav=document.getElementById('mobile-nav');
+  const btn=document.getElementById('hamburger-btn');
+  const open=nav.classList.contains('open');
+  if(open){closeMobileNav()}else{nav.classList.add('open');btn.classList.add('open');document.body.style.overflow='hidden'}
 }
-
-// ── MOBILE NAV ────────────────────────────────────────────────────────────────
-function toggleMobileNav() {
-  const nav = document.getElementById('mobile-nav');
-  const btn = document.getElementById('hamburger-btn');
-  const isOpen = nav.classList.contains('open');
-  if (isOpen) { closeMobileNav(); } else {
-    nav.classList.add('open');
-    btn.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-}
-function closeMobileNav() {
+function closeMobileNav(){
   document.getElementById('mobile-nav').classList.remove('open');
   document.getElementById('hamburger-btn').classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.style.overflow='';
 }
-// Close mobile nav on ESC
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeMobileNav(); closeBio(); closeInstall(); } });
-
-// ── TEAM DATA ─────────────────────────────────────────────────────────────────
-// HOW TO SET UP LIVE TEAM AVATARS:
-// 1. Replace YOUR_SUPABASE_URL  → your Supabase project URL  (e.g. https://abcdefghij.supabase.co)
-// 2. Replace YOUR_SUPABASE_ANON_KEY → your anon/public key from Supabase Dashboard → Settings → API
-// 3. Set each team member's xeeviaUsername to their actual Xeevia account username
-const SUPABASE_URL  = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
-
-const TEAM = [
-  {
-    i: 'SK', name: 'Sprouts King', role: 'Founder & Visionary',
-    xeeviaUsername: 'sproutsking',
-    bio: `<p>I grew up in Nigeria, in a place where the land teaches you patience and the seasons teach you timing.</p>
-<p>I watched the internet make millionaires out of platforms and leave the people who built them with nothing. Creators doing all the work. Platforms taking all the value. That's not an accident — it's design. I decided to redesign it.</p>
-<p>Xeevia is not a social app with token rewards bolted on. It's a real economy where engagement costs something, earnings are liquid from day one, and ownership is written in code — not terms of service.</p>
-<p>I build systems I can't stop thinking about. This is one of them.</p>`
-  },
-  {
-    i: 'SK', name: 'Sarah Kim', role: 'Chief Technology Officer',
-    xeeviaUsername: 'sarahkim',
-    bio: `<p>Former blockchain infrastructure lead. PhD in distributed systems. At Xeevia, Sarah architects the technical foundation — ensuring every transaction is verifiable, every record is immutable, and every user owns their history.</p>`
-  },
-  {
-    i: 'MR', name: 'Marcus Rodriguez', role: 'Head of Product',
-    xeeviaUsername: 'marcusr',
-    bio: `<p>Previously shipped product at Instagram and TikTok at scale. At Xeevia, Marcus ensures the most complex economic model in social media feels like the simplest app you've ever used.</p>`
-  },
-  {
-    i: 'LW', name: 'Lisa Wang', role: 'Lead Designer',
-    xeeviaUsername: 'lisawang',
-    bio: `<p>Former design lead at Airbnb. Award-winning UX across three continents. At Xeevia, Lisa makes sure power and beauty are never at odds with each other.</p>`
-  },
-];
-
-async function fetchAvatar(username) {
-  if (!username || SUPABASE_URL === 'YOUR_SUPABASE_URL') return null;
-  try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/profiles?username=eq.${encodeURIComponent(username)}&select=avatar_id`,
-      { headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` } }
-    );
-    const data = await res.json();
-    if (data?.[0]?.avatar_id) return `${SUPABASE_URL}/storage/v1/object/public/avatars/${data[0].avatar_id}`;
-  } catch(e) {}
-  return null;
-}
-
-function makeTeamCard(m, url) {
-  const shortBio = m.bio.replace(/<[^>]+>/g, '').slice(0, 90) + '…';
-  const ms = JSON.stringify({i:m.i,name:m.name,role:m.role,bio:m.bio}).replace(/'/g,"&#39;");
-  const us = url ? `'${url}'` : 'null';
-  return `<div class="tc">
-    <div class="av-ring">
-      ${url ? `<img src="${url}" alt="${m.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}
-      <span class="av-fb" style="${url ? 'display:none' : ''}">${m.i}</span>
-    </div>
-    <div class="t-name">${m.name}</div>
-    <div class="t-role">${m.role}</div>
-    <p class="t-bio">${shortBio} <span class="read-m" onclick='openBio(${ms},${us})'>read more</span></p>
-    <div class="t-soc">
-      <a class="t-sb" href="#" onclick="return false">Xeevia</a>
-      <a class="t-sb" href="#" onclick="return false">𝕏 / Twitter</a>
-    </div>
-  </div>`;
-}
-
-async function renderTeam() {
-  const urls = await Promise.all(TEAM.map(m => fetchAvatar(m.xeeviaUsername)));
-  const html = TEAM.map((m, i) => makeTeamCard(m, urls[i])).join('');
-  const g1 = document.getElementById('teamGrid');
-  const g2 = document.getElementById('teamGridFull');
-  if (g1) g1.innerHTML = html;
-  if (g2) g2.innerHTML = html;
-}
-renderTeam();
-
-// ── BIO MODAL ─────────────────────────────────────────────────────────────────
-function openBio(m, url) {
-  const fb = document.getElementById('bioFb');
-  const av = document.getElementById('bioAv');
-  const oldImg = av.querySelector('img');
-  if (oldImg) oldImg.remove();
-  if (url) {
-    const img = document.createElement('img');
-    img.src = url;
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%';
-    img.onerror = () => { img.remove(); fb.style.display = 'flex'; };
-    fb.style.display = 'none';
-    av.prepend(img);
-  } else { fb.style.display = 'flex'; }
-  fb.textContent = m.i;
-  document.getElementById('bioName').textContent = m.name;
-  document.getElementById('bioRole').textContent = m.role;
-  document.getElementById('bioBody').innerHTML = m.bio;
-  document.getElementById('bioOv').classList.add('on');
-  document.body.style.overflow = 'hidden';
-}
-function closeBio() {
-  document.getElementById('bioOv').classList.remove('on');
-  document.body.style.overflow = '';
-}
-
-// ── NAVIGATION ────────────────────────────────────────────────────────────────
-function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-function showXRCFull() {
-  closeMobileNav();
-  document.getElementById('xrcFull').classList.add('on');
-  document.body.style.overflow = 'hidden';
-}
-function hideXRCFull() {
-  document.getElementById('xrcFull').classList.remove('on');
-  document.body.style.overflow = '';
-}
-function showTeamFull() {
-  closeMobileNav();
-  document.getElementById('teamFull').classList.add('on');
-  document.body.style.overflow = 'hidden';
-}
-function hideTeamFull() {
-  document.getElementById('teamFull').classList.remove('on');
-  document.body.style.overflow = '';
-}
-
-// ── INSTALL ───────────────────────────────────────────────────────────────────
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; });
-function openInstall() { closeMobileNav(); document.getElementById('insOv').classList.add('on'); }
-function closeInstall() { document.getElementById('insOv').classList.remove('on'); }
-document.getElementById('installBtn').addEventListener('click', async () => {
-  if (!deferredPrompt) { closeInstall(); return; }
-  await deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  closeInstall();
-  localStorage.setItem('xeevia_installed', '1');
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeMobileNav();closeInstall();hideXRCFull()}
 });
 
-// ── FAQ ───────────────────────────────────────────────────────────────────────
-function toggleFAQ(btn) {
-  const item = btn.parentElement;
-  const wasOpen = item.classList.contains('on');
-  document.querySelectorAll('.fq').forEach(i => i.classList.remove('on'));
-  if (!wasOpen) item.classList.add('on');
-}
+// ── HEADER SCROLL ──
+window.addEventListener('scroll',()=>{
+  const h=document.getElementById('site-header');
+  h.style.background=window.scrollY>60?'rgba(6,6,6,0.96)':'rgba(6,6,6,0.75)';
+},{passive:true});
 
-// ── SMOOTH LINKS ──────────────────────────────────────────────────────────────
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
+// ── SCROLL LINKS ──
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
     e.preventDefault();
-    const t = document.querySelector(a.getAttribute('href'));
-    if (t) { closeMobileNav(); t.scrollIntoView({ behavior: 'smooth' }); }
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){closeMobileNav();t.scrollIntoView({behavior:'smooth'})}
   });
 });
+function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'})}
 
-// ── HEADER SCROLL EFFECT ──────────────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  const h = document.getElementById('site-header');
-  if (window.scrollY > 60) { h.style.background = 'rgba(2,2,2,0.96)'; }
-  else { h.style.background = 'rgba(2,2,2,0.82)'; }
-}, { passive: true });
+// ── VIEWS ──
+function showXRCFull(){
+  closeMobileNav();
+  document.getElementById('xrcFull').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function hideXRCFull(){
+  document.getElementById('xrcFull').classList.remove('on');
+  document.body.style.overflow='';
+}
 
-// ── SERVICE WORKER ────────────────────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+// ── INSTALL ──
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
+function openInstall(){closeMobileNav();document.getElementById('install-ov').classList.add('on')}
+function closeInstall(){document.getElementById('install-ov').classList.remove('on')}
+document.getElementById('installBtn').addEventListener('click',async()=>{
+  if(!deferredPrompt){closeInstall();return}
+  await deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt=null;closeInstall();
+  localStorage.setItem('xeevia_installed','1');
+});
+
+// ── FAQ ──
+function toggleFAQ(btn){
+  const item=btn.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen)item.classList.add('open');
+}
+
+// ── MANIFESTO SCROLL REVEAL ──
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const lines=en.target.querySelectorAll('.mline');
+      lines.forEach((l,i)=>{
+        setTimeout(()=>{
+          l.style.transition='color .5s, opacity .5s';
+          l.style.color='';
+        },i*80);
+      });
+    }
+  });
+},{threshold:.2});
+const mf=document.getElementById('manifesto-lines');
+if(mf)observer.observe(mf);
+
+// ── SERVICE WORKER ──
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
 }
 </script>
 </body>
