@@ -24,7 +24,7 @@
   --glass-hi:rgba(255,255,255,0.07);
   --t1:#e8e6df;
   --t2:#8a8a9a;
-  --t3:#4a4a58;
+  --t3:#6e6e82;
 
   --ion:#7de8ff;
   --ion-d:rgba(125,232,255,0.08);
@@ -67,7 +67,7 @@
   --glass-hi:rgba(255,255,255,0.92);
   --t1:#0b0d24;
   --t2:#4a4e6a;
-  --t3:#9a9db8;
+  --t3:#6b7090;
 
   --ion:#045fc0;
   --ion-d:rgba(4,95,192,0.07);
@@ -105,19 +105,24 @@ button{font-family:inherit;cursor:pointer}
 .ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .amb-grid{
   position:absolute;inset:0;
-  background-image:linear-gradient(rgba(125,232,255,0.022) 1px,transparent 1px),linear-gradient(90deg,rgba(125,232,255,0.022) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(125,232,255,0.032) 1px,transparent 1px),linear-gradient(90deg,rgba(125,232,255,0.032) 1px,transparent 1px);
   background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(circle at 50% 35%,transparent 0%,transparent 15%,black 78%);
+  mask-image:radial-gradient(circle at 50% 35%,transparent 0%,transparent 15%,black 78%);
 }
-[data-theme="light"] .amb-grid{background-image:linear-gradient(rgba(10,12,40,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(10,12,40,0.03) 1px,transparent 1px)}
+[data-theme="light"] .amb-grid{background-image:linear-gradient(rgba(15,18,45,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(15,18,45,0.05) 1px,transparent 1px)}
 .amb-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none}
-.amb-orb.a{width:800px;height:800px;top:-20%;right:-15%;background:radial-gradient(circle,rgba(125,232,255,0.055),transparent 70%);animation:orbA 38s ease-in-out infinite}
-.amb-orb.b{width:650px;height:650px;bottom:-18%;left:-12%;background:radial-gradient(circle,rgba(200,245,58,0.04),transparent 70%);animation:orbB 30s ease-in-out infinite}
-[data-theme="light"] .amb-orb.a{background:radial-gradient(circle,rgba(4,95,192,0.1),transparent 70%)}
-[data-theme="light"] .amb-orb.b{background:radial-gradient(circle,rgba(13,122,64,0.08),transparent 70%)}
+.amb-orb.a{width:800px;height:800px;top:-20%;right:-15%;background:radial-gradient(circle,rgba(125,232,255,0.07),transparent 70%);animation:orbA 38s ease-in-out infinite}
+.amb-orb.b{width:650px;height:650px;bottom:-18%;left:-12%;background:radial-gradient(circle,rgba(200,245,58,0.055),transparent 70%);animation:orbB 30s ease-in-out infinite}
+.amb-orb.c{width:560px;height:560px;top:38%;left:50%;background:radial-gradient(circle,rgba(255,155,84,0.045),transparent 70%);animation:orbC 44s ease-in-out infinite}
+[data-theme="light"] .amb-orb.a{background:radial-gradient(circle,rgba(4,95,192,0.13),transparent 70%)}
+[data-theme="light"] .amb-orb.b{background:radial-gradient(circle,rgba(13,122,64,0.1),transparent 70%)}
+[data-theme="light"] .amb-orb.c{background:radial-gradient(circle,rgba(83,32,176,0.09),transparent 70%)}
 @keyframes orbA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,30px) scale(1.06)}}
 @keyframes orbB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-25px) scale(1.04)}}
-.stars{position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 15% 25%,rgba(255,255,255,.55),transparent),radial-gradient(1px 1px at 72% 14%,rgba(255,255,255,.45),transparent),radial-gradient(1.5px 1.5px at 40% 70%,rgba(255,255,255,.35),transparent),radial-gradient(1px 1px at 88% 55%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 26% 88%,rgba(255,255,255,.4),transparent),radial-gradient(2px 2px at 60% 40%,rgba(125,232,255,.3),transparent),radial-gradient(1px 1px at 5% 50%,rgba(255,255,255,.45),transparent)}
-[data-theme="light"] .stars{display:none}
+@keyframes orbC{0%,100%{transform:translate(-50%,0) scale(1)}50%{transform:translate(-50%,-40px) scale(1.1)}}
+.stars{position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 15% 25%,rgba(255,255,255,.55),transparent),radial-gradient(1px 1px at 72% 14%,rgba(255,255,255,.45),transparent),radial-gradient(1.5px 1.5px at 40% 70%,rgba(255,255,255,.35),transparent),radial-gradient(1px 1px at 88% 55%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 26% 88%,rgba(255,255,255,.4),transparent),radial-gradient(2px 2px at 60% 40%,rgba(125,232,255,.3),transparent),radial-gradient(1px 1px at 5% 50%,rgba(255,255,255,.45),transparent),radial-gradient(1.5px 1.5px at 93% 82%,rgba(200,245,58,.28),transparent),radial-gradient(1px 1px at 48% 8%,rgba(255,155,84,.28),transparent),radial-gradient(1.5px 1.5px at 33% 46%,rgba(255,255,255,.4),transparent),radial-gradient(1px 1px at 80% 30%,rgba(167,139,250,.3),transparent)}
+[data-theme="light"] .stars{background-image:radial-gradient(1.5px 1.5px at 15% 25%,rgba(4,95,192,.4),transparent),radial-gradient(1.5px 1.5px at 72% 14%,rgba(13,122,64,.35),transparent),radial-gradient(2px 2px at 40% 70%,rgba(184,80,12,.32),transparent),radial-gradient(1.5px 1.5px at 88% 55%,rgba(83,32,176,.35),transparent),radial-gradient(1.5px 1.5px at 26% 88%,rgba(168,13,76,.3),transparent),radial-gradient(2.5px 2.5px at 60% 40%,rgba(4,95,192,.25),transparent),radial-gradient(1.5px 1.5px at 5% 50%,rgba(13,122,64,.32),transparent),radial-gradient(1.5px 1.5px at 93% 80%,rgba(184,80,12,.28),transparent),radial-gradient(1.5px 1.5px at 48% 10%,rgba(83,32,176,.28),transparent),radial-gradient(1.5px 1.5px at 20% 60%,rgba(168,13,76,.25),transparent),radial-gradient(2px 2px at 65% 92%,rgba(4,95,192,.22),transparent),radial-gradient(1.5px 1.5px at 8% 12%,rgba(13,122,64,.28),transparent)}
 
 /* ==========================================
    DEPTH RAIL
@@ -142,7 +147,7 @@ header{
   border-bottom:1px solid rgba(255,255,255,0.06);
   transition:background .3s,border-color .3s;
 }
-[data-theme="light"] header{background:rgba(255,255,255,0.88);border-bottom-color:rgba(10,12,40,0.09)}
+[data-theme="light"] header{background:rgba(255,255,255,0.88);border-bottom-color:rgba(15,18,45,0.12)}
 nav{display:flex;justify-content:space-between;align-items:center;padding:14px 48px;max-width:1500px;margin:0 auto}
 @media(max-width:1100px){nav{padding:13px 28px}}
 @media(max-width:640px){nav{padding:11px 18px}}
@@ -176,15 +181,16 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 
 .nav-cta{
   font-family:var(--fd);background:var(--t1);color:var(--bg);
-  border:none;padding:10px 28px;font-size:12.5px;letter-spacing:2px;
-  transition:all .25s;flex-shrink:0;
+  border:none;border-radius:5px;padding:10px 28px;font-size:12.5px;letter-spacing:2px;
+  transition:all .28s cubic-bezier(.16,1,.3,1);flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.18);
 }
-[data-theme="light"] .nav-cta{background:var(--t1);color:#fff}
-.nav-cta:hover{background:var(--accent);color:#000}
+[data-theme="light"] .nav-cta{background:var(--t1);color:#fff;box-shadow:0 2px 10px rgba(15,18,45,0.14)}
+.nav-cta:hover{background:var(--accent);color:#000;transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,0.26)}
+[data-theme="light"] .nav-cta:hover{box-shadow:0 10px 22px rgba(15,18,45,0.18)}
 
-.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:1px solid rgba(255,255,255,0.15);padding:9px;width:38px;height:38px;justify-content:center;border-radius:2px}
-.hamburger span{width:16px;height:1.5px;background:var(--t1);border-radius:1px;transition:all .25s}
-[data-theme="light"] .hamburger{border-color:rgba(10,12,40,0.2)}
+.hamburger{display:none;flex-direction:column;gap:4px;align-items:center;background:var(--glass);border:1px solid var(--glass-b);padding:0;width:38px;height:38px;justify-content:center;border-radius:50%;transition:all .28s}
+.hamburger:hover{border-color:var(--accent);transform:rotate(90deg)}
+.hamburger span{width:14px;height:1.5px;background:var(--t1);border-radius:1px;transition:all .25s}
 @media(max-width:920px){.nav-links{display:none}.nav-cta{display:none}.hamburger{display:flex}}
 
 /* MOBILE NAV */
@@ -211,11 +217,11 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .mob-links a{
   display:flex;align-items:center;gap:18px;
   font-family:var(--fd);font-size:30px;letter-spacing:2px;
-  color:rgba(232,230,223,0.4);
+  color:rgba(232,230,223,0.62);
   padding:13px 0;border-bottom:1px solid rgba(255,255,255,0.05);
   transition:all .22s;
 }
-[data-theme="light"] .mob-links a{color:rgba(10,12,40,0.32);border-bottom-color:rgba(10,12,40,0.06)}
+[data-theme="light"] .mob-links a{color:rgba(10,12,40,0.52);border-bottom-color:rgba(10,12,40,0.06)}
 .mob-links a:hover{color:var(--t1);padding-left:8px}
 .mob-links a:last-child{border-bottom:none}
 .mob-n{font-family:var(--fm);font-size:9.5px;color:var(--accent);opacity:.5;min-width:24px;letter-spacing:.5px}
@@ -223,9 +229,11 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 [data-theme="light"] .mob-foot{border-top-color:rgba(10,12,40,0.08)}
 .mob-enter{
   width:100%;font-family:var(--fd);font-size:15px;letter-spacing:3px;
-  background:var(--t1);color:var(--bg);border:none;padding:17px;transition:all .25s;
+  background:var(--t1);color:var(--bg);border:none;border-radius:6px;padding:17px;transition:all .28s cubic-bezier(.16,1,.3,1);box-shadow:0 4px 16px rgba(0,0,0,0.2);
 }
-.mob-enter:hover{background:var(--lime);color:#000}
+.mob-enter:hover{background:var(--lime);color:#000;box-shadow:0 10px 26px rgba(0,0,0,0.28)}
+[data-theme="light"] .mob-enter{box-shadow:0 4px 16px rgba(15,18,45,0.16)}
+[data-theme="light"] .mob-enter:hover{box-shadow:0 10px 24px rgba(15,18,45,0.2)}
 
 /* ==========================================
    GLASS CARD — base class, the only card type
@@ -315,8 +323,8 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 
 .h1{font-family:var(--fd);font-size:clamp(52px,9.5vw,126px);line-height:.86;letter-spacing:-2px;text-transform:uppercase;margin-bottom:28px}
 .h1 .ln{display:block;animation:rise 1s ease both}
-.h1 .l1{animation-delay:.2s;color:rgba(232,230,223,.45)}
-[data-theme="light"] .h1 .l1{color:rgba(10,12,40,.35)}
+.h1 .l1{animation-delay:.2s;color:rgba(232,230,223,.58)}
+[data-theme="light"] .h1 .l1{color:rgba(10,12,40,.48)}
 .h1 .l2{animation-delay:.36s;color:var(--t1)}
 .h1 .l3{animation-delay:.52s;background:linear-gradient(90deg,var(--ion),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
 [data-theme="light"] .h1 .l3{background:linear-gradient(90deg,var(--ion),var(--violet));-webkit-background-clip:text;background-clip:text}
@@ -324,13 +332,15 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .sub{font-family:var(--fs);font-style:italic;font-size:clamp(15px,1.8vw,20px);color:var(--t2);max-width:620px;line-height:1.75;margin-bottom:44px;animation:rise .9s ease .68s both}
 
 .cta-row{display:flex;gap:12px;flex-wrap:nowrap;justify-content:center;margin-bottom:80px;animation:rise .9s ease .84s both}
-.btn-p{font-family:var(--fd);background:var(--t1);color:var(--bg);border:none;height:52px;padding:0 36px;font-size:13.5px;letter-spacing:2px;transition:all .25s;flex-shrink:0}
-.btn-p:hover{background:var(--lime);color:#000}
-[data-theme="light"] .btn-p{color:#fff}
-[data-theme="light"] .btn-p:hover{background:var(--lime);color:#000}
-.btn-s{font-family:var(--fd);background:transparent;color:var(--t1);border:1px solid rgba(255,255,255,0.2);height:52px;padding:0 32px;font-size:13.5px;letter-spacing:2px;transition:all .25s;flex-shrink:0}
-[data-theme="light"] .btn-s{border-color:rgba(10,12,40,0.22);color:var(--t1)}
-.btn-s:hover{border-color:var(--lime);color:var(--lime)}
+.btn-p{font-family:var(--fd);background:var(--t1);color:var(--bg);border:none;border-radius:6px;height:52px;padding:0 36px;font-size:13.5px;letter-spacing:2px;transition:all .3s cubic-bezier(.16,1,.3,1);flex-shrink:0;box-shadow:0 3px 12px rgba(0,0,0,0.2)}
+.btn-p:hover{background:var(--lime);color:#000;transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,0.3),0 0 26px rgba(from var(--lime) r g b / 0.22)}
+.btn-p:active{transform:translateY(0)}
+[data-theme="light"] .btn-p{color:#fff;box-shadow:0 4px 16px rgba(15,18,45,0.18)}
+[data-theme="light"] .btn-p:hover{background:var(--lime);color:#000;box-shadow:0 16px 32px rgba(15,18,45,0.22),0 0 28px rgba(13,122,64,0.2)}
+.btn-s{font-family:var(--fd);background:transparent;color:var(--t1);border:1px solid rgba(255,255,255,0.2);border-radius:6px;height:52px;padding:0 32px;font-size:13.5px;letter-spacing:2px;transition:all .3s cubic-bezier(.16,1,.3,1);flex-shrink:0}
+[data-theme="light"] .btn-s{border-color:rgba(15,18,45,0.22);color:var(--t1)}
+.btn-s:hover{border-color:var(--lime);color:var(--lime);background:var(--lime-d);transform:translateY(-2px)}
+.btn-s:active{transform:translateY(0)}
 @media(max-width:480px){.btn-p,.btn-s{padding:0 18px;font-size:11px;letter-spacing:1px;height:46px}}
 
 .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:9px;animation:rise .9s ease 1s both,bob 2.4s ease-in-out 2.2s infinite;cursor:pointer}
@@ -339,10 +349,14 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .scroll-cue svg{stroke:var(--t3)}
 
 /* Chain strip */
-.chain-strip{position:relative;z-index:2;max-width:1080px;margin:28px auto 0;padding:0 40px 90px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:0}
-@media(max-width:640px){.chain-strip{padding:0 16px 60px}}
+.chain-strip{position:relative;z-index:2;max-width:1080px;margin:28px auto 0;padding:0 40px 90px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 0}
+@media(max-width:640px){
+  .chain-strip{padding:0 16px 50px;flex-direction:column;gap:8px}
+  .ca{display:none}
+  .cp:not(:last-child)::after{content:"↓";display:block;text-align:center;color:var(--t3);font-size:11px;margin-top:8px;letter-spacing:0}
+}
 .cp{font-family:var(--fm);font-size:10px;color:var(--t3);padding:6px 13px;border:1px solid rgba(255,255,255,0.08);border-radius:100px;white-space:nowrap;letter-spacing:.3px}
-[data-theme="light"] .cp{border-color:rgba(10,12,40,0.12);color:var(--t2)}
+[data-theme="light"] .cp{border-color:rgba(15,18,45,0.14);color:var(--t2)}
 .cp.fin{color:var(--t1);border-color:var(--lime);background:var(--lime-d);font-weight:700}
 .ca{color:var(--t3);padding:0 6px;font-size:11px}
 [data-theme="light"] .ca{color:var(--t3)}
@@ -350,8 +364,8 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 /* ==========================================
    ORACLE SPECIFIC
    ========================================== */
-.oracle-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(125,232,255,0.045),transparent 62%)}
-[data-theme="light"] .oracle-bg{background:radial-gradient(circle at 50% 45%,rgba(4,95,192,0.07),transparent 62%)}
+.oracle-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(125,232,255,0.075),transparent 58%),radial-gradient(circle at 82% 88%,rgba(167,139,250,0.03),transparent 55%)}
+[data-theme="light"] .oracle-bg{background:radial-gradient(circle at 50% 40%,rgba(4,95,192,0.13),transparent 58%),radial-gradient(circle at 82% 88%,rgba(83,32,176,0.06),transparent 55%)}
 .o-rings{position:absolute;top:50%;left:50%;width:1px;height:1px;pointer-events:none}
 .o-ring{position:absolute;border:1px solid rgba(125,232,255,0.07);border-radius:50%;transform:translate(-50%,-50%);animation:spin linear infinite}
 [data-theme="light"] .o-ring{border-color:rgba(4,95,192,0.09)}
@@ -471,6 +485,12 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 
 /* Bio modal */
 .bio-ov{position:fixed;inset:0;background:rgba(3,3,5,0.88);backdrop-filter:blur(22px);z-index:4000;display:none;align-items:center;justify-content:center;padding:20px}
+@media(max-width:640px){
+  .bio-ov{padding:10px;align-items:flex-end}
+  .bio-modal{max-width:100%;max-height:88vh;border-radius:18px 18px 0 0}
+  .bio-head{padding:26px 20px 16px}
+  .bio-body{padding:18px 20px 26px}
+}
 .bio-ov.on{display:flex}
 .bio-modal{
   position:relative;overflow:hidden;
@@ -501,10 +521,10 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
    ========================================== */
 .manifesto{padding:clamp(80px,10vw,140px) clamp(20px,4vw,48px);text-align:center;position:relative}
 .mlines{max-width:900px;margin:0 auto}
-.ml{display:block;font-family:var(--fd);font-size:clamp(26px,4.5vw,54px);line-height:1.06;letter-spacing:-.5px;color:rgba(232,230,223,0.1);transition:color .5s}
+.ml{display:block;font-family:var(--fd);font-size:clamp(26px,4.5vw,54px);line-height:1.06;letter-spacing:-.5px;color:rgba(232,230,223,0.42);transition:color .5s}
 .ml.lit{color:var(--t1)}
 .ml.glow{background:linear-gradient(90deg,var(--ion),var(--lime),var(--ember),var(--violet),var(--signal));-webkit-background-clip:text;background-clip:text;color:transparent}
-[data-theme="light"] .ml{color:rgba(10,12,40,0.08)}
+[data-theme="light"] .ml{color:rgba(10,12,40,0.38)}
 [data-theme="light"] .ml.glow{background:linear-gradient(90deg,var(--ion),var(--violet));-webkit-background-clip:text;background-clip:text}
 .m-sub{font-family:var(--fs);font-style:italic;font-size:14px;color:var(--t2);margin-top:36px}
 
@@ -531,12 +551,12 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
    Inline .lf gradients are tuned for near-black backgrounds;
    on white paper they need real presence to carry the design.
    ========================================== */
-[data-theme="light"] #problem .lf{background:radial-gradient(circle at 80% 20%,rgba(4,95,192,0.075),transparent 55%)!important}
-[data-theme="light"] #architecture .lf{background:radial-gradient(circle at 20% 35%,rgba(13,122,64,0.075),transparent 55%)!important}
-[data-theme="light"] #social .lf{background:radial-gradient(circle at 15% 75%,rgba(184,80,12,0.075),transparent 55%)!important}
-[data-theme="light"] #ep .lf{background:radial-gradient(circle at 78% 65%,rgba(184,80,12,0.09),transparent 55%)!important}
-[data-theme="light"] #finance .lf{background:radial-gradient(circle at 30% 60%,rgba(83,32,176,0.09),transparent 55%)!important}
-[data-theme="light"] #ecosystem .lf{background:radial-gradient(circle at 70% 30%,rgba(13,122,64,0.075),transparent 55%)!important}
+[data-theme="light"] #problem .lf{background:radial-gradient(circle at 82% 15%,rgba(4,95,192,0.12),transparent 50%),radial-gradient(circle at 8% 90%,rgba(83,32,176,0.05),transparent 55%)!important}
+[data-theme="light"] #architecture .lf{background:radial-gradient(circle at 18% 30%,rgba(13,122,64,0.12),transparent 50%),radial-gradient(circle at 88% 85%,rgba(4,95,192,0.05),transparent 55%)!important}
+[data-theme="light"] #social .lf{background:radial-gradient(circle at 12% 78%,rgba(184,80,12,0.12),transparent 50%),radial-gradient(circle at 92% 12%,rgba(83,32,176,0.05),transparent 55%)!important}
+[data-theme="light"] #ep .lf{background:radial-gradient(circle at 80% 62%,rgba(184,80,12,0.14),transparent 50%),radial-gradient(circle at 12% 18%,rgba(168,13,76,0.05),transparent 55%)!important}
+[data-theme="light"] #finance .lf{background:radial-gradient(circle at 28% 58%,rgba(83,32,176,0.14),transparent 50%),radial-gradient(circle at 86% 20%,rgba(4,95,192,0.05),transparent 55%)!important}
+[data-theme="light"] #ecosystem .lf{background:radial-gradient(circle at 72% 28%,rgba(13,122,64,0.12),transparent 50%),radial-gradient(circle at 14% 85%,rgba(184,80,12,0.05),transparent 55%)!important}
 
 /* ==========================================
    RESPONSIVE
@@ -551,6 +571,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="stars"></div>
   <div class="amb-orb a"></div>
   <div class="amb-orb b"></div>
+  <div class="amb-orb c"></div>
 </div>
 
 <!-- DEPTH RAIL -->
@@ -641,9 +662,10 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     </div>
   </div>
   <div class="chain-strip">
-    <span class="cp">Economic Inefficiency</span><span class="ca">→</span>
+    <span class="cp">Fragmented Evidence</span><span class="ca">→</span>
     <span class="cp">Fragmented Truth</span><span class="ca">→</span>
     <span class="cp">Fragmented Trust</span><span class="ca">→</span>
+    <span class="cp">Economic Waste</span><span class="ca">→</span>
     <span class="cp fin">XEEVIA</span>
   </div>
 </section>
@@ -654,18 +676,18 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
      THE PROBLEM
      ====================================== -->
 <section class="layer" id="problem" data-lay="00" data-nm="THE PROBLEM" data-ac="#7de8ff" style="background:var(--s1)">
-  <div class="lf" style="background:radial-gradient(circle at 80% 20%,rgba(125,232,255,0.04),transparent 55%)"></div>
+  <div class="lf" style="background:radial-gradient(circle at 82% 15%,rgba(125,232,255,0.065),transparent 50%),radial-gradient(circle at 8% 90%,rgba(167,139,250,0.03),transparent 55%)"></div>
   <div class="li" style="--a:var(--ion);--accent:var(--ion)">
     <div class="ey"><span class="ey-n">00</span><span class="ey-l"></span>Economic Reality</div>
     <h2 class="lh">The Global Cost Of<br><span class="ac">Fragmented Trust.</span></h2>
-    <p class="wh">Why does the internet feel so expensive to participate in, even when everything is free? <span class="ac">Because trust has to be rebuilt from zero, every single time.</span></p>
+    <p class="wh">Why does the internet feel so expensive to participate in, even when everything is free? <span class="ac">Because evidence is fragmented — so trust has to be rebuilt from zero, every single time.</span></p>
     <div class="cg">
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">01 — Fragmented</div><div class="c-h">Identity</div><p class="c-p">An Instagram self, an X self, a LinkedIn self. None of them travel. You rebuild from nothing on every platform you join, every time.</p></div></div>
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">02 — Fragmented</div><div class="c-h">Truth</div><p class="c-p">No single source of what is real. Facts, records, and claims contradict each other across systems with no mechanism to reconcile them.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">02 — Fragmented</div><div class="c-h">Truth</div><p class="c-p">No single source of verifiable evidence. Facts, records, and claims contradict each other across systems with no mechanism to reconcile them.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">03 — Fragmented</div><div class="c-h">Reputation</div><p class="c-p">Years of contribution built on one platform become invisible everywhere else. Nothing compounds. Everything resets.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">04 — Fragmented</div><div class="c-h">Communities</div><p class="c-p">Groups with no portable economy, no treasury, no governance. They live and die by the platform that hosts them.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">05 — Fragmented</div><div class="c-h">Opportunity</div><p class="c-p">Hiring, investment, and commerce all require re-proving yourself from scratch. Trust never compounds across contexts.</p></div></div>
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">06 — Emerging</div><div class="c-h">The AI Trust Problem</div><p class="c-p">AI systems have no reliable way to verify identity or truth. Every model inherits the internet's fragmentation problem at scale.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">06 — Emerging</div><div class="c-h">The AI Trust Problem</div><p class="c-p">AI systems have no reliable way to verify identity or evidence. Every model inherits the internet's fragmentation problem at scale.</p></div></div>
     </div>
   </div>
 </section>
@@ -680,8 +702,8 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="li" style="--a:var(--ion);--accent:var(--ion)">
     <div class="ey"><span class="ey-n">01</span><span class="ey-l"></span>The Foundation Layer</div>
     <h2 class="lh">The Singular<br><span class="ac">Source Of Truth.</span></h2>
-    <p class="wh">What happens beneath every platform if trust is to become permanent? <span class="ac">A layer where truth is established once and never has to be proved again.</span></p>
-    <p class="ld">Not a better app. The infrastructure underneath all apps — where identity, records, and trust are written once, verified instantly, and recognized everywhere by every system that chooses to ask.</p>
+    <p class="wh">What happens beneath every platform if trust is to become permanent? <span class="ac">Evidence is established once, so truth never has to be argued and trust never has to be rebuilt.</span></p>
+    <p class="ld">Not a better app. The user-controlled coordination layer for verifiable evidence — every achievement, contribution, credential, relationship, and interaction organized into one continuously evolving record, written once, verified instantly, and recognized everywhere by every system that chooses to ask. Truth becomes explainable through evidence. Trust follows naturally.</p>
     <div class="sg" style="--a:var(--ion)">
       <div class="sc"><div class="sv">&lt;50ms</div><div class="sl">Write</div></div>
       <div class="sc"><div class="sv">&lt;10ms</div><div class="sl">Read</div></div>
@@ -701,7 +723,13 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="li" style="--a:var(--ion);--accent:var(--ion);padding-top:130px;padding-bottom:110px">
     <div class="ey"><span class="ey-n">02</span><span class="ey-l"></span>What Travels With You</div>
     <h2 class="lh" style="font-size:clamp(38px,5.5vw,76px)">Trust Built Once.<br><span class="ac">Recognized Everywhere.</span></h2>
-    <p class="ld" style="max-width:680px">Once established within Xeevia, trust is not locked to a platform. It becomes a portable credential. A business verified once can be trusted by every counterparty. A person verified once never has to re-prove who they are again.</p>
+    <p class="ld" style="max-width:680px;margin-bottom:32px">Portable trust exists because evidence is portable. Once verified within Xeevia, your evidence is not locked to a platform — it belongs to you, and platforms consume it rather than own it. Trust follows wherever the evidence goes.</p>
+    <div class="cg">
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><p class="c-p">A professional changing jobs should not rebuild their reputation from zero.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><p class="c-p">A freelancer moving platforms should not restart their reviews from zero.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><p class="c-p">A business expanding internationally should not recreate its credibility from zero.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><p class="c-p">A creator joining a new ecosystem should not lose years of work.</p></div></div>
+    </div>
   </div>
 </section>
 
@@ -711,11 +739,11 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
      IDENTITY / TRUST / REPUTATION
      ====================================== -->
 <section class="layer" id="architecture" data-lay="03" data-nm="IDENTITY" data-ac="#c8f53a">
-  <div class="lf" style="background:radial-gradient(circle at 20% 35%,rgba(200,245,58,0.04),transparent 55%)"></div>
+  <div class="lf" style="background:radial-gradient(circle at 18% 30%,rgba(200,245,58,0.065),transparent 50%),radial-gradient(circle at 88% 85%,rgba(125,232,255,0.03),transparent 55%)"></div>
   <div class="li" style="--a:var(--lime);--accent:var(--lime)">
     <div class="ey"><span class="ey-n">03–05</span><span class="ey-l"></span>The Human Layer</div>
     <h2 class="lh">Identity. Trust.<br><span class="ac">Reputation.</span></h2>
-    <p class="wh">Why should you rebuild yourself every time you arrive somewhere new? <span class="ac">Because until now, no one gave you a self that could travel.</span></p>
+    <p class="wh">Why should you rebuild yourself every time you arrive somewhere new? <span class="ac">Because until now, no one gave your evidence a home that could travel with you.</span></p>
 
     <!-- Identity graph — desktop only -->
     <div id="idGraph" style="position:relative;height:440px;margin:8px 0 28px;display:none" aria-hidden="true">
@@ -744,9 +772,9 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div class="cg">
       <div class="gc"><div class="inner"><div class="c-tag">Identity</div><div class="c-h">Unified Profile</div><p class="c-p">Personal, business, organization, government, developer, creator — one root identity, many expressions.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-tag">Identity</div><div class="c-h">Identity Graph</div><p class="c-p">Cross-platform synchronization that keeps your identity consistent and verifiable everywhere you exist.</p></div></div>
-      <div class="gc"><div class="inner"><div class="c-tag">Trust</div><div class="c-h">Verification Engine</div><p class="c-p">Trust signals, fraud detection, cross-platform proof. Established once, recognized by every system that asks.</p></div></div>
-      <div class="gc"><div class="inner"><div class="c-tag">Trust</div><div class="c-h">AI-Readable Trust</div><p class="c-p">Trust structured so AI systems can reliably verify identity and claims — at machine speed, at machine scale.</p></div></div>
-      <div class="gc"><div class="inner"><div class="c-tag">Reputation</div><div class="c-h">Compounding Score</div><p class="c-p">Every contribution — content, commerce, governance — adds permanently to a cryptographically-linked record.</p></div></div>
+      <div class="gc"><div class="inner"><div class="c-tag">Trust</div><div class="c-h">Verification Engine</div><p class="c-p">Verified evidence, fraud detection, cross-platform proof. Established once, recognized by every system that asks.</p></div></div>
+      <div class="gc"><div class="inner"><div class="c-tag">Trust</div><div class="c-h">AI-Readable Evidence</div><p class="c-p">Evidence structured so AI systems can reliably verify identity and claims — at machine speed, at machine scale, without replacing human judgment.</p></div></div>
+      <div class="gc"><div class="inner"><div class="c-tag">Reputation</div><div class="c-h">Compounding Evidence</div><p class="c-p">Every contribution — content, commerce, governance — adds permanently to a cryptographically-linked evidence record. Not a score. Evidence you can inspect.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-tag">Reputation</div><div class="c-h">Portable Reputation</div><p class="c-p">What you build in one community or platform travels with you to the next. Nothing is ever rebuilt from zero.</p></div></div>
     </div>
   </div>
@@ -758,7 +786,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
      SOCIAL VALUE LAYER
      ====================================== -->
 <section class="layer" id="social" data-lay="06" data-nm="SOCIAL VALUE LAYER" data-ac="#ff9b54" style="background:var(--s1)">
-  <div class="lf" style="background:radial-gradient(circle at 15% 75%,rgba(255,155,84,0.04),transparent 55%)"></div>
+  <div class="lf" style="background:radial-gradient(circle at 12% 78%,rgba(255,155,84,0.065),transparent 50%),radial-gradient(circle at 92% 12%,rgba(167,139,250,0.03),transparent 55%)"></div>
   <div class="li" style="--a:var(--ember);--accent:var(--ember)">
     <div class="ey"><span class="ey-n">06</span><span class="ey-l"></span>Where Participation Becomes Visible</div>
     <h2 class="lh">The Social Value<br><span class="ac">Layer.</span></h2>
@@ -801,7 +829,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
         </div>
       </div>
       <div class="sf-list">
-        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="sf-h">Posts and Comments</div><p class="sf-p">Every post and comment is weighted — published with EP, surfaced by genuine engagement, never by spend alone.</p></div></div>
+        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="sf-h">Posts and Comments</div><p class="sf-p">Every post and comment is weighted, published with EP, and becomes part of your evolving evidence — surfaced by genuine engagement, never by spend alone.</p></div></div>
         <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div><div class="sf-h">Live Streaming</div><p class="sf-p">Live chat and participation run on the same EP cost model as the feed — every interaction is priced, never free-for-all.</p></div></div>
         <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 1 1-11-8 8.5 8.5 0 0 1 11 8v.5z"/></svg></div><div><div class="sf-h">Messages</div><p class="sf-p">Direct messages backed by the same identity and trust layer. No anonymous spam, no impersonation.</p></div></div>
         <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="sf-h">Conversation Value, Shared</div><p class="sf-p">When a discussion creates real value, everyone who measurably contributed shares in it — not just the original poster.</p></div></div>
@@ -817,18 +845,18 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
      PARTICIPATION ECONOMY
      ====================================== -->
 <section class="layer" id="ep" data-lay="06.5" data-nm="PARTICIPATION ECONOMY" data-ac="#ff9b54">
-  <div class="lf" style="background:radial-gradient(circle at 78% 65%,rgba(255,155,84,0.05),transparent 55%)"></div>
+  <div class="lf" style="background:radial-gradient(circle at 80% 62%,rgba(255,155,84,0.075),transparent 50%),radial-gradient(circle at 12% 18%,rgba(255,77,141,0.03),transparent 55%)"></div>
   <div class="li" style="--a:var(--ember);--accent:var(--ember)">
     <div class="ey"><span class="ey-n">06.5</span><span class="ey-l"></span>The Mechanics Underneath</div>
     <h2 class="lh">Participation<br><span class="ac">With Weight.</span></h2>
-    <p class="wh">Why must participation carry weight if trust is to remain meaningful? <span class="ac">Because free engagement is zero-value engagement.</span></p>
+    <p class="wh">Why must participation carry weight if trust is to remain meaningful? <span class="ac">Because free engagement produces no evidence — and evidence is what makes participation valuable.</span></p>
     <p class="ld" style="margin-bottom:8px">This is not post-to-earn. Not like-to-earn. Not a daily login bonus. Xeevia never rewards activity simply because it occurred. Every meaningful action costs EP. Participation becomes investment, not free consumption.</p>
-    <p class="ld">Earning works the other way: when your contribution helps create a valuable conversation, you share in the value that conversation generates — weighted by your reputation and demonstrated contribution, not by your account age or deposit size.</p>
+    <p class="ld">Earning works the other way: when your contribution helps create a valuable conversation, you share in the value that conversation generates — weighted by your reputation and demonstrated contribution, not by your account age or deposit size. Every rewarded action leaves verifiable evidence behind — the record that lets reputation compound honestly.</p>
     <div class="ep-grid">
       <div class="ep-card"><div class="ep-n">01</div><div class="ep-h">Deposit Funds Participation</div><p class="ep-p">$1 becomes 100 EP and enters the liquidity pool. This is a funding step, not an earning event. It buys the capacity to participate — nothing more.</p></div>
       <div class="ep-card"><div class="ep-n">02</div><div class="ep-h">EP Is Spent, Never Given Free</div><p class="ep-p">Publishing, commenting, replying, and proposing all cost EP. Priced engagement produces intent. Free engagement produces noise.</p></div>
-      <div class="ep-card"><div class="ep-n">03</div><div class="ep-h">Conversations Create Value</div><p class="ep-p">A post, the comments it draws, the replies those generate — the whole discussion is the economic unit, not any single action within it.</p></div>
-      <div class="ep-card"><div class="ep-n">04</div><div class="ep-h">Contribution Score Decides the Split</div><p class="ep-p">Reaction quality, reply depth, endorsement weight, and reputation tier determine each contributor's share — not raw activity.</p></div>
+      <div class="ep-card"><div class="ep-n">03</div><div class="ep-h">Conversations Create Value</div><p class="ep-p">A post, the comments it draws, the replies those generate — the whole discussion is the economic unit and the evidence it leaves behind, not any single action within it.</p></div>
+      <div class="ep-card"><div class="ep-n">04</div><div class="ep-h">Contribution Evidence Decides the Split</div><p class="ep-p">Reaction quality, reply depth, endorsement weight, and reputation tier determine each contributor's share — not raw activity.</p></div>
       <div class="ep-card"><div class="ep-n">05</div><div class="ep-h">Reputation Multiplies Every Payout</div><p class="ep-p">A Trusted Contributor earns more from the same conversation than an unverified account. Reputation compounds into economic weight.</p></div>
       <div class="ep-card"><div class="ep-n">06</div><div class="ep-h">Earned EP Converts to XEV</div><p class="ep-p">Only EP earned through genuine contribution — never deposited EP — is eligible for monthly conversion into fixed-supply $XEV.</p></div>
     </div>
@@ -866,7 +894,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
      ECONOMIC / FINANCIAL
      ====================================== -->
 <section class="layer" id="finance" data-lay="09" data-nm="ECONOMIC AND FINANCIAL" data-ac="#a78bfa">
-  <div class="lf" style="background:radial-gradient(circle at 30% 60%,rgba(167,139,250,0.05),transparent 55%)"></div>
+  <div class="lf" style="background:radial-gradient(circle at 28% 58%,rgba(167,139,250,0.075),transparent 50%),radial-gradient(circle at 86% 20%,rgba(125,232,255,0.03),transparent 55%)"></div>
   <div class="li" style="--a:var(--violet);--accent:var(--violet)">
     <div class="ey"><span class="ey-n">09–10</span><span class="ey-l"></span>Native Finance</div>
     <h2 class="lh">The Economic and<br><span class="ac">Financial Layer.</span></h2>
@@ -896,7 +924,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div class="ey"><span class="ey-n">PROTOCOL</span><span class="ey-l"></span>Not A Feature. A Pillar.</div>
     <h2 class="lh">The XRC<br><span class="ac">Protocol.</span></h2>
     <p class="wh">How does truth get written so it never has to be argued about again? <span class="ac">Every event, cryptographically linked, the instant it happens.</span></p>
-    <p class="ld" style="margin-bottom:8px">XRC is the deterministic, off-chain record layer beneath all of Xeevia. Six chains record everything. One Oracle makes it queryable by any system in the world.</p>
+    <p class="ld" style="margin-bottom:8px">XRC is the deterministic, off-chain evidence layer beneath all of Xeevia — an evidence synchronization and verification infrastructure, not merely a blockchain oracle. Six chains record everything. One Oracle makes it queryable by any system in the world.</p>
     <div class="o-feed">
       <span>XTRC — transaction record written — 4ms</span>
       <span>XARC — identity claim confirmed — 3ms</span>
@@ -952,7 +980,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div class="ey"><span class="ey-n">ORACLE</span><span class="ey-l"></span>Live Verification Surface</div>
     <h2 class="lh" style="font-size:clamp(38px,6vw,88px)">Ask The Oracle.<br><span class="ac">Get A Proof.</span></h2>
     <p class="wh">How does the outside world verify a truth it did not witness? <span class="ac">It asks the Oracle and gets a deterministic, cryptographic answer.</span></p>
-    <p class="ld" style="margin-bottom:44px">Seven oracles. Each a live interface into one domain of verified truth. Every query answered from the XRC record chains — never guessed, never approximated.</p>
+    <p class="ld" style="margin-bottom:44px">Seven oracles. Each a live interface into one domain of verified evidence. Every query answered from the XRC record chains — never guessed, never approximated.</p>
     <div class="cg">
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-n" style="font-size:28px">01</div><div class="c-h">Trust Oracle</div><p class="c-p">Verifiable trust scores any external system can query without recreating the trust work themselves.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-n" style="font-size:28px">02</div><div class="c-h">Identity Oracle</div><p class="c-p">One verification, recognized everywhere. Ending the endless KYC rebuild for good.</p></div></div>
@@ -971,7 +999,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
      ECOSYSTEM
      ====================================== -->
 <section class="layer" id="ecosystem" data-lay="ECO" data-nm="ECOSYSTEM" data-ac="#c8f53a">
-  <div class="lf" style="background:radial-gradient(circle at 70% 30%,rgba(200,245,58,0.04),transparent 55%)"></div>
+  <div class="lf" style="background:radial-gradient(circle at 72% 28%,rgba(200,245,58,0.065),transparent 50%),radial-gradient(circle at 14% 85%,rgba(255,155,84,0.03),transparent 55%)"></div>
   <div class="li" style="--a:var(--lime);--accent:var(--lime)">
     <div class="ey"><span class="ey-n">ECO</span><span class="ey-l"></span>Every Participant, A World</div>
     <h2 class="lh">Built For Every<br><span class="ac">Kind Of Trust.</span></h2>
@@ -1005,28 +1033,28 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
         <div class="tc-name">Emmanuel</div>
         <div class="tc-role">Founder</div>
         <p class="tc-bio">Traced the root cause chain from global economic inefficiency to Xeevia, and has been building the twelve-layer architecture since.</p>
-        <span class="tc-read" onclick="openBio('emmanuel')">Read More</span>
+        <span class="tc-read" onclick="openBio('emmanuel',this)">Read More</span>
       </div>
       <div class="tc">
         <div class="tc-av"><img src="image2.png" alt="Nenkang Bamayang" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">N</span></div>
         <div class="tc-name">Nenkang Bamayang</div>
         <div class="tc-role">Chief Marketing Officer</div>
         <p class="tc-bio">Shaping how the world encounters Xeevia — building the narrative, the reach, and the relationships that bring foundational infrastructure to light.</p>
-        <span class="tc-read" onclick="openBio('nenkang')">Read More</span>
+        <span class="tc-read" onclick="openBio('nenkang',this)">Read More</span>
       </div>
       <div class="tc">
         <div class="tc-av"><img src="image3.png" alt="Douna Empire" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">D</span></div>
         <div class="tc-name">Douna Empire</div>
         <div class="tc-role">Social Media Manager</div>
         <p class="tc-bio">Leading Xeevia's presence across every platform — turning the ideas inside the architecture into conversations people actually find and remember.</p>
-        <span class="tc-read" onclick="openBio('douna')">Read More</span>
+        <span class="tc-read" onclick="openBio('douna',this)">Read More</span>
       </div>
       <div class="tc">
         <div class="tc-av"><img src="image4.png" alt="YCEE" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">Y</span></div>
         <div class="tc-name">YCEE</div>
         <div class="tc-role">Partnership Manager</div>
         <p class="tc-bio">Building the alliances and integrations that expand what Xeevia's trust infrastructure can reach — one trusted relationship at a time.</p>
-        <span class="tc-read" onclick="openBio('ycee')">Read More</span>
+        <span class="tc-read" onclick="openBio('ycee',this)">Read More</span>
       </div>
     </div>
   </div>
@@ -1056,7 +1084,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <span class="ml">Features evolve.</span>
     <span class="ml">Technology advances.</span>
     <span class="ml" style="height:.6em;display:block"></span>
-    <span class="ml glow">But truth, identity, and trust</span>
+    <span class="ml glow">But evidence, truth, and trust</span>
     <span class="ml glow">do not expire.</span>
     <span class="ml" style="height:.6em;display:block"></span>
     <span class="ml lit">This is the internet's</span>
@@ -1075,7 +1103,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div style="max-width:700px;margin:0 auto">
       <div class="ey" style="justify-content:center"><span class="ey-l"></span>Begin<span class="ey-l"></span></div>
       <h2 class="lh" style="text-align:center">Enter The Singular<br><span class="ac">Source Of Truth.</span></h2>
-      <p class="ld" style="text-align:center;margin:0 auto 40px">The internet has enough platforms. It has one Xeevia — where participation has weight and trust finally compounds.</p>
+      <p class="ld" style="text-align:center;margin:0 auto 40px">The internet has enough platforms. It has one Xeevia — where evidence compounds into trust, and participation finally has weight.</p>
       <div class="cta-row" style="animation:none;opacity:1;margin-bottom:0">
         <button class="btn-p" onclick="enterXeevia()">Enter Xeevia</button>
         <button class="btn-s" onclick="openOracle()">Read The Protocol</button>
@@ -1097,7 +1125,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
         </div>
         <span class="logo-name">XEEVIA</span>
       </div>
-      <p class="ft-tag">The Singular Source of Truth. Infrastructure for identity, trust, reputation, and participation.</p>
+      <p class="ft-tag">The Singular Source of Truth. The user-controlled coordination layer for identity, evidence, trust, reputation, and participation.</p>
     </div>
     <div class="ft-col"><h5>Architecture</h5><ul>
       <li><a onclick="goTo('#truth')">Truth Layer</a></li>
@@ -1156,6 +1184,7 @@ function toggleTheme(){
   if(isLight){html.removeAttribute('data-theme');localStorage.setItem('xv-theme','dark')}
   else{html.setAttribute('data-theme','light');localStorage.setItem('xv-theme','light')}
   setThemeIcons(!isLight);
+  if(typeof updateHeaderBorder==='function')updateHeaderBorder();
 }
 (function(){
   const saved=localStorage.getItem('xv-theme');
@@ -1170,9 +1199,15 @@ mqNav.addEventListener('change',handleNavMq);
 handleNavMq(mqNav);
 
 // ── HEADER SCROLL ──
-window.addEventListener('scroll',()=>{
-  document.getElementById('hdr').style.borderBottomColor=window.scrollY>40?'rgba(255,255,255,0.1)':'rgba(255,255,255,0.06)';
-},{passive:true});
+function updateHeaderBorder(){
+  const isLight=document.documentElement.getAttribute('data-theme')==='light';
+  const hdr=document.getElementById('hdr');
+  const scrolled=window.scrollY>40;
+  if(isLight){hdr.style.borderBottomColor=scrolled?'rgba(15,18,45,0.18)':'rgba(15,18,45,0.12)'}
+  else{hdr.style.borderBottomColor=scrolled?'rgba(255,255,255,0.14)':'rgba(255,255,255,0.06)'}
+}
+window.addEventListener('scroll',updateHeaderBorder,{passive:true});
+updateHeaderBorder();
 
 // ── DEPTH RAIL ──
 const layers=[...document.querySelectorAll('[data-lay]')];
@@ -1234,7 +1269,7 @@ setTimeout(drawGraph,200);
 
 // ── TEAM BIOS ──
 const bios={
-  emmanuel:{nm:'Emmanuel',rl:'Founder',fb:'E',img:'image1.png',
+  emmanuel:{nm:'Emmanuel',rl:'Founder',fb:'E',img:'Sproutsking.png',
     body:`<p>Emmanuel approached Xeevia not as a product to build but as a principle to resolve. The root chain — global economic inefficiency produced by fragmented truth, which produces fragmented trust, which demands a singular source of truth — is not a marketing thesis. It is the logical foundation from which every layer of the architecture follows.</p><p>That orientation shapes how Xeevia is built: philosophy before architecture, architecture before features. The twelve-layer system, the XRC Protocol, and the Participation Economy all trace back to the same root discovery. Nothing exists inside Xeevia without first answering why it must exist.</p><p>Currently directing the full architecture of the platform alongside its public-facing knowledge base and a parallel series of foundational books — each designed to educate before they persuade, and to make Xeevia's thesis feel like a logical conclusion rather than a product pitch.</p>`},
   nenkang:{nm:'Nenkang Bamayang',rl:'Chief Marketing Officer',fb:'N',img:'image2.png',
     body:`<p>Nenkang leads how the world encounters Xeevia for the first time. In a project where the ideas are as important as the infrastructure, the marketing function is not about reach alone — it is about ensuring that what people find when they discover Xeevia is something worth the discovery.</p><p>Nenkang builds the narrative, the channels, and the partnerships that bring Xeevia's vision to the audiences most ready to understand it and most positioned to help it grow.</p>`},
@@ -1243,14 +1278,18 @@ const bios={
   ycee:{nm:'YCEE',rl:'Partnership Manager',fb:'Y',img:'image4.png',
     body:`<p>YCEE leads the relationships that expand what Xeevia's trust infrastructure can reach. In an ecosystem built on the premise that trust compounds through real relationships, the Partnership function is not a sales role — it is the first live demonstration of what portable, trusted connection looks like in practice.</p><p>Every integration, every aligned organization, every institutional relationship YCEE builds is another proof point that the infrastructure Xeevia is building is worth connecting to.</p>`}
 };
-function openBio(k){
+function openBio(k,el){
   const b=bios[k];if(!b)return;
   document.getElementById('bioNm').textContent=b.nm;
   document.getElementById('bioRl').textContent=b.rl;
   document.getElementById('bioFb').textContent=b.fb;
   document.getElementById('bioBody').innerHTML=b.body;
   const av=document.getElementById('bioAv');
-  av.innerHTML=`<img src="${b.img}" alt="${b.nm}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb" style="font-family:var(--fd);font-size:28px;color:var(--lime);display:none;align-items:center;justify-content:center;width:100%;height:100%">${b.fb}</span>`;
+  let imgSrc=b.img;
+  const card=el&&el.closest('.tc');
+  const cardImg=card&&card.querySelector('.tc-av img');
+  if(cardImg&&cardImg.getAttribute('src'))imgSrc=cardImg.getAttribute('src');
+  av.innerHTML=`<img src="${imgSrc}" alt="${b.nm}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb" style="font-family:var(--fd);font-size:28px;color:var(--lime);display:none;align-items:center;justify-content:center;width:100%;height:100%">${b.fb}</span>`;
   document.getElementById('bioOv').classList.add('on');
   document.body.style.overflow='hidden';
 }
