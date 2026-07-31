@@ -495,39 +495,40 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
   transition:transform .45s cubic-bezier(.16,1,.3,1);
 }
 .tc-av-ring{
-  position:absolute;inset:-16px;border-radius:50%;
-  background:
-    radial-gradient(circle at 32% 28%,rgba(200,245,58,0.5),transparent 58%),
-    radial-gradient(circle at 68% 40%,rgba(125,232,255,0.28),transparent 55%),
-    radial-gradient(circle at 48% 78%,rgba(200,245,58,0.32),transparent 60%);
-  filter:blur(15px);
-  opacity:.5;
-  transform:scale(1) rotate(0deg);
-  transition:opacity .45s ease;
-  animation:tcSmoke 9s ease-in-out infinite;
+  position:absolute;inset:-4px;border-radius:50%;
+  background:conic-gradient(from 0deg,
+    rgba(200,245,58,0.95),
+    rgba(125,232,255,0.55) 22%,
+    rgba(200,245,58,0.12) 45%,
+    rgba(200,245,58,0.85) 68%,
+    rgba(125,232,255,0.4) 88%,
+    rgba(200,245,58,0.95) 100%);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#fff calc(100% - 4px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#fff calc(100% - 4px));
+  opacity:.72;
+  transition:opacity .35s ease;
+  animation:tcSmokeDrift 11s linear infinite;
   pointer-events:none;
 }
 [data-theme="light"] .tc-av-ring{
-  background:
-    radial-gradient(circle at 32% 28%,rgba(13,122,64,0.34),transparent 58%),
-    radial-gradient(circle at 68% 40%,rgba(4,95,192,0.22),transparent 55%),
-    radial-gradient(circle at 48% 78%,rgba(13,122,64,0.24),transparent 60%);
-  opacity:.4;
+  background:conic-gradient(from 0deg,
+    rgba(13,122,64,0.9),
+    rgba(4,95,192,0.5) 22%,
+    rgba(13,122,64,0.1) 45%,
+    rgba(13,122,64,0.8) 68%,
+    rgba(4,95,192,0.35) 88%,
+    rgba(13,122,64,0.9) 100%);
+  opacity:.58;
 }
-.tc:hover .tc-av-ring{opacity:.85}
-@keyframes tcSmoke{
-  0%,100%{transform:scale(1) rotate(0deg);filter:blur(15px)}
-  33%{transform:scale(1.12) rotate(6deg) translate(2px,-3px);filter:blur(18px)}
-  66%{transform:scale(0.94) rotate(-5deg) translate(-3px,2px);filter:blur(13px)}
-}
+.tc:hover .tc-av-ring{opacity:1}
+@keyframes tcSmokeDrift{to{transform:rotate(360deg)}}
 .tc-av-inner{
   position:absolute;inset:0;border-radius:50%;
   border:1.5px solid rgba(200,245,58,0.24);background:var(--lime-d);
-  box-shadow:0 0 0 3px var(--bg),inset 0 0 0 1px rgba(255,255,255,0.06);
   display:flex;align-items:center;justify-content:center;overflow:hidden;
-  transition:border-color .32s,box-shadow .32s;
+  transition:border-color .32s;
 }
-.tc:hover .tc-av-inner{border-color:var(--lime);box-shadow:0 0 0 3px var(--bg),0 0 22px var(--lime-d)}
+.tc:hover .tc-av-inner{border-color:var(--lime)}
 .tc:hover .tc-av{transform:scale(1.06)}
 .tc-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .tc-av .fb{font-family:var(--fd);font-size:28px;color:var(--lime);display:none;align-items:center;justify-content:center;width:100%;height:100%}
