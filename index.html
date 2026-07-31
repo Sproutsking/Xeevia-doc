@@ -4,10 +4,11 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
 <meta name="theme-color" content="#030305"/>
-<title>XEEVIA — The Singular Source of Truth</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23030305' stroke='%23c8f53a' stroke-width='1.5'/%3E%3Cpath d='M9 9L23 23M23 9L9 23' stroke='%23e8e6df' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%23c8f53a'/%3E%3C/svg%3E"/>
+<title>XEEVIA - The Singular Source of Truth</title>
+<link rel="icon" type="image/png" href="logo.png"/>
+<link rel="apple-touch-icon" href="logo.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none}
 *::-webkit-scrollbar{display:none}
@@ -49,6 +50,7 @@
   --fd:"Bebas Neue",sans-serif;
   --fs:"Fraunces",serif;
   --fm:"Space Mono",monospace;
+  --fn:"Syne",sans-serif;
 
   --accent:var(--lime);
   --accent-d:var(--lime-d);
@@ -56,7 +58,7 @@
 }
 
 /* ==========================================
-   LIGHT THEME — white paper, deep ink
+   LIGHT THEME - white paper, deep ink
    ========================================== */
 [data-theme="light"]{
   --bg:#ffffff;
@@ -206,18 +208,18 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 [data-theme="light"] .mob-nav{background:rgba(255,255,255,0.98)}
 .mob-nav.open{display:flex;animation:mobIn .32s cubic-bezier(.16,1,.3,1)}
 @keyframes mobIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
-.mob-top{display:flex;justify-content:space-between;align-items:center;padding:20px 28px;border-bottom:1px solid rgba(255,255,255,0.07)}
-[data-theme="light"] .mob-top{border-bottom-color:rgba(10,12,40,0.08)}
+.mob-top{display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top) + 18px) 24px 18px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
+[data-theme="light"] .mob-top{border-bottom-color:rgba(10,12,40,0.08);background:linear-gradient(180deg,rgba(10,12,40,0.015),transparent)}
 .mob-close{
-  width:38px;height:38px;border-radius:50%;
+  width:40px;height:40px;border-radius:50%;
   background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
-  display:flex;align-items:center;justify-content:center;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
   stroke:var(--t1);transition:all .22s;
 }
 [data-theme="light"] .mob-close{background:rgba(10,12,40,0.04);border-color:rgba(10,12,40,0.12)}
 .mob-close:hover{background:var(--lime-d);border-color:var(--lime)}
 .mob-close svg{stroke:var(--t1);width:18px;height:18px}
-.mob-links{flex:1;display:flex;flex-direction:column;justify-content:center;padding:12px 28px;gap:0}
+.mob-links{flex:1;display:flex;flex-direction:column;justify-content:center;padding:12px 24px;gap:0}
 .mob-links a{
   display:flex;align-items:center;gap:18px;
   font-family:var(--fd);font-size:30px;letter-spacing:2px;
@@ -229,7 +231,7 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .mob-links a:hover{color:var(--t1);padding-left:8px}
 .mob-links a:last-child{border-bottom:none}
 .mob-n{font-family:var(--fm);font-size:9.5px;color:var(--accent);opacity:.5;min-width:24px;letter-spacing:.5px}
-.mob-foot{padding:22px 28px;border-top:1px solid rgba(255,255,255,0.07)}
+.mob-foot{padding:22px 24px calc(env(safe-area-inset-bottom) + 22px);border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0}
 [data-theme="light"] .mob-foot{border-top-color:rgba(10,12,40,0.08)}
 .mob-enter{
   width:100%;font-family:var(--fd);font-size:15px;letter-spacing:3px;
@@ -240,13 +242,13 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 [data-theme="light"] .mob-enter:hover{box-shadow:0 10px 24px rgba(15,18,45,0.2)}
 
 /* ==========================================
-   SPECTRUM BAR — thin rhythm accent
+   SPECTRUM BAR - thin rhythm accent
    ========================================== */
 .spectrum-bar{height:2px;background:linear-gradient(90deg,var(--ion),var(--lime),var(--ember),var(--violet));opacity:.25;position:relative;z-index:2}
 .spectrum-bar.full{opacity:.45}
 
 /* ==========================================
-   GLASS CARD — base class, the only card type
+   GLASS CARD - base class, the only card type
    ========================================== */
 .gc{
   position:relative;overflow:hidden;
@@ -277,7 +279,7 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
 @media(max-width:640px){.cg{grid-template-columns:1fr;gap:12px}}
 
-/* Stat cards — tight variant */
+/* Stat cards - tight variant */
 .sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:12px;margin-top:40px}
 .sc{position:relative;overflow:hidden;background:var(--glass);border:1px solid var(--glass-b);border-radius:14px;padding:22px 18px;backdrop-filter:blur(14px);transition:border-color .3s,transform .28s,box-shadow .3s}
 [data-theme="light"] .sc{box-shadow:0 3px 14px rgba(15,18,45,0.04)}
@@ -384,7 +386,7 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .o-feed span{font-size:10px;color:rgba(125,232,255,0.45);letter-spacing:.5px;font-family:var(--fm)}
 [data-theme="light"] .o-feed span{color:rgba(4,95,192,0.62)}
 
-/* Oracle launch card — elite expandable */
+/* Oracle launch card - elite expandable */
 .o-launch{
   margin-top:14px;position:relative;overflow:hidden;
   background:linear-gradient(135deg,rgba(125,232,255,0.055),rgba(125,232,255,0.01));
@@ -487,20 +489,17 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .tc:hover .tc-av{border-color:var(--lime);box-shadow:0 0 26px var(--lime-d)}
 .tc-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .tc-av .fb{font-family:var(--fd);font-size:28px;color:var(--lime);display:none;align-items:center;justify-content:center;width:100%;height:100%}
-.tc-name{font-family:var(--fd);font-size:17px;letter-spacing:.5px;color:var(--t1);margin-bottom:4px;text-transform:uppercase;position:relative;z-index:1}
-.tc-role{font-size:9px;color:var(--lime);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:14px;position:relative;z-index:1}
+.tc-name{font-family:var(--fn);font-weight:800;font-size:18px;letter-spacing:.2px;color:var(--t1);margin-bottom:6px;text-transform:uppercase;position:relative;z-index:1}
+.tc-handle{display:inline-flex;align-items:center;gap:5px;font-family:var(--fm);font-size:10px;letter-spacing:.4px;color:var(--t2);background:rgba(255,255,255,0.045);border:1px solid var(--glass-b);padding:4px 12px;border-radius:100px;margin-bottom:12px;position:relative;z-index:1}
+.tc-handle::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0;box-shadow:0 0 6px var(--lime)}
+[data-theme="light"] .tc-handle{background:rgba(15,18,45,0.03)}
+.tc-role{display:inline-flex;align-items:center;font-size:9px;color:var(--lime);text-transform:uppercase;letter-spacing:1.8px;font-weight:700;padding:5px 15px;border-radius:100px;background:var(--lime-d);border:1px solid var(--lime-s);margin-bottom:16px;position:relative;z-index:1}
 .tc-bio{font-size:11.5px;color:var(--t2);line-height:1.8;margin-bottom:18px;position:relative;z-index:1}
 .tc-read{font-size:9px;color:var(--lime);letter-spacing:2px;text-transform:uppercase;padding:8px 18px;border:1px solid var(--lime-s);border-radius:100px;display:inline-block;transition:all .22s;position:relative;z-index:1}
 .tc-read:hover{background:var(--lime-d);letter-spacing:3px}
 
 /* Bio modal */
 .bio-ov{position:fixed;inset:0;background:rgba(3,3,5,0.88);backdrop-filter:blur(22px);z-index:4000;display:none;align-items:center;justify-content:center;padding:20px}
-@media(max-width:640px){
-  .bio-ov{padding:10px;align-items:flex-end}
-  .bio-modal{max-width:100%;max-height:88vh;border-radius:18px 18px 0 0}
-  .bio-head{padding:26px 20px 16px}
-  .bio-body{padding:18px 20px 26px}
-}
 .bio-ov.on{display:flex}
 .bio-modal{
   position:relative;overflow:hidden;
@@ -517,14 +516,39 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .bio-av{width:76px;height:76px;border-radius:50%;margin:0 auto 14px;border:1.5px solid var(--lime);overflow:hidden;background:var(--lime-d);display:flex;align-items:center;justify-content:center;box-shadow:0 0 28px var(--lime-d)}
 .bio-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .bio-av .fb{font-family:var(--fd);font-size:28px;color:var(--lime);display:none;align-items:center;justify-content:center;width:100%;height:100%}
-.bio-nm{font-family:var(--fd);font-size:20px;color:var(--t1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
-.bio-rl{font-size:9px;color:var(--lime);text-transform:uppercase;letter-spacing:2px;font-weight:700}
+.bio-nm{font-family:var(--fd);font-size:21px;color:var(--t1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.bio-handle{display:none;align-items:center;gap:5px;font-family:var(--fm);font-size:10.5px;letter-spacing:.4px;color:var(--t2);background:rgba(255,255,255,0.045);border:1px solid var(--glass-b);padding:4px 13px;border-radius:100px;margin:0 auto 10px}
+.bio-handle::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0;box-shadow:0 0 6px var(--lime)}
+[data-theme="light"] .bio-handle{background:rgba(15,18,45,0.03)}
+.bio-rl{display:inline-flex;align-items:center;font-size:9px;color:var(--lime);text-transform:uppercase;letter-spacing:1.8px;font-weight:700;padding:5px 15px;border-radius:100px;background:var(--lime-d);border:1px solid var(--lime-s)}
 .bio-body{padding:22px 28px 30px;font-size:12.5px;color:var(--t2);line-height:1.9;position:relative;z-index:1}
 .bio-body p{margin-bottom:14px}
 .bio-body p:last-child{margin-bottom:0}
 [data-theme="light"] .bio-modal{background:rgba(255,255,255,0.96);border-color:rgba(13,122,64,0.22);box-shadow:0 32px 76px rgba(15,18,45,0.2),0 0 54px rgba(13,122,64,0.08)}
 [data-theme="light"] .bio-head{border-bottom-color:rgba(10,12,40,0.08)}
 [data-theme="light"] .bio-x{background:rgba(10,12,40,0.04);border-color:rgba(10,12,40,0.12)}
+
+/* Bio modal - mobile: full screen, not a cramped card */
+@media(max-width:640px){
+  .bio-ov{padding:0;align-items:stretch;justify-content:stretch}
+  .bio-modal{
+    max-width:100%;width:100%;
+    height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;
+    border-radius:0;overflow-y:hidden;
+    display:flex;flex-direction:column;
+  }
+  .bio-modal::before,.bio-modal::after{border-radius:0}
+  .bio-x{top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right));width:40px;height:40px}
+  .bio-x svg{width:19px;height:19px}
+  .bio-head{padding:calc(env(safe-area-inset-top) + 36px) 24px 22px;flex-shrink:0}
+  .bio-av{width:92px;height:92px}
+  .bio-av .fb{font-size:32px}
+  .bio-nm{font-size:23px;letter-spacing:.3px}
+  .bio-handle{font-size:11.5px;padding:5px 15px;margin-bottom:12px}
+  .bio-rl{font-size:10.5px;padding:6px 17px}
+  .bio-body{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:26px 24px calc(env(safe-area-inset-bottom) + 44px);font-size:15px;line-height:1.95}
+  .bio-body p{margin-bottom:18px}
+}
 
 /* ==========================================
    MANIFESTO
@@ -557,7 +581,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
 @media(max-width:540px){.ft{grid-template-columns:1fr}footer{padding:44px 20px 22px}.ft-bot{flex-direction:column;gap:8px;text-align:center}}
 
 /* ==========================================
-   LIGHT THEME — SECTION WASH INTENSITY
+   LIGHT THEME - SECTION WASH INTENSITY
    Inline .lf gradients are tuned for near-black backgrounds;
    on white paper they need real presence to carry the design.
    ========================================== */
@@ -597,7 +621,8 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
 <nav>
   <a class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <div class="logo-mark">
-      <svg viewBox="0 0 32 32" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 9L23 23M23 9L9 23" stroke="var(--t1)" stroke-width="2.6" stroke-linecap="round" fill="none"/><circle cx="16" cy="16" r="2.6" fill="var(--lime)"/></svg>
+      <img src="logo.png" alt="Xeevia" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span class="logo-fallback">X</span>
     </div>
     <span class="logo-name">XEEVIA</span>
   </a>
@@ -629,7 +654,8 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="mob-top">
     <div class="logo">
       <div class="logo-mark" style="width:28px;height:28px">
-        <svg viewBox="0 0 32 32" width="15" height="15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 9L23 23M23 9L9 23" stroke="var(--t1)" stroke-width="2.6" stroke-linecap="round" fill="none"/><circle cx="16" cy="16" r="2.6" fill="var(--lime)"/></svg>
+        <img src="logo.png" alt="Xeevia" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <span class="logo-fallback" style="font-family:var(--fd);font-size:13px">X</span>
       </div>
       <span class="logo-name" style="font-size:14px;letter-spacing:5px">XEEVIA</span>
     </div>
@@ -663,7 +689,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
       <span class="ln l2">Never Had An</span>
       <span class="ln l3">Identity Layer.</span>
     </h1>
-    <p class="sub">Until now. Xeevia is the infrastructure beneath every platform — where truth, identity, and reputation are established once and carried everywhere.</p>
+    <p class="sub">Until now. Xeevia is the infrastructure beneath every platform - where truth, identity, and reputation are established once and carried everywhere.</p>
     <div class="cta-row">
       <button class="btn-p" onclick="enterXeevia()">Enter Xeevia</button>
       <button class="btn-s" onclick="goTo('#problem')">Discover Xeevia</button>
@@ -695,10 +721,10 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <p class="wh">Why does an identity layer even need to exist? <span class="ac">Because every platform makes you prove yourself again, freezes what you built, and owns the people who chose to know you.</span></p>
     <div class="gc" style="--a:var(--signal);max-width:760px">
       <div class="inner">
-        <p style="font-family:var(--fs);font-style:italic;font-size:clamp(16px,1.8vw,20px);color:var(--t1);line-height:1.85;opacity:.92">Xeevia is the layer underneath all of it — where your evidence, your trust, your reputation, and your relationships belong to you, and travel with you, no matter which application you're standing in today.</p>
+        <p style="font-family:var(--fs);font-style:italic;font-size:clamp(16px,1.8vw,20px);color:var(--t1);line-height:1.85;opacity:.92">Xeevia is the layer underneath all of it - where your evidence, your trust, your reputation, and your relationships belong to you, and travel with you, no matter which application you're standing in today.</p>
       </div>
     </div>
-    <p class="ep-not" style="margin-top:28px">Not a social network — not a blockchain platform — not an identity provider — not a creator-economy platform — not a follower-import tool</p>
+    <p class="ep-not" style="margin-top:28px">Not a social network - not a blockchain platform - not an identity provider - not a creator-economy platform - not a follower-import tool</p>
   </div>
 </section>
 
@@ -712,14 +738,14 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="li" style="--a:var(--ion);--accent:var(--ion)">
     <div class="ey"><span class="ey-n">00</span><span class="ey-l"></span>Economic Reality</div>
     <h2 class="lh">The Global Cost Of<br><span class="ac">Fragmented Trust.</span></h2>
-    <p class="wh">Why does the internet feel so expensive to participate in, even when everything is free? <span class="ac">Because evidence is fragmented — so trust has to be rebuilt from zero, every single time.</span></p>
+    <p class="wh">Why does the internet feel so expensive to participate in, even when everything is free? <span class="ac">Because evidence is fragmented - so trust has to be rebuilt from zero, every single time.</span></p>
     <div class="cg">
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">01 — Fragmented</div><div class="c-h">Identity</div><p class="c-p">An Instagram self, an X self, a LinkedIn self. None of them travel. You rebuild from nothing on every platform you join, every time.</p></div></div>
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">02 — Fragmented</div><div class="c-h">Truth</div><p class="c-p">No single source of verifiable evidence. Facts, records, and claims contradict each other across systems with no mechanism to reconcile them.</p></div></div>
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">03 — Fragmented</div><div class="c-h">Reputation</div><p class="c-p">Years of contribution built on one platform become invisible everywhere else. Nothing compounds. Everything resets.</p></div></div>
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">04 — Fragmented</div><div class="c-h">Communities</div><p class="c-p">Groups with no portable economy, no treasury, no governance. They live and die by the platform that hosts them.</p></div></div>
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">05 — Fragmented</div><div class="c-h">Opportunity</div><p class="c-p">Hiring, investment, and commerce all require re-proving yourself from scratch. Trust never compounds across contexts.</p></div></div>
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">06 — Emerging</div><div class="c-h">The AI Trust Problem</div><p class="c-p">AI systems have no reliable way to verify identity or evidence. Every model inherits the internet's fragmentation problem at scale.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">01 - Fragmented</div><div class="c-h">Identity</div><p class="c-p">An Instagram self, an X self, a LinkedIn self. None of them travel. You rebuild from nothing on every platform you join, every time.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">02 - Fragmented</div><div class="c-h">Truth</div><p class="c-p">No single source of verifiable evidence. Facts, records, and claims contradict each other across systems with no mechanism to reconcile them.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">03 - Fragmented</div><div class="c-h">Reputation</div><p class="c-p">Years of contribution built on one platform become invisible everywhere else. Nothing compounds. Everything resets.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">04 - Fragmented</div><div class="c-h">Communities</div><p class="c-p">Groups with no portable economy, no treasury, no governance. They live and die by the platform that hosts them.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">05 - Fragmented</div><div class="c-h">Opportunity</div><p class="c-p">Hiring, investment, and commerce all require re-proving yourself from scratch. Trust never compounds across contexts.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">06 - Emerging</div><div class="c-h">The AI Trust Problem</div><p class="c-p">AI systems have no reliable way to verify identity or evidence. Every model inherits the internet's fragmentation problem at scale.</p></div></div>
     </div>
   </div>
 </section>
@@ -735,7 +761,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div class="ey"><span class="ey-n">01</span><span class="ey-l"></span>The Foundation Layer</div>
     <h2 class="lh">The Singular<br><span class="ac">Source Of Truth.</span></h2>
     <p class="wh">What happens beneath every platform if trust is to become permanent? <span class="ac">Evidence is established once, so truth never has to be argued and trust never has to be rebuilt.</span></p>
-    <p class="ld">Not a better app. The user-controlled coordination layer for verifiable evidence — every achievement, contribution, credential, and interaction, and every relationship someone chooses to carry forward, organized into one continuously evolving record, written once, verified instantly, and recognized everywhere by every system that chooses to ask. Truth becomes explainable through evidence. Trust follows naturally.</p>
+    <p class="ld">Not a better app. The user-controlled coordination layer for verifiable evidence - every achievement, contribution, credential, and interaction, and every relationship someone chooses to carry forward, organized into one continuously evolving record, written once, verified instantly, and recognized everywhere by every system that chooses to ask. Truth becomes explainable through evidence. Trust follows naturally.</p>
     <div class="sg" style="--a:var(--ion)">
       <div class="sc"><div class="sv">&lt;50ms</div><div class="sl">Write</div></div>
       <div class="sc"><div class="sv">&lt;10ms</div><div class="sl">Read</div></div>
@@ -755,7 +781,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="li" style="--a:var(--ion);--accent:var(--ion);padding-top:130px;padding-bottom:110px">
     <div class="ey"><span class="ey-n">02</span><span class="ey-l"></span>What Travels With You</div>
     <h2 class="lh" style="font-size:clamp(38px,5.5vw,76px)">Trust Built Once.<br><span class="ac">Recognized Everywhere.</span></h2>
-    <p class="ld" style="max-width:680px;margin-bottom:32px">Portable trust exists because evidence is portable. Once verified within Xeevia, your evidence is not locked to a platform — it belongs to you, and platforms consume it rather than own it. Trust follows wherever the evidence goes.</p>
+    <p class="ld" style="max-width:680px;margin-bottom:32px">Portable trust exists because evidence is portable. Once verified within Xeevia, your evidence is not locked to a platform - it belongs to you, and platforms consume it rather than own it. Trust follows wherever the evidence goes.</p>
     <div class="cg">
       <div class="gc" style="--a:var(--ion)"><div class="inner"><p class="c-p">A professional changing jobs should not rebuild their reputation from zero.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><p class="c-p">A freelancer moving platforms should not restart their reviews from zero.</p></div></div>
@@ -776,8 +802,9 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div class="ey"><span class="ey-n">03–05</span><span class="ey-l"></span>The Human Layer</div>
     <h2 class="lh">Identity. Trust.<br><span class="ac">Reputation.</span></h2>
     <p class="wh">Why should you rebuild yourself every time you arrive somewhere new? <span class="ac">Because until now, no one gave your evidence a home that could travel with you.</span></p>
+    <p class="ld" style="margin-bottom:32px;max-width:680px">Underneath identity, trust, and reputation sits one network: the Trust Graph. It is the engine that records who verified what, who vouched for whom, and how evidence connects across every identity in the system. Reputation is not stored as a number. It is computed, live, from your position inside that graph.</p>
 
-    <!-- Identity graph — desktop only -->
+    <!-- Identity graph - desktop only -->
     <div id="idGraph" style="position:relative;height:440px;margin:8px 0 28px;display:none" aria-hidden="true">
       <div class="gc" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;border-color:var(--lime);box-shadow:0 0 50px rgba(200,245,58,0.12);z-index:3">
         <span style="font-family:var(--fd);font-size:16px;color:var(--t1);letter-spacing:1.5px;position:relative;z-index:1">YOU</span>
@@ -802,11 +829,11 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     </div>
 
     <div class="cg">
-      <div class="gc"><div class="inner"><div class="c-tag">Identity</div><div class="c-h">Unified Profile</div><p class="c-p">Personal, business, organization, government, developer, creator — one root identity, many expressions.</p></div></div>
-      <div class="gc"><div class="inner"><div class="c-tag">Identity</div><div class="c-h">Identity Graph</div><p class="c-p">Cross-platform synchronization that keeps your identity consistent and verifiable everywhere you exist.</p></div></div>
+      <div class="gc"><div class="inner"><div class="c-tag">Identity</div><div class="c-h">Unified Profile</div><p class="c-p">Personal, business, organization, government, developer, creator - one root identity, many expressions.</p></div></div>
+      <div class="gc"><div class="inner"><div class="c-tag">Identity</div><div class="c-h">Identity Graph</div><p class="c-p">Cross-platform synchronization that keeps your identity consistent and verifiable everywhere you exist. One layer of the wider Trust Graph.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-tag">Trust</div><div class="c-h">Verification Engine</div><p class="c-p">Verified evidence, fraud detection, cross-platform proof. Established once, recognized by every system that asks.</p></div></div>
-      <div class="gc"><div class="inner"><div class="c-tag">Trust</div><div class="c-h">AI-Readable Evidence</div><p class="c-p">Evidence structured so AI systems can reliably verify identity and claims — at machine speed, at machine scale, without replacing human judgment.</p></div></div>
-      <div class="gc"><div class="inner"><div class="c-tag">Reputation</div><div class="c-h">Compounding Evidence</div><p class="c-p">Every contribution — content, commerce, governance — adds permanently to a cryptographically-linked evidence record. Not a score. Evidence you can inspect.</p></div></div>
+      <div class="gc"><div class="inner"><div class="c-tag">Trust</div><div class="c-h">AI-Readable Evidence</div><p class="c-p">Evidence structured so AI systems can reliably verify identity and claims - at machine speed, at machine scale, without replacing human judgment.</p></div></div>
+      <div class="gc"><div class="inner"><div class="c-tag">Reputation</div><div class="c-h">Compounding Evidence</div><p class="c-p">Every contribution - content, commerce, governance - adds permanently to a cryptographically-linked evidence record. Not a score. Evidence you can inspect.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-tag">Reputation</div><div class="c-h">Portable Reputation</div><p class="c-p">What you build in one community or platform travels with you to the next. Nothing is ever rebuilt from zero.</p></div></div>
     </div>
   </div>
@@ -822,14 +849,14 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="li" style="--a:var(--violet);--accent:var(--violet)">
     <div class="ey"><span class="ey-n">05.5</span><span class="ey-l"></span>Who Already Knows You</div>
     <h2 class="lh">The Relationship<br><span class="ac">Layer.</span></h2>
-    <p class="wh">Why do platforms hold your audience hostage the moment you try to leave? <span class="ac">Because on every platform but this one, relationships belong to the app — never to the person.</span></p>
-    <p class="ld" style="margin-bottom:32px;max-width:680px">Identity answers who you are. Reputation answers whether you should be trusted. Relationships answer something neither can: who already chose to listen. Xeevia treats those relationships as evidence too — proof that trust was already extended — portable the same way everything else here is portable.</p>
+    <p class="wh">Why do platforms hold your audience hostage the moment you try to leave? <span class="ac">Because on every platform but this one, relationships belong to the app - never to the person.</span></p>
+    <p class="ld" style="margin-bottom:32px;max-width:680px">Identity answers who you are. Reputation answers whether you should be trusted. Relationships answer something neither can: who already chose to listen. Xeevia treats those relationships as evidence too - proof that trust was already extended - portable the same way everything else here is portable.</p>
     <div class="cg">
       <div class="gc" style="--a:var(--violet)"><div class="inner"><div class="c-tag">Attachment</div><div class="c-h">Subscribe To The Identity</div><p class="c-p">People follow the identity, not the platform it happened to be created on. Wherever that identity creates next, the relationship is already there.</p></div></div>
       <div class="gc" style="--a:var(--violet)"><div class="inner"><div class="c-tag">Consent</div><div class="c-h">Migration, Never Extraction</div><p class="c-p">Xeevia cannot and does not pull follower lists from closed platforms. An identity connects its verified accounts, invites its audience once, and people choose to follow forward.</p></div></div>
-      <div class="gc" style="--a:var(--violet)"><div class="inner"><div class="c-tag">Control</div><div class="c-h">Every App Requests A Slice</div><p class="c-p">A logistics app doesn't need your creative audience. A finance app doesn't need your followers. Every application asks for only the slice of the relationship graph it needs — under your control.</p></div></div>
+      <div class="gc" style="--a:var(--violet)"><div class="inner"><div class="c-tag">Control</div><div class="c-h">Every App Requests A Slice</div><p class="c-p">A logistics app doesn't need your creative audience. A finance app doesn't need your followers. Every application asks for only the slice of the relationship graph it needs - under your control.</p></div></div>
     </div>
-    <p class="ep-not" style="margin-top:28px">Not follower importing — not scraping — not automatic cross-posting — not platform impersonation</p>
+    <p class="ep-not" style="margin-top:28px">Not follower importing - not scraping - not automatic cross-posting - not platform impersonation</p>
   </div>
 </section>
 
@@ -866,7 +893,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
               <div class="ph-av" style="background:linear-gradient(135deg,var(--violet),var(--ion))"></div>
               <span class="ph-nm">@xeevia.live</span>
             </div>
-            <div class="ph-tx">Live: Building the Trust Oracle — join the discussion.</div>
+            <div class="ph-tx">Live: Building the Trust Oracle - join the discussion.</div>
             <div class="ph-ac">
               <span class="ph-a" style="color:var(--ion)">LIVE 3.2k</span>
               <span class="ph-a hl">EP to participate</span>
@@ -877,16 +904,16 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
               <div class="ph-av" style="background:linear-gradient(135deg,var(--lime),var(--ion))"></div>
               <span class="ph-nm">Reputation</span>
             </div>
-            <div class="ph-tx">"Your score crossed into Verified Contributor — your weight in every future conversation just increased."</div>
+            <div class="ph-tx">"Your score crossed into Verified Contributor - your weight in every future conversation just increased."</div>
           </div>
         </div>
       </div>
       <div class="sf-list">
-        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="sf-h">Posts and Comments</div><p class="sf-p">Every post and comment is weighted, published with EP, and becomes part of your evolving evidence — surfaced by genuine engagement, never by spend alone.</p></div></div>
-        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div><div class="sf-h">Live Streaming</div><p class="sf-p">Live chat and participation run on the same EP cost model as the feed — every interaction is priced, never free-for-all.</p></div></div>
+        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="sf-h">Posts and Comments</div><p class="sf-p">Every post and comment is weighted, published with EP, and becomes part of your evolving evidence - surfaced by genuine engagement, never by spend alone.</p></div></div>
+        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div><div class="sf-h">Live Streaming</div><p class="sf-p">Live chat and participation run on the same EP cost model as the feed - every interaction is priced, never free-for-all.</p></div></div>
         <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 1 1-11-8 8.5 8.5 0 0 1 11 8v.5z"/></svg></div><div><div class="sf-h">Messages</div><p class="sf-p">Direct messages backed by the same identity and trust layer. No anonymous spam, no impersonation.</p></div></div>
-        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="sf-h">Conversation Value, Shared</div><p class="sf-p">When a discussion creates real value, everyone who measurably contributed shares in it — not just the original poster.</p></div></div>
-        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="sf-h">Reputation, Visible</div><p class="sf-p">Contributor tiers and trust signals surface in the feed. Reputation is not a hidden score — it is part of how you are seen.</p></div></div>
+        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="sf-h">Conversation Value, Shared</div><p class="sf-p">When a discussion creates real value, everyone who measurably contributed shares in it - not just the original poster.</p></div></div>
+        <div class="sf"><div class="sf-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="sf-h">Reputation, Visible</div><p class="sf-p">Contributor tiers and trust signals surface in the feed. Reputation is not a hidden score - it is part of how you are seen.</p></div></div>
       </div>
     </div>
   </div>
@@ -902,16 +929,16 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="li" style="--a:var(--ember);--accent:var(--ember)">
     <div class="ey"><span class="ey-n">06.5</span><span class="ey-l"></span>The Mechanics Underneath</div>
     <h2 class="lh">Participation<br><span class="ac">With Weight.</span></h2>
-    <p class="wh">Why must participation carry weight if trust is to remain meaningful? <span class="ac">Because free engagement produces no evidence — and evidence is what makes participation valuable.</span></p>
+    <p class="wh">Why must participation carry weight if trust is to remain meaningful? <span class="ac">Because free engagement produces no evidence - and evidence is what makes participation valuable.</span></p>
     <p class="ld" style="margin-bottom:8px">This is not post-to-earn. Not like-to-earn. Not a daily login bonus. Xeevia never rewards activity simply because it occurred. Every meaningful action costs EP. Participation becomes investment, not free consumption.</p>
-    <p class="ld">Earning works the other way: when your contribution helps create a valuable conversation, you share in the value that conversation generates — weighted by your reputation and demonstrated contribution, not by your account age or deposit size. Every rewarded action leaves verifiable evidence behind — the record that lets reputation compound honestly.</p>
+    <p class="ld">Earning works the other way: when your contribution helps create a valuable conversation, you share in the value that conversation generates - weighted by your reputation and demonstrated contribution, not by your account age or deposit size. Every rewarded action leaves verifiable evidence behind - the record that lets reputation compound honestly.</p>
     <div class="ep-grid">
-      <div class="ep-card"><div class="ep-n">01</div><div class="ep-h">Deposit Funds Participation</div><p class="ep-p">$1 becomes 100 EP and enters the liquidity pool. This is a funding step, not an earning event. It buys the capacity to participate — nothing more.</p></div>
+      <div class="ep-card"><div class="ep-n">01</div><div class="ep-h">Deposit Funds Participation</div><p class="ep-p">$1 becomes 100 EP and enters the liquidity pool. This is a funding step, not an earning event. It buys the capacity to participate - nothing more.</p></div>
       <div class="ep-card"><div class="ep-n">02</div><div class="ep-h">EP Is Spent, Never Given Free</div><p class="ep-p">Publishing, commenting, replying, and proposing all cost EP. Priced engagement produces intent. Free engagement produces noise.</p></div>
-      <div class="ep-card"><div class="ep-n">03</div><div class="ep-h">Conversations Create Value</div><p class="ep-p">A post, the comments it draws, the replies those generate — the whole discussion is the economic unit and the evidence it leaves behind, not any single action within it.</p></div>
-      <div class="ep-card"><div class="ep-n">04</div><div class="ep-h">Contribution Evidence Decides the Split</div><p class="ep-p">Reaction quality, reply depth, endorsement weight, and reputation tier determine each contributor's share — not raw activity.</p></div>
+      <div class="ep-card"><div class="ep-n">03</div><div class="ep-h">Conversations Create Value</div><p class="ep-p">A post, the comments it draws, the replies those generate - the whole discussion is the economic unit and the evidence it leaves behind, not any single action within it.</p></div>
+      <div class="ep-card"><div class="ep-n">04</div><div class="ep-h">Contribution Evidence Decides the Split</div><p class="ep-p">Reaction quality, reply depth, endorsement weight, and reputation tier determine each contributor's share - not raw activity.</p></div>
       <div class="ep-card"><div class="ep-n">05</div><div class="ep-h">Reputation Multiplies Every Payout</div><p class="ep-p">A Trusted Contributor earns more from the same conversation than an unverified account. Reputation compounds into economic weight.</p></div>
-      <div class="ep-card"><div class="ep-n">06</div><div class="ep-h">Earned EP Converts to XEV</div><p class="ep-p">Only EP earned through genuine contribution — never deposited EP — is eligible for monthly conversion into fixed-supply $XEV.</p></div>
+      <div class="ep-card"><div class="ep-n">06</div><div class="ep-h">Earned EP Converts to XEV</div><p class="ep-p">Only EP earned through genuine contribution - never deposited EP - is eligible for monthly conversion into fixed-supply $XEV.</p></div>
     </div>
     <div class="sg" style="--a:var(--ember)">
       <div class="sc"><div class="sv">2%</div><div class="sl">Protocol Fee</div></div>
@@ -919,7 +946,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
       <div class="sc"><div class="sv">1:1</div><div class="sl">EP Pool Backing</div></div>
       <div class="sc"><div class="sv">0</div><div class="sl">Reward For Presence</div></div>
     </div>
-    <p class="ep-not">Not: daily login rewards — post-to-earn — like-to-earn — comment farming — engagement streaks — fixed creator percentages</p>
+    <p class="ep-not">Not: daily login rewards - post-to-earn - like-to-earn - comment farming - engagement streaks - fixed creator percentages</p>
   </div>
 </section>
 
@@ -932,10 +959,10 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="li" style="--a:var(--ember);--accent:var(--ember)">
     <div class="ey"><span class="ey-n">07–08</span><span class="ey-l"></span>Where Trust Becomes Action</div>
     <h2 class="lh">Communities and<br><span class="ac">Opportunity.</span></h2>
-    <p class="ld" style="margin-bottom:40px;max-width:680px">Communities on Xeevia are not groups — they are economies. Each has its own identity, treasury, marketplace, and governance. And because trust and reputation are portable, the opportunity they unlock — hiring, investment, commerce — finally travels with the people who earned it.</p>
+    <p class="ld" style="margin-bottom:40px;max-width:680px">Communities on Xeevia are not groups - they are economies. Each has its own identity, treasury, marketplace, and governance. And because trust and reputation are portable, the opportunity they unlock - hiring, investment, commerce - finally travels with the people who earned it.</p>
     <div class="cg">
       <div class="gc" style="--a:var(--ember)"><div class="inner"><div class="c-tag">Community</div><div class="c-h">Treasury and Marketplace</div><p class="c-p">Self-sustaining economies with their own funds, commerce, and member-driven governance structures.</p></div></div>
-      <div class="gc" style="--a:var(--ember)"><div class="inner"><div class="c-tag">Community</div><div class="c-h">Discovery and Intelligence</div><p class="c-p">Communities surfaced by trust signal and genuine relevance — not algorithmic noise or paid promotion.</p></div></div>
+      <div class="gc" style="--a:var(--ember)"><div class="inner"><div class="c-tag">Community</div><div class="c-h">Discovery and Intelligence</div><p class="c-p">Communities surfaced by trust signal and genuine relevance - not algorithmic noise or paid promotion.</p></div></div>
       <div class="gc" style="--a:var(--ember)"><div class="inner"><div class="c-tag">Opportunity</div><div class="c-h">Hiring and Investment</div><p class="c-p">Reputation that compounds across contexts becomes a credential employers and investors can actually rely on.</p></div></div>
     </div>
   </div>
@@ -951,11 +978,11 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="li" style="--a:var(--violet);--accent:var(--violet)">
     <div class="ey"><span class="ey-n">09–10</span><span class="ey-l"></span>Native Finance</div>
     <h2 class="lh">The Economic and<br><span class="ac">Financial Layer.</span></h2>
-    <p class="ld" style="margin-bottom:40px;max-width:680px">Wallets, payments, settlement, and cross-border value movement built directly into the identity and reputation layer — not bolted on afterward. Every revenue flow is defined, transparent, and permanent.</p>
+    <p class="ld" style="margin-bottom:40px;max-width:680px">Wallets, payments, settlement, and cross-border value movement built directly into the identity and reputation layer - not bolted on afterward. Every revenue flow is defined, transparent, and permanent.</p>
     <div class="cg">
       <div class="gc" style="--a:var(--violet)"><div class="inner"><div class="c-tag">Finance</div><div class="c-h">Wallet and Payments</div><p class="c-p">Native to identity. No separate onboarding, no separate trust to establish at every financial touchpoint.</p></div></div>
       <div class="gc" style="--a:var(--violet)"><div class="inner"><div class="c-tag">Finance</div><div class="c-h">Cross-Border Settlement</div><p class="c-p">Value moves between verified identities without the friction of rebuilding trust at each border or platform.</p></div></div>
-      <div class="gc" style="--a:var(--violet)"><div class="inner"><div class="c-tag">Economic</div><div class="c-h">Revenue Transparency</div><p class="c-p">Every flow — contribution rewards, treasury, staking yields — defined before a line of code is written.</p></div></div>
+      <div class="gc" style="--a:var(--violet)"><div class="inner"><div class="c-tag">Economic</div><div class="c-h">Revenue Transparency</div><p class="c-p">Every flow - contribution rewards, treasury, staking yields - defined before a line of code is written.</p></div></div>
     </div>
   </div>
 </section>
@@ -977,11 +1004,11 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div class="ey"><span class="ey-n">PROTOCOL</span><span class="ey-l"></span>Not A Feature. A Pillar.</div>
     <h2 class="lh">The XRC<br><span class="ac">Protocol.</span></h2>
     <p class="wh">How does truth get written so it never has to be argued about again? <span class="ac">Every event, cryptographically linked, the instant it happens.</span></p>
-    <p class="ld" style="margin-bottom:8px">XRC is the deterministic, off-chain evidence layer beneath all of Xeevia — an evidence synchronization and verification infrastructure, not merely a blockchain oracle. Six chains record everything. One Oracle makes it queryable by any system in the world.</p>
+    <p class="ld" style="margin-bottom:8px">XRC is the deterministic, off-chain evidence layer beneath all of Xeevia - an evidence synchronization and verification infrastructure, not merely a blockchain oracle. Six chains record everything. One Oracle makes it queryable by any system in the world.</p>
     <div class="o-feed">
-      <span>XTRC — transaction record written — 4ms</span>
-      <span>XARC — identity claim confirmed — 3ms</span>
-      <span>XCRC — content provenance resolved — 5ms</span>
+      <span>XTRC - transaction record written - 4ms</span>
+      <span>XARC - identity claim confirmed - 3ms</span>
+      <span>XCRC - content provenance resolved - 5ms</span>
     </div>
     <div class="sg" style="--a:var(--ion)">
       <div class="sc"><div class="sv">&lt;50ms</div><div class="sl">Write</div></div>
@@ -990,8 +1017,8 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
       <div class="sc"><div class="sv">6</div><div class="sl">Record Chains</div></div>
     </div>
     <div class="cg" style="margin-top:28px">
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">XTRC</div><div class="c-h">Transaction Chain</div><p class="c-p">Every transfer, contribution reward, and fee — permanently linked and fully accountable.</p></div></div>
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">XERC</div><div class="c-h">Engagement Chain</div><p class="c-p">Signals, reactions, replies — weighted and verified. No synthetic engagement passes through.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">XTRC</div><div class="c-h">Transaction Chain</div><p class="c-p">Every transfer, contribution reward, and fee - permanently linked and fully accountable.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">XERC</div><div class="c-h">Engagement Chain</div><p class="c-p">Signals, reactions, replies - weighted and verified. No synthetic engagement passes through.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">XARC</div><div class="c-h">Account Chain</div><p class="c-p">Signup, verification, device binding, security events. Your identity history, immutable.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">XCRC</div><div class="c-h">Content Chain</div><p class="c-p">Creation, edits, ownership, deletion. Proof of authorship for everything you make.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-tag">XPRC</div><div class="c-h">Permission Chain</div><p class="c-p">Role grants, revocations, moderation. Every authority decision on record, always.</p></div></div>
@@ -1033,11 +1060,11 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div class="ey"><span class="ey-n">ORACLE</span><span class="ey-l"></span>Live Verification Surface</div>
     <h2 class="lh" style="font-size:clamp(38px,6vw,88px)">Ask The Oracle.<br><span class="ac">Get A Proof.</span></h2>
     <p class="wh">How does the outside world verify a truth it did not witness? <span class="ac">It asks the Oracle and gets a deterministic, cryptographic answer.</span></p>
-    <p class="ld" style="margin-bottom:44px">Seven oracles. Each a live interface into one domain of verified evidence. Every query answered from the XRC record chains — never guessed, never approximated.</p>
+    <p class="ld" style="margin-bottom:44px">Seven oracles. Each a live interface into one domain of verified evidence. Every query answered from the XRC record chains - never guessed, never approximated.</p>
     <div class="cg">
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-n" style="font-size:28px">01</div><div class="c-h">Trust Oracle</div><p class="c-p">Verifiable trust scores any external system can query without recreating the trust work themselves.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-n" style="font-size:28px">02</div><div class="c-h">Identity Oracle</div><p class="c-p">One verification, recognized everywhere. Ending the endless KYC rebuild for good.</p></div></div>
-      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-n" style="font-size:28px">03</div><div class="c-h">Business Oracle</div><p class="c-p">Reputation, transaction history, compliance — queryable in real time, without friction.</p></div></div>
+      <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-n" style="font-size:28px">03</div><div class="c-h">Business Oracle</div><p class="c-p">Reputation, transaction history, compliance - queryable in real time, without friction.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-n" style="font-size:28px">04</div><div class="c-h">Reputation Oracle</div><p class="c-p">Portable scores AI systems and platforms can use to make better decisions, instantly.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-n" style="font-size:28px">05</div><div class="c-h">Knowledge Oracle</div><p class="c-p">Verified contributions linked to verified identity. The end of anonymous, unaccountable information.</p></div></div>
       <div class="gc" style="--a:var(--ion)"><div class="inner"><div class="c-n" style="font-size:28px">06</div><div class="c-h">Community Oracle</div><p class="c-p">Provable community health and governance, independent of the platform that hosts the community.</p></div></div>
@@ -1056,13 +1083,13 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
   <div class="li" style="--a:var(--lime);--accent:var(--lime)">
     <div class="ey"><span class="ey-n">ECO</span><span class="ey-l"></span>Every Participant, A World</div>
     <h2 class="lh">Built For Every<br><span class="ac">Kind Of Trust.</span></h2>
-    <p class="ld" style="margin-bottom:40px;max-width:680px">Individuals, creators, businesses, communities, governments, universities, banks, and developers — each with infrastructure shaped precisely to what they actually need from a trust layer.</p>
+    <p class="ld" style="margin-bottom:40px;max-width:680px">Individuals, creators, businesses, communities, governments, universities, banks, and developers - each with infrastructure shaped precisely to what they actually need from a trust layer.</p>
     <div class="cg">
       <div class="gc"><div class="inner"><div class="c-h">Individuals</div><p class="c-p">Unified identity, portable reputation, real economic weight for genuine participation.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-h">Creators</div><p class="c-p">Ownership of work and audience that travels with you, not with the platform hosting you.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-h">Businesses</div><p class="c-p">Verified identity and portable trust that unlocks commerce and talent acquisition.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-h">Communities</div><p class="c-p">Self-governed economies with treasury, marketplace, intelligence, and governance.</p></div></div>
-      <div class="gc"><div class="inner"><div class="c-h">Governments</div><p class="c-p">Verified citizen identity and transparent, provable public records — at scale.</p></div></div>
+      <div class="gc"><div class="inner"><div class="c-h">Governments</div><p class="c-p">Verified citizen identity and transparent, provable public records - at scale.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-h">Universities</div><p class="c-p">Verified credentials and academic reputation tied to real, attributed contribution.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-h">Banks</div><p class="c-p">Portable financial reputation. KYC solved once, at the infrastructure layer.</p></div></div>
       <div class="gc"><div class="inner"><div class="c-h">Developers</div><p class="c-p">Full API surface: Identity, Trust, Reputation, Oracle, Graph, Auth, Webhooks.</p></div></div>
@@ -1084,7 +1111,8 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
       <div class="tc">
         <div class="tc-av"><img src="Sproutsking.png" alt="Emmanuel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">E</span></div>
         <div class="tc-name">Emmanuel</div>
-        <div class="tc-role">Founder</div>
+        <span class="tc-handle">SproutsKing</span>
+        <div class="tc-role">Founder and CEO</div>
         <p class="tc-bio">Traced the root cause chain from global economic inefficiency to Xeevia, and has been building the twelve-layer architecture since.</p>
         <span class="tc-read" onclick="openBio('emmanuel',this)">Read More</span>
       </div>
@@ -1092,21 +1120,21 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
         <div class="tc-av"><img src="image2.png" alt="Nenkang Bamayang" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">N</span></div>
         <div class="tc-name">Nenkang Bamayang</div>
         <div class="tc-role">Chief Marketing Officer</div>
-        <p class="tc-bio">Shaping how the world encounters Xeevia — building the narrative, the reach, and the relationships that bring foundational infrastructure to light.</p>
+        <p class="tc-bio">Shaping how the world encounters Xeevia - building the narrative, the reach, and the relationships that bring foundational infrastructure to light.</p>
         <span class="tc-read" onclick="openBio('nenkang',this)">Read More</span>
       </div>
       <div class="tc">
         <div class="tc-av"><img src="image3.png" alt="Douna Empire" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">D</span></div>
         <div class="tc-name">Douna Empire</div>
         <div class="tc-role">Social Media Manager</div>
-        <p class="tc-bio">Leading Xeevia's presence across every platform — turning the ideas inside the architecture into conversations people actually find and remember.</p>
+        <p class="tc-bio">Leading Xeevia's presence across every platform - turning the ideas inside the architecture into conversations people actually find and remember.</p>
         <span class="tc-read" onclick="openBio('douna',this)">Read More</span>
       </div>
       <div class="tc">
         <div class="tc-av"><img src="image4.png" alt="YCEE" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">Y</span></div>
         <div class="tc-name">YCEE</div>
         <div class="tc-role">Partnership Manager</div>
-        <p class="tc-bio">Building the alliances and integrations that expand what Xeevia's trust infrastructure can reach — one trusted relationship at a time.</p>
+        <p class="tc-bio">Building the alliances and integrations that expand what Xeevia's trust infrastructure can reach - one trusted relationship at a time.</p>
         <span class="tc-read" onclick="openBio('ycee',this)">Read More</span>
       </div>
     </div>
@@ -1120,7 +1148,8 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div class="bio-head">
       <div class="bio-av" id="bioAv"><span class="fb" id="bioFb">E</span></div>
       <div class="bio-nm" id="bioNm">Emmanuel</div>
-      <div class="bio-rl" id="bioRl">Founder</div>
+      <span class="bio-handle" id="bioHandle"></span>
+      <div class="bio-rl" id="bioRl">Founder and CEO</div>
     </div>
     <div class="bio-body" id="bioBody"></div>
   </div>
@@ -1156,7 +1185,7 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div style="max-width:700px;margin:0 auto">
       <div class="ey" style="justify-content:center"><span class="ey-l"></span>Begin<span class="ey-l"></span></div>
       <h2 class="lh" style="text-align:center">Enter The Singular<br><span class="ac">Source Of Truth.</span></h2>
-      <p class="ld" style="text-align:center;margin:0 auto 40px">The internet has enough platforms. It has one Xeevia — where evidence compounds into trust, and participation finally has weight.</p>
+      <p class="ld" style="text-align:center;margin:0 auto 40px">The internet has enough platforms. It has one Xeevia - where evidence compounds into trust, and participation finally has weight.</p>
       <div class="cta-row" style="animation:none;opacity:1;margin-bottom:0">
         <button class="btn-p" onclick="enterXeevia()">Enter Xeevia</button>
         <button class="btn-s" onclick="openOracle()">Read The Protocol</button>
@@ -1173,7 +1202,8 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <div>
       <div class="ft-brand">
         <div class="logo-mark">
-          <svg viewBox="0 0 32 32" width="18" height="18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 9L23 23M23 9L9 23" stroke="var(--t1)" stroke-width="2.6" stroke-linecap="round" fill="none"/><circle cx="16" cy="16" r="2.6" fill="var(--lime)"/></svg>
+          <img src="logo.png" alt="Xeevia" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <span class="logo-fallback">X</span>
         </div>
         <span class="logo-name">XEEVIA</span>
       </div>
@@ -1343,18 +1373,21 @@ setTimeout(drawGraph,200);
 
 // ── TEAM BIOS ──
 const bios={
-  emmanuel:{nm:'Emmanuel',rl:'Founder',fb:'E',img:'Sproutsking.png',
-    body:`<p>Emmanuel approached Xeevia not as a product to build but as a principle to resolve. The root chain — global economic inefficiency produced by fragmented truth, which produces fragmented trust, which demands a singular source of truth — is not a marketing thesis. It is the logical foundation from which every layer of the architecture follows.</p><p>That orientation shapes how Xeevia is built: philosophy before architecture, architecture before features. The twelve-layer system, the XRC Protocol, and the Participation Economy all trace back to the same root discovery. Nothing exists inside Xeevia without first answering why it must exist.</p><p>Currently directing the full architecture of the platform alongside its public-facing knowledge base and a parallel series of foundational books — each designed to educate before they persuade, and to make Xeevia's thesis feel like a logical conclusion rather than a product pitch.</p>`},
+  emmanuel:{nm:'Emmanuel',handle:'SproutsKing',rl:'Founder and CEO',fb:'E',img:'Sproutsking.png',
+    body:`<p>I didn't set out to build another technology company. I set out to answer one question: why does the digital economy keep rebuilding trust from zero, every time two people or businesses try to interact.</p><p>The answer went deeper than a product. Fragmented truth produces fragmented trust. Fragmented trust weakens reputation. And without reputation people can actually rely on, participation and opportunity stay artificially small. That chain is the foundation Xeevia is built on.</p><p>I don't start with features. I start with the principle that has to be true first. Philosophy before architecture. Architecture before features. Every feature has to earn its place in the system, or it doesn't belong in it.</p><p>Xeevia isn't a social platform to me. It's the infrastructure that makes trust portable, reputation meaningful, and participation worth more, everywhere it travels. I lead the architecture and long-term direction of the company, and I write the principles down as we build, because ideas deserve to be understood before they're adopted. I'm not building a product. I'm solving a problem the internet has never actually solved.</p>`},
   nenkang:{nm:'Nenkang Bamayang',rl:'Chief Marketing Officer',fb:'N',img:'image2.png',
-    body:`<p>Nenkang leads how the world encounters Xeevia for the first time. In a project where the ideas are as important as the infrastructure, the marketing function is not about reach alone — it is about ensuring that what people find when they discover Xeevia is something worth the discovery.</p><p>Nenkang builds the narrative, the channels, and the partnerships that bring Xeevia's vision to the audiences most ready to understand it and most positioned to help it grow.</p>`},
+    body:`<p>Nenkang leads how the world encounters Xeevia for the first time. In a project where the ideas are as important as the infrastructure, the marketing function is not about reach alone - it is about ensuring that what people find when they discover Xeevia is something worth the discovery.</p><p>Nenkang builds the narrative, the channels, and the partnerships that bring Xeevia's vision to the audiences most ready to understand it and most positioned to help it grow.</p>`},
   douna:{nm:'Douna Empire',rl:'Social Media Manager',fb:'D',img:'image3.png',
-    body:`<p>Douna manages Xeevia's presence across the very platforms that Xeevia is ultimately designed to sit beneath. That tension is not lost — it is part of the mission. Every post, thread, and conversation Douna runs is itself a demonstration of what intentional participation looks like when someone cares about the signal they send.</p><p>Leading Xeevia's social identity means turning complex infrastructure ideas into language that moves, without ever reducing the complexity to slogans.</p>`},
+    body:`<p>Douna manages Xeevia's presence across the very platforms that Xeevia is ultimately designed to sit beneath. That tension is not lost - it is part of the mission. Every post, thread, and conversation Douna runs is itself a demonstration of what intentional participation looks like when someone cares about the signal they send.</p><p>Leading Xeevia's social identity means turning complex infrastructure ideas into language that moves, without ever reducing the complexity to slogans.</p>`},
   ycee:{nm:'YCEE',rl:'Partnership Manager',fb:'Y',img:'image4.png',
-    body:`<p>YCEE leads the relationships that expand what Xeevia's trust infrastructure can reach. In an ecosystem built on the premise that trust compounds through real relationships, the Partnership function is not a sales role — it is the first live demonstration of what portable, trusted connection looks like in practice.</p><p>Every integration, every aligned organization, every institutional relationship YCEE builds is another proof point that the infrastructure Xeevia is building is worth connecting to.</p>`}
+    body:`<p>YCEE leads the relationships that expand what Xeevia's trust infrastructure can reach. In an ecosystem built on the premise that trust compounds through real relationships, the Partnership function is not a sales role - it is the first live demonstration of what portable, trusted connection looks like in practice.</p><p>Every integration, every aligned organization, every institutional relationship YCEE builds is another proof point that the infrastructure Xeevia is building is worth connecting to.</p>`}
 };
 function openBio(k,el){
   const b=bios[k];if(!b)return;
   document.getElementById('bioNm').textContent=b.nm;
+  const handleEl=document.getElementById('bioHandle');
+  if(b.handle){handleEl.textContent=b.handle;handleEl.style.display='inline-flex'}
+  else{handleEl.textContent='';handleEl.style.display='none'}
   document.getElementById('bioRl').textContent=b.rl;
   document.getElementById('bioFb').textContent=b.fb;
   document.getElementById('bioBody').innerHTML=b.body;
