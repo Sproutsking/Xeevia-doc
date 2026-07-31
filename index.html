@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="logo.png"/>
 <link rel="apple-touch-icon" href="logo.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none}
 *::-webkit-scrollbar{display:none}
@@ -50,7 +50,6 @@
   --fd:"Bebas Neue",sans-serif;
   --fs:"Fraunces",serif;
   --fm:"Space Mono",monospace;
-  --fn:"Syne",sans-serif;
 
   --accent:var(--lime);
   --accent-d:var(--lime-d);
@@ -335,10 +334,10 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 
 .h1{font-family:var(--fd);font-size:clamp(52px,9.5vw,126px);line-height:.86;letter-spacing:-2px;text-transform:uppercase;margin-bottom:28px}
 .h1 .ln{display:block;animation:rise 1s ease both}
-.h1 .l1{animation-delay:.2s;color:rgba(232,230,223,.58)}
+.h1 .l1{animation-delay:.2s;color:rgba(232,230,223,.58);font-size:.66em;letter-spacing:0;line-height:1}
 [data-theme="light"] .h1 .l1{color:rgba(10,12,40,.48)}
-.h1 .l2{animation-delay:.36s;color:var(--t1)}
-.h1 .l3{animation-delay:.52s;background:linear-gradient(90deg,var(--ion),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+.h1 .l2{animation-delay:.36s;color:var(--t1);font-size:.82em;letter-spacing:-1px;line-height:1}
+.h1 .l3{animation-delay:.52s;background:linear-gradient(90deg,var(--ion),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1em;line-height:.9}
 [data-theme="light"] .h1 .l3{background:linear-gradient(90deg,var(--ion),var(--violet));-webkit-background-clip:text;background-clip:text}
 
 .sub{font-family:var(--fs);font-style:italic;font-size:clamp(15px,1.8vw,20px);color:var(--t2);max-width:620px;line-height:1.75;margin-bottom:44px;animation:rise .9s ease .68s both}
@@ -485,18 +484,105 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:14px 4
 .tc:hover{border-color:rgba(200,245,58,0.26);transform:translateY(-6px);box-shadow:0 28px 70px rgba(0,0,0,.34)}
 [data-theme="light"] .tc{box-shadow:0 4px 20px rgba(15,18,45,0.06)}
 [data-theme="light"] .tc:hover{box-shadow:0 22px 50px rgba(15,18,45,0.12),0 0 34px rgba(13,122,64,0.1);border-color:rgba(13,122,64,0.32)}
-.tc-av{width:84px;height:84px;border-radius:50%;margin:0 auto 18px;border:1.5px solid rgba(200,245,58,0.22);background:var(--lime-d);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;z-index:1;transition:all .32s}
-.tc:hover .tc-av{border-color:var(--lime);box-shadow:0 0 26px var(--lime-d)}
+
+/* Avatar — soft drifting smoke halo behind the frame. Looks intentional
+   whether the photo loads or the fallback initial shows, because the
+   glow lives on its own layer, independent of image content. */
+.tc-av{
+  width:84px;height:84px;border-radius:50%;margin:0 auto 18px;
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .45s cubic-bezier(.16,1,.3,1);
+}
+.tc-av-ring{
+  position:absolute;inset:-16px;border-radius:50%;
+  background:
+    radial-gradient(circle at 32% 28%,rgba(200,245,58,0.5),transparent 58%),
+    radial-gradient(circle at 68% 40%,rgba(125,232,255,0.28),transparent 55%),
+    radial-gradient(circle at 48% 78%,rgba(200,245,58,0.32),transparent 60%);
+  filter:blur(15px);
+  opacity:.5;
+  transform:scale(1) rotate(0deg);
+  transition:opacity .45s ease;
+  animation:tcSmoke 9s ease-in-out infinite;
+  pointer-events:none;
+}
+[data-theme="light"] .tc-av-ring{
+  background:
+    radial-gradient(circle at 32% 28%,rgba(13,122,64,0.34),transparent 58%),
+    radial-gradient(circle at 68% 40%,rgba(4,95,192,0.22),transparent 55%),
+    radial-gradient(circle at 48% 78%,rgba(13,122,64,0.24),transparent 60%);
+  opacity:.4;
+}
+.tc:hover .tc-av-ring{opacity:.85}
+@keyframes tcSmoke{
+  0%,100%{transform:scale(1) rotate(0deg);filter:blur(15px)}
+  33%{transform:scale(1.12) rotate(6deg) translate(2px,-3px);filter:blur(18px)}
+  66%{transform:scale(0.94) rotate(-5deg) translate(-3px,2px);filter:blur(13px)}
+}
+.tc-av-inner{
+  position:absolute;inset:0;border-radius:50%;
+  border:1.5px solid rgba(200,245,58,0.24);background:var(--lime-d);
+  box-shadow:0 0 0 3px var(--bg),inset 0 0 0 1px rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  transition:border-color .32s,box-shadow .32s;
+}
+.tc:hover .tc-av-inner{border-color:var(--lime);box-shadow:0 0 0 3px var(--bg),0 0 22px var(--lime-d)}
+.tc:hover .tc-av{transform:scale(1.06)}
 .tc-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .tc-av .fb{font-family:var(--fd);font-size:28px;color:var(--lime);display:none;align-items:center;justify-content:center;width:100%;height:100%}
-.tc-name{font-family:var(--fn);font-weight:800;font-size:18px;letter-spacing:.2px;color:var(--t1);margin-bottom:6px;text-transform:uppercase;position:relative;z-index:1}
+
+/* Name — auto-fit single line, no wasted vertical space */
+.tc-name{
+  font-family:var(--fd);color:var(--t1);margin-bottom:6px;
+  text-transform:uppercase;position:relative;z-index:1;
+  white-space:nowrap;overflow:hidden;
+  font-size:18px;letter-spacing:.6px;
+  transform-origin:center;
+  transition:letter-spacing .3s;
+}
+.tc:hover .tc-name{letter-spacing:1px}
+
 .tc-handle{display:inline-flex;align-items:center;gap:5px;font-family:var(--fm);font-size:10px;letter-spacing:.4px;color:var(--t2);background:rgba(255,255,255,0.045);border:1px solid var(--glass-b);padding:4px 12px;border-radius:100px;margin-bottom:12px;position:relative;z-index:1}
 .tc-handle::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0;box-shadow:0 0 6px var(--lime)}
 [data-theme="light"] .tc-handle{background:rgba(15,18,45,0.03)}
 .tc-role{display:inline-flex;align-items:center;font-size:9px;color:var(--lime);text-transform:uppercase;letter-spacing:1.8px;font-weight:700;padding:5px 15px;border-radius:100px;background:var(--lime-d);border:1px solid var(--lime-s);margin-bottom:16px;position:relative;z-index:1}
 .tc-bio{font-size:11.5px;color:var(--t2);line-height:1.8;margin-bottom:18px;position:relative;z-index:1}
-.tc-read{font-size:9px;color:var(--lime);letter-spacing:2px;text-transform:uppercase;padding:8px 18px;border:1px solid var(--lime-s);border-radius:100px;display:inline-block;transition:all .22s;position:relative;z-index:1}
-.tc-read:hover{background:var(--lime-d);letter-spacing:3px}
+
+/* Read more — bordered pill with a soft gradient ring, no solid fill flip.
+   Border does the work; background only ever gets a faint lime tint. */
+.tc-read{
+  font-size:9px;color:var(--lime);letter-spacing:2px;text-transform:uppercase;
+  padding:9px 20px;border-radius:100px;
+  display:inline-flex;align-items:center;gap:6px;
+  position:relative;z-index:1;
+  border:1px solid transparent;
+  background:
+    linear-gradient(var(--s1),var(--s1)) padding-box,
+    linear-gradient(120deg,var(--lime) 0%,rgba(200,245,58,0.22) 50%,var(--lime) 100%) border-box;
+  box-shadow:0 1px 0 rgba(255,255,255,0.03) inset;
+  transition:color .3s ease,box-shadow .32s ease,letter-spacing .3s ease,background .32s ease,transform .2s ease;
+}
+[data-theme="light"] .tc-read{
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    linear-gradient(120deg,var(--lime) 0%,rgba(13,122,64,0.28) 50%,var(--lime) 100%) border-box;
+}
+.tc-read .tc-read-arrow{display:inline-flex;transform:translateX(-4px);opacity:0;transition:transform .32s cubic-bezier(.16,1,.3,1),opacity .32s ease;width:0;overflow:hidden}
+.tc-read:hover{
+  letter-spacing:2.6px;padding-right:16px;
+  box-shadow:0 8px 26px var(--lime-d),0 1px 0 rgba(255,255,255,0.05) inset;
+  background:
+    linear-gradient(var(--s1),var(--s1)) padding-box,
+    linear-gradient(120deg,var(--lime) 0%,var(--lime) 100%) border-box;
+}
+[data-theme="light"] .tc-read:hover{
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    linear-gradient(120deg,var(--lime) 0%,var(--lime) 100%) border-box;
+}
+.tc-read:hover .tc-read-arrow{transform:translateX(0);opacity:1;width:10px}
+.tc-read:active{transform:scale(.97)}
 
 /* Bio modal */
 .bio-ov{position:fixed;inset:0;background:rgba(3,3,5,0.88);backdrop-filter:blur(22px);z-index:4000;display:none;align-items:center;justify-content:center;padding:20px}
@@ -1109,42 +1195,54 @@ footer{padding:70px 48px 28px;border-top:1px solid rgba(255,255,255,0.06);backgr
     <p class="ld" style="margin-bottom:40px;max-width:680px">Infrastructure is not built by accident. Every layer you have seen was designed by people who treated the discovery as seriously as the engineering.</p>
     <div class="team-grid">
       <div class="tc">
-        <div class="tc-av"><img src="Sproutsking.png" alt="Emmanuel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">E</span></div>
+        <div class="tc-av">
+          <div class="tc-av-ring"></div>
+          <div class="tc-av-inner"><img src="Sproutsking.png" alt="Emmanuel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">E</span></div>
+        </div>
         <div class="tc-name">Emmanuel</div>
         <span class="tc-handle">SproutsKing</span>
         <div class="tc-role">Founder and CEO</div>
         <p class="tc-bio">Traced the root cause chain from global economic inefficiency to Xeevia, and has been building the twelve-layer architecture since.</p>
-        <span class="tc-read" onclick="openBio('emmanuel',this)">Read More</span>
+        <button type="button" class="tc-read" data-bio="emmanuel">Read More<span class="tc-read-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
       </div>
       <div class="tc">
-        <div class="tc-av"><img src="image2.png" alt="Nenkang Bamayang" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">N</span></div>
+        <div class="tc-av">
+          <div class="tc-av-ring"></div>
+          <div class="tc-av-inner"><img src="image2.png" alt="Nenkang Bamayang" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">N</span></div>
+        </div>
         <div class="tc-name">Nenkang Bamayang</div>
         <div class="tc-role">Chief Marketing Officer</div>
         <p class="tc-bio">Shaping how the world encounters Xeevia - building the narrative, the reach, and the relationships that bring foundational infrastructure to light.</p>
-        <span class="tc-read" onclick="openBio('nenkang',this)">Read More</span>
+        <button type="button" class="tc-read" data-bio="nenkang">Read More<span class="tc-read-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
       </div>
       <div class="tc">
-        <div class="tc-av"><img src="image3.png" alt="Douna Empire" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">D</span></div>
+        <div class="tc-av">
+          <div class="tc-av-ring"></div>
+          <div class="tc-av-inner"><img src="image3.png" alt="Douna Empire" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">D</span></div>
+        </div>
         <div class="tc-name">Douna Empire</div>
         <div class="tc-role">Social Media Manager</div>
         <p class="tc-bio">Leading Xeevia's presence across every platform - turning the ideas inside the architecture into conversations people actually find and remember.</p>
-        <span class="tc-read" onclick="openBio('douna',this)">Read More</span>
+        <button type="button" class="tc-read" data-bio="douna">Read More<span class="tc-read-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
       </div>
       <div class="tc">
-        <div class="tc-av"><img src="image4.png" alt="YCEE" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">Y</span></div>
+        <div class="tc-av">
+          <div class="tc-av-ring"></div>
+          <div class="tc-av-inner"><img src="image4.png" alt="YCEE" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb">Y</span></div>
+        </div>
         <div class="tc-name">YCEE</div>
         <div class="tc-role">Partnership Manager</div>
         <p class="tc-bio">Building the alliances and integrations that expand what Xeevia's trust infrastructure can reach - one trusted relationship at a time.</p>
-        <span class="tc-read" onclick="openBio('ycee',this)">Read More</span>
+        <button type="button" class="tc-read" data-bio="ycee">Read More<span class="tc-read-arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Bio Overlay -->
-<div class="bio-ov" id="bioOv" onclick="if(event.target===this)closeBio()">
+<div class="bio-ov" id="bioOv">
   <div class="bio-modal">
-    <button class="bio-x" onclick="closeBio()"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <button class="bio-x" id="bioCloseBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
     <div class="bio-head">
       <div class="bio-av" id="bioAv"><span class="fb" id="bioFb">E</span></div>
       <div class="bio-nm" id="bioNm">Emmanuel</div>
@@ -1371,39 +1469,103 @@ window.addEventListener('load',drawGraph);
 window.addEventListener('resize',drawGraph);
 setTimeout(drawGraph,200);
 
-// ── TEAM BIOS ──
-const bios={
-  emmanuel:{nm:'Emmanuel',handle:'SproutsKing',rl:'Founder and CEO',fb:'E',img:'Sproutsking.png',
-    body:`<p>I didn't set out to build another technology company. I set out to answer one question: why does the digital economy keep rebuilding trust from zero, every time two people or businesses try to interact.</p><p>The answer went deeper than a product. Fragmented truth produces fragmented trust. Fragmented trust weakens reputation. And without reputation people can actually rely on, participation and opportunity stay artificially small. That chain is the foundation Xeevia is built on.</p><p>I don't start with features. I start with the principle that has to be true first. Philosophy before architecture. Architecture before features. Every feature has to earn its place in the system, or it doesn't belong in it.</p><p>Xeevia isn't a social platform to me. It's the infrastructure that makes trust portable, reputation meaningful, and participation worth more, everywhere it travels. I lead the architecture and long-term direction of the company, and I write the principles down as we build, because ideas deserve to be understood before they're adopted. I'm not building a product. I'm solving a problem the internet has never actually solved.</p>`},
-  nenkang:{nm:'Nenkang Bamayang',rl:'Chief Marketing Officer',fb:'N',img:'image2.png',
-    body:`<p>Nenkang leads how the world encounters Xeevia for the first time. In a project where the ideas are as important as the infrastructure, the marketing function is not about reach alone - it is about ensuring that what people find when they discover Xeevia is something worth the discovery.</p><p>Nenkang builds the narrative, the channels, and the partnerships that bring Xeevia's vision to the audiences most ready to understand it and most positioned to help it grow.</p>`},
-  douna:{nm:'Douna Empire',rl:'Social Media Manager',fb:'D',img:'image3.png',
-    body:`<p>Douna manages Xeevia's presence across the very platforms that Xeevia is ultimately designed to sit beneath. That tension is not lost - it is part of the mission. Every post, thread, and conversation Douna runs is itself a demonstration of what intentional participation looks like when someone cares about the signal they send.</p><p>Leading Xeevia's social identity means turning complex infrastructure ideas into language that moves, without ever reducing the complexity to slogans.</p>`},
-  ycee:{nm:'YCEE',rl:'Partnership Manager',fb:'Y',img:'image4.png',
-    body:`<p>YCEE leads the relationships that expand what Xeevia's trust infrastructure can reach. In an ecosystem built on the premise that trust compounds through real relationships, the Partnership function is not a sales role - it is the first live demonstration of what portable, trusted connection looks like in practice.</p><p>Every integration, every aligned organization, every institutional relationship YCEE builds is another proof point that the infrastructure Xeevia is building is worth connecting to.</p>`}
-};
-function openBio(k,el){
-  const b=bios[k];if(!b)return;
-  document.getElementById('bioNm').textContent=b.nm;
-  const handleEl=document.getElementById('bioHandle');
-  if(b.handle){handleEl.textContent=b.handle;handleEl.style.display='inline-flex'}
-  else{handleEl.textContent='';handleEl.style.display='none'}
-  document.getElementById('bioRl').textContent=b.rl;
-  document.getElementById('bioFb').textContent=b.fb;
-  document.getElementById('bioBody').innerHTML=b.body;
-  const av=document.getElementById('bioAv');
-  let imgSrc=b.img;
-  const card=el&&el.closest('.tc');
-  const cardImg=card&&card.querySelector('.tc-av img');
-  if(cardImg&&cardImg.getAttribute('src'))imgSrc=cardImg.getAttribute('src');
-  av.innerHTML=`<img src="${imgSrc}" alt="${b.nm}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb" style="font-family:var(--fd);font-size:28px;color:var(--lime);display:none;align-items:center;justify-content:center;width:100%;height:100%">${b.fb}</span>`;
-  document.getElementById('bioOv').classList.add('on');
-  document.body.style.overflow='hidden';
+// ── TEAM NAME AUTO-FIT (keeps every name on one line, only shrinks when needed) ──
+function fitTeamNames(){
+  document.querySelectorAll('.tc-name').forEach(el=>{
+    el.style.fontSize='18px';
+    el.style.letterSpacing='.6px';
+    let size=18;
+    const min=12.5;
+    // guard against zero-width containers (e.g. hidden ancestor) — bail safely
+    if(el.clientWidth===0)return;
+    while(el.scrollWidth>el.clientWidth && size>min){
+      size-=0.5;
+      el.style.fontSize=size+'px';
+    }
+    if(size<=14){el.style.letterSpacing='.2px'}
+  });
 }
-function closeBio(){
-  document.getElementById('bioOv').classList.remove('on');
-  document.body.style.overflow='';
-}
+window.addEventListener('load',fitTeamNames);
+window.addEventListener('resize',fitTeamNames);
+setTimeout(fitTeamNames,150);
+
+// ── TEAM BIOS (namespaced + defensive: never throws, always re-opens) ──
+(function(){
+  const XV_BIOS={
+    emmanuel:{nm:'Emmanuel',handle:'SproutsKing',rl:'Founder and CEO',fb:'E',img:'Sproutsking.png',
+      body:`<p>I didn't set out to build another technology company. I set out to answer one question: why does the digital economy keep rebuilding trust from zero, every time two people or businesses try to interact.</p><p>The answer went deeper than a product. Fragmented truth produces fragmented trust. Fragmented trust weakens reputation. And without reputation people can actually rely on, participation and opportunity stay artificially small. That chain is the foundation Xeevia is built on.</p><p>I don't start with features. I start with the principle that has to be true first. Philosophy before architecture. Architecture before features. Every feature has to earn its place in the system, or it doesn't belong in it.</p><p>Xeevia isn't a social platform to me. It's the infrastructure that makes trust portable, reputation meaningful, and participation worth more, everywhere it travels. I lead the architecture and long-term direction of the company, and I write the principles down as we build, because ideas deserve to be understood before they're adopted. I'm not building a product. I'm solving a problem the internet has never actually solved.</p>`},
+    nenkang:{nm:'Nenkang Bamayang',rl:'Chief Marketing Officer',fb:'N',img:'image2.png',
+      body:`<p>Nenkang leads how the world encounters Xeevia for the first time. In a project where the ideas are as important as the infrastructure, the marketing function is not about reach alone - it is about ensuring that what people find when they discover Xeevia is something worth the discovery.</p><p>Nenkang builds the narrative, the channels, and the partnerships that bring Xeevia's vision to the audiences most ready to understand it and most positioned to help it grow.</p>`},
+    douna:{nm:'Douna Empire',rl:'Social Media Manager',fb:'D',img:'image3.png',
+      body:`<p>Douna manages Xeevia's presence across the very platforms that Xeevia is ultimately designed to sit beneath. That tension is not lost - it is part of the mission. Every post, thread, and conversation Douna runs is itself a demonstration of what intentional participation looks like when someone cares about the signal they send.</p><p>Leading Xeevia's social identity means turning complex infrastructure ideas into language that moves, without ever reducing the complexity to slogans.</p>`},
+    ycee:{nm:'YCEE',rl:'Partnership Manager',fb:'Y',img:'image4.png',
+      body:`<p>YCEE leads the relationships that expand what Xeevia's trust infrastructure can reach. In an ecosystem built on the premise that trust compounds through real relationships, the Partnership function is not a sales role - it is the first live demonstration of what portable, trusted connection looks like in practice.</p><p>Every integration, every aligned organization, every institutional relationship YCEE builds is another proof point that the infrastructure Xeevia is building is worth connecting to.</p>`}
+  };
+
+  function xvSetText(id,val){
+    const el=document.getElementById(id);
+    if(el)el.textContent=val;
+  }
+
+  function xvOpenBio(key,triggerEl){
+    const b=XV_BIOS[key];
+    if(!b)return;
+    const ov=document.getElementById('bioOv');
+    if(!ov)return;
+
+    xvSetText('bioNm',b.nm);
+    const handleEl=document.getElementById('bioHandle');
+    if(handleEl){
+      if(b.handle){handleEl.textContent=b.handle;handleEl.style.display='inline-flex'}
+      else{handleEl.textContent='';handleEl.style.display='none'}
+    }
+    xvSetText('bioRl',b.rl);
+    xvSetText('bioFb',b.fb);
+    const bodyEl=document.getElementById('bioBody');
+    if(bodyEl)bodyEl.innerHTML=b.body;
+
+    const av=document.getElementById('bioAv');
+    if(av){
+      let imgSrc=b.img;
+      const card=triggerEl&&triggerEl.closest?triggerEl.closest('.tc'):null;
+      const cardImg=card?card.querySelector('.tc-av img'):null;
+      if(cardImg&&cardImg.getAttribute('src'))imgSrc=cardImg.getAttribute('src');
+      av.innerHTML=`<img src="${imgSrc}" alt="${b.nm}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="fb" style="font-family:var(--fd);font-size:28px;color:var(--lime);display:none;align-items:center;justify-content:center;width:100%;height:100%">${b.fb}</span>`;
+    }
+
+    ov.classList.add('on');
+    document.body.style.overflow='hidden';
+  }
+
+  function xvCloseBio(){
+    const ov=document.getElementById('bioOv');
+    if(ov)ov.classList.remove('on');
+    document.body.style.overflow='';
+  }
+
+  // Event delegation — survives DOM changes, never binds a stale reference,
+  // and lets the SAME handler reliably open every card, every time.
+  document.addEventListener('click',function(e){
+    const readBtn=e.target.closest?e.target.closest('.tc-read'):null;
+    if(readBtn){
+      e.preventDefault();
+      xvOpenBio(readBtn.getAttribute('data-bio'),readBtn);
+      return;
+    }
+    if(e.target.closest&&e.target.closest('#bioCloseBtn')){
+      xvCloseBio();
+      return;
+    }
+    // click on the dark backdrop itself (not the modal card) closes it
+    if(e.target.id==='bioOv'){
+      xvCloseBio();
+    }
+  });
+
+  // expose for the Escape-key handler above
+  window.closeBio=xvCloseBio;
+  window.openBio=xvOpenBio;
+})();
 
 // ── FADE-IN OBSERVER ──
 const fObs=new IntersectionObserver(entries=>{
