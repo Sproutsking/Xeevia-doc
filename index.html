@@ -706,6 +706,83 @@ button.tile:active{transform:scale(.985)}
 [data-theme="light"] footer{background:linear-gradient(180deg,#f5f7fc,#eef1f9)}
 [data-theme="light"] .dock{background:linear-gradient(to top,#fcfcfe 42%,transparent)}
 [data-theme="light"] ::selection{background:rgba(11,122,62,.18)}
+
+/* ================================================================
+   TEAM CARDS · "SIGNAL FIELD" BACKGROUND
+   Per-card accent, orbital rings + dot grid centred on the avatar,
+   aurora glow, rotating avatar halo, hover sweep. Pure CSS.
+   ================================================================ */
+.team .tc:nth-child(1){--ac:var(--lime)}
+.team .tc:nth-child(2){--ac:var(--ion)}
+.team .tc:nth-child(3){--ac:var(--ember)}
+.team .tc:nth-child(4){--ac:var(--violet)}
+.tc{
+  --ac:var(--lime);--cx:50%;--cy:80px;
+  position:relative;isolation:isolate;overflow:hidden;
+  border-color:color-mix(in srgb,var(--ac) 26%,var(--line));
+  background:linear-gradient(180deg,color-mix(in srgb,var(--ac) 7%,var(--s2)) 0%,var(--s1) 58%,var(--bg) 140%);
+  transition:border-color .35s,transform .35s cubic-bezier(.16,1,.3,1);
+}
+.tc>*{position:relative;z-index:2}
+.tc:hover{border-color:var(--ac)}
+@media(hover:hover){.tc:hover{transform:translateY(-4px)}}
+.tc::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    repeating-radial-gradient(circle at var(--cx) var(--cy),transparent 0 44px,color-mix(in srgb,var(--ac) 34%,transparent) 44px 45px),
+    radial-gradient(color-mix(in srgb,var(--ac) 46%,transparent) 1.1px,transparent 1.7px) 0 0/16px 16px;
+  -webkit-mask-image:radial-gradient(75% 62% at var(--cx) var(--cy),#000 8%,transparent 78%);
+  mask-image:radial-gradient(75% 62% at var(--cx) var(--cy),#000 8%,transparent 78%);
+  opacity:.75;transition:opacity .4s;
+}
+.tc::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(90deg,transparent,var(--ac),transparent) 50% 0/60% 1px no-repeat,
+    radial-gradient(65% 42% at var(--cx) 0,color-mix(in srgb,var(--ac) 26%,transparent),transparent 72%),
+    radial-gradient(55% 38% at 100% 100%,color-mix(in srgb,var(--ion) 15%,transparent),transparent 74%),
+    radial-gradient(40% 30% at 0 100%,color-mix(in srgb,var(--signal) 9%,transparent),transparent 74%);
+  transition:opacity .4s;
+}
+.tc:hover::before{opacity:1}
+.tc-av{position:relative;overflow:visible;border-color:color-mix(in srgb,var(--ac) 55%,transparent)}
+.tc-av::before{
+  content:"";position:absolute;inset:-9px;border-radius:50%;pointer-events:none;
+  background:conic-gradient(from 0deg,var(--ac),transparent 38%,var(--ion) 66%,transparent 90%,var(--ac));
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1.4px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1.4px));
+  animation:orb 9s linear infinite;
+}
+.tc-av::after{
+  content:"";position:absolute;inset:-2px;border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle,color-mix(in srgb,var(--ac) 38%,transparent),transparent 70%);
+  animation:pulse 3.2s ease-in-out infinite;
+}
+.tc-av div{color:var(--ac)}
+.tc .role{color:var(--ac)}
+.tc summary{color:var(--ac)}
+@media(hover:hover){
+  .tc:hover::after{
+    background:
+      linear-gradient(90deg,transparent,var(--ac),transparent) 50% 0/90% 1px no-repeat,
+      radial-gradient(65% 46% at var(--cx) 0,color-mix(in srgb,var(--ac) 34%,transparent),transparent 72%),
+      radial-gradient(55% 38% at 100% 100%,color-mix(in srgb,var(--ion) 20%,transparent),transparent 74%),
+      radial-gradient(40% 30% at 0 100%,color-mix(in srgb,var(--signal) 12%,transparent),transparent 74%);
+  }
+}
+@media(max-width:760px){
+  .tc{--cx:56px;--cy:60px}
+  .tc::before{-webkit-mask-image:radial-gradient(90% 70% at var(--cx) var(--cy),#000 8%,transparent 78%);mask-image:radial-gradient(90% 70% at var(--cx) var(--cy),#000 8%,transparent 78%)}
+}
+[data-theme="light"] .tc{background:linear-gradient(180deg,color-mix(in srgb,var(--ac) 8%,#fff) 0%,#fff 62%)}
+[data-theme="light"] .tc::before{opacity:.5}
+[data-theme="light"] .tc:hover::before{opacity:.8}
+[data-theme="light"] .tc::after{
+  background:
+    linear-gradient(90deg,transparent,var(--ac),transparent) 50% 0/60% 1px no-repeat,
+    radial-gradient(65% 42% at var(--cx) 0,color-mix(in srgb,var(--ac) 16%,transparent),transparent 72%),
+    radial-gradient(55% 38% at 100% 100%,color-mix(in srgb,var(--ion) 10%,transparent),transparent 74%);
+}
 </style>
 </head>
 <body>
