@@ -830,6 +830,18 @@ button.tile:active{transform:scale(.985)}
 [data-theme="light"] .card::after,[data-theme="light"] .tile::after,[data-theme="light"] .rung::after,[data-theme="light"] .loop div::after{opacity:.5}
 @media(hover:hover){[data-theme="light"] .card:hover::after,[data-theme="light"] .tile:hover::after,[data-theme="light"] .rung:hover::after,[data-theme="light"] .loop div:hover::after{opacity:.85}}
 @media(prefers-reduced-motion:reduce){.card:hover::after,.tile:hover::after,.rung:hover::after,.loop div:hover::after{transform:none}}
+
+/* ================================================================
+   NEON CURRENT · live energy running through the grid lines
+   A canvas sits exactly on top of the CSS grid (same cell size, same origin, same mask),
+   so every pulse travels along a real grid line, turns only at real intersections,
+   and fades out with the same radial mask as the grid itself.
+   Hosts: the hero (72px grid) and every .fx-grid section (56px grid).
+   ================================================================ */
+.neon{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;display:block}
+.hero>.neon{-webkit-mask-image:radial-gradient(85% 85% at 50% 38%,#000,transparent);mask-image:radial-gradient(85% 85% at 50% 38%,#000,transparent)}
+.fx-grid>.neon{-webkit-mask-image:radial-gradient(90% 100% at 100% 0%,#000 12%,transparent 82%);mask-image:radial-gradient(90% 100% at 100% 0%,#000 12%,transparent 82%)}
+@media(prefers-reduced-motion:reduce){.neon{display:none}}
 </style>
 </head>
 <body>
@@ -1100,7 +1112,7 @@ button.tile:active{transform:scale(.985)}
   <section class="sec first">
     <div class="wrap" style="--a:var(--ember)">
       <div class="eb"><span class="n">Communities</span>Where people gather</div>
-      <h1 class="h1" style="max-width:18ch">Find your netork. <em>Build something together.</em></h1>
+      <h1 class="h1" style="max-width:18ch">Find your network. <em>Build something together.</em></h1>
       <p class="lead mt-s">Communities on Xeevia are groups built around what people actually care about, hobbies, professions, cities, causes, interests of every kind. <b>Real conversation, kept on topic.</b></p>
       <div class="ctas"><button class="btn p" type="button" data-soon="join">Join Xeevia <svg class="ic"><use href="#i-arrow"/></svg></button><button class="btn s" type="button" data-soon="community">Start a community</button></div>
     </div>
@@ -2060,6 +2072,270 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     });
   });
   const mf=$('.mf');if(mf)mf.style.setProperty('--a','var(--lime)');
+})();
+
+/* ---------- NEON CURRENT ----------
+   A neon current network running through the background grid lines.
+   One canvas per grid host (the hero, plus every .fx-grid section), laid exactly over the CSS grid:
+   same origin, same cell size, same radial mask. Pulses travel only along real grid lines, pick a
+   direction at each real intersection (straight, left, right, sometimes branching), leave a fading
+   comet trail, and throw a spark at every node they cross. Every few seconds a power surge
+   radiates from a node: a ring of light that lights the grid lines it passes over and fires
+   fresh pulses outward along all four lines. One shared animation loop; hosts that are off-screen
+   or in a hidden view are skipped; reduced-motion users keep the static grid. */
+(function(){
+  if(reduce)return;
+  const TAU=Math.PI*2,DIRS=[[1,0],[0,1],[-1,0],[0,-1]];
+  const hosts=[];
+  let light=false;
+
+  function toRGB(s){
+    s=String(s||'').trim();
+    let m=s.match(/^#([0-9a-f]{3})$/i);
+    if(m){const h=m[1];return[parseInt(h[0]+h[0],16),parseInt(h[1]+h[1],16),parseInt(h[2]+h[2],16)]}
+    m=s.match(/^#([0-9a-f]{6})/i);
+    if(m){const h=m[1];return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+    m=s.match(/rgba?\(\s*(\d+)[ ,]+(\d+)[ ,]+(\d+)/i);
+    if(m)return[+m[1],+m[2],+m[3]];
+    return[200,245,58];
+  }
+  function tone(rgb){
+    /* core = whiter hot centre on dark; on light backgrounds the core stays the saturated colour */
+    const c=light?rgb:rgb.map(v=>Math.round(v+(255-v)*.55));
+    return{r:rgb[0],g:rgb[1],b:rgb[2],cr:c[0],cg:c[1],cb:c[2]};
+  }
+  const rgba=(r,g,b,a)=>'rgba('+r+','+g+','+b+','+Math.max(0,Math.min(1,a)).toFixed(3)+')';
+
+  function refresh(h){
+    const root=getComputedStyle(document.documentElement);
+    light=document.documentElement.getAttribute('data-theme')==='light';
+    const v=n=>toRGB(root.getPropertyValue(n));
+    const acc=toRGB(getComputedStyle(h.el).getPropertyValue('--a'));
+    if(h.hero){h.pal=[v('--lime'),v('--lime'),v('--ion'),v('--ion'),v('--ember')].map(tone)}
+    else{h.pal=[acc,acc,acc,v('--ion')].map(tone)}
+  }
+
+  function inten(h,x,y){
+    const m=h.m,dx=(x/h.w-m.cx)/m.rx,dy=(y/h.h-m.cy)/m.ry,d=Math.sqrt(dx*dx+dy*dy);
+    return Math.max(0,Math.min(1,1-(d-m.a)/(m.b-m.a)));
+  }
+  const inb=(h,x,y)=>x>=0&&y>=0&&x<h.nx&&y<h.ny;
+
+  function size(h){
+    const w=h.el.clientWidth,hh=h.el.clientHeight;
+    if(!w||!hh){h.w=0;return false}
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    if(w===h.w&&hh===h.h&&dpr===h.dpr)return true;
+    h.w=w;h.h=hh;h.dpr=dpr;
+    h.cv.width=Math.round(w*dpr);h.cv.height=Math.round(hh*dpr);
+    h.nx=Math.floor(w/h.cell)+1;h.ny=Math.floor(hh/h.cell)+1;
+    const small=w<760?.6:1;
+    h.target=Math.max(6,Math.min(h.hero?26:16,Math.round(w*hh/(h.cell*h.cell)/11*h.dens*small)));
+    return true;
+  }
+
+  function spawn(h,gx,gy,dir,o){
+    o=o||{};
+    if(gx==null){
+      let ok=false;
+      for(let t=0;t<40&&!ok;t++){
+        gx=(Math.random()*h.nx)|0;gy=(Math.random()*h.ny)|0;
+        ok=Math.random()<inten(h,gx*h.cell,gy*h.cell);
+      }
+      if(!ok)return null;
+      const ds=[0,1,2,3].filter(d=>inb(h,gx+DIRS[d][0],gy+DIRS[d][1]));
+      if(!ds.length)return null;
+      dir=ds[(Math.random()*ds.length)|0];
+    }else if(!inb(h,gx+DIRS[dir][0],gy+DIRS[dir][1]))return null;
+    const k=h.cell/72;
+    const p={
+      gx:gx,gy:gy,dir:dir,t:0,trav:0,
+      speed:o.speed||(130+Math.random()*160)*k,
+      len:o.len||(150+Math.random()*170)*k,
+      maxd:o.maxd||(520+Math.random()*1100)*k,
+      ci:o.ci!=null?o.ci:(Math.random()*h.pal.length)|0,
+      pts:[{x:gx*h.cell,y:gy*h.cell}],dead:false,fade:1,len0:0
+    };
+    h.pulses.push(p);
+    return p;
+  }
+
+  function flash(h,x,y,ci){if(h.flashes.length<90)h.flashes.push({x:x,y:y,age:0,ci:ci})}
+
+  function surge(h){
+    const C=h.cell,sc=h.sc;
+    let gx=Math.round(sc.x*h.w/C+(Math.random()-.5)*8),gy=Math.round(sc.y*h.h/C+(Math.random()-.5)*8);
+    gx=Math.max(0,Math.min(h.nx-1,gx));gy=Math.max(0,Math.min(h.ny-1,gy));
+    const ci=(Math.random()*h.pal.length)|0;
+    h.surges.push({x:gx*C,y:gy*C,r:0,ci:ci,max:Math.max(380,Math.min(760,h.w*.5))});
+    flash(h,gx*C,gy*C,ci);
+    for(let d=0;d<4;d++)spawn(h,gx,gy,d,{ci:ci,speed:(300+Math.random()*90)*(C/72),len:(220+Math.random()*80)*(C/72),maxd:(480+Math.random()*320)*(C/72)});
+  }
+
+  function step(h,dt,now){
+    const C=h.cell;
+    if(h.pulses.length<h.target&&Math.random()<dt*4)spawn(h);
+    if(now>=h.nextSurge){surge(h);h.nextSurge=now+(h.hero?5500+Math.random()*4500:9000+Math.random()*7000)}
+
+    for(let i=h.pulses.length-1;i>=0;i--){
+      const p=h.pulses[i];
+      if(p.dead){
+        p.len-=p.speed*dt*1.4;
+        p.fade=Math.max(0,p.len/p.len0);
+        if(p.len<=2)h.pulses.splice(i,1);
+        continue;
+      }
+      p.t+=p.speed*dt;p.trav+=p.speed*dt;
+      while(p.t>=C&&!p.dead){
+        p.t-=C;p.gx+=DIRS[p.dir][0];p.gy+=DIRS[p.dir][1];
+        const nxp=p.gx*C,nyp=p.gy*C;
+        flash(h,nxp,nyp,p.ci);
+        const l=(p.dir+3)&3,r=(p.dir+1)&3,st=p.dir;
+        const ok=d=>inb(h,p.gx+DIRS[d][0],p.gy+DIRS[d][1]);
+        let nd=st;
+        if(Math.random()<.38){
+          const side=Math.random()<.5?l:r,other=side===l?r:l;
+          if(ok(side))nd=side;else if(ok(other))nd=other;
+        }
+        if(!ok(nd)){nd=-1;const c3=[l,r,st];for(let k=0;k<3;k++){if(ok(c3[k])){nd=c3[k];break}}}
+        if(nd<0||p.trav>p.maxd){p.dead=true;p.t=0;p.len0=Math.max(p.len,1);break}
+        if(Math.random()<.07&&h.pulses.length<h.target*1.5){
+          const alts=[l,r,st].filter(d=>d!==nd&&ok(d));
+          if(alts.length)spawn(h,p.gx,p.gy,alts[(Math.random()*alts.length)|0],{ci:p.ci,speed:p.speed,len:p.len*.85,maxd:p.maxd*.5});
+        }
+        if(nd!==p.dir){p.dir=nd;p.pts.push({x:nxp,y:nyp})}
+      }
+      /* trim vertices that lie beyond the visible trail */
+      const hx=p.gx*C+DIRS[p.dir][0]*p.t,hy=p.gy*C+DIRS[p.dir][1]*p.t;
+      let n=p.pts.length,sum=Math.abs(hx-p.pts[n-1].x)+Math.abs(hy-p.pts[n-1].y),j=n-1;
+      while(sum<p.len&&j>0){sum+=Math.abs(p.pts[j].x-p.pts[j-1].x)+Math.abs(p.pts[j].y-p.pts[j-1].y);j--}
+      if(j>0)p.pts.splice(0,j);
+    }
+    for(let i=h.flashes.length-1;i>=0;i--){h.flashes[i].age+=dt;if(h.flashes[i].age>.55)h.flashes.splice(i,1)}
+    for(let i=h.surges.length-1;i>=0;i--){const s=h.surges[i];s.r+=dt*(h.hero?460:380);if(s.r>s.max+60)h.surges.splice(i,1)}
+  }
+
+  function line(ctx,ax,ay,bx,by){ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke()}
+
+  function drawSurge(h,ctx,s){
+    const C=h.cell,band=40,fade=Math.pow(1-Math.min(1,s.r/s.max),1.3);
+    if(fade<=0)return;
+    const col=h.pal[s.ci];
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r+band,0,TAU);
+    ctx.arc(s.x,s.y,Math.max(0,s.r-band),0,TAU);
+    ctx.clip('evenodd');
+    const x0=Math.max(0,Math.floor((s.x-s.r-band)/C)),x1=Math.min(h.nx-1,Math.ceil((s.x+s.r+band)/C));
+    const y0=Math.max(0,Math.floor((s.y-s.r-band)/C)),y1=Math.min(h.ny-1,Math.ceil((s.y+s.r+band)/C));
+    for(let pass=0;pass<2;pass++){
+      ctx.lineWidth=pass?1.4:4;
+      ctx.strokeStyle=pass?rgba(col.cr,col.cg,col.cb,.85*fade):rgba(col.r,col.g,col.b,.22*fade);
+      ctx.beginPath();
+      for(let k=x0;k<=x1;k++){ctx.moveTo(k*C,0);ctx.lineTo(k*C,h.h)}
+      for(let k=y0;k<=y1;k++){ctx.moveTo(0,k*C);ctx.lineTo(h.w,k*C)}
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawPulse(h,ctx,p){
+    const C=h.cell,col=h.pal[p.ci],fade=p.dead?p.fade:1;
+    if(fade<=0)return;
+    const hx=p.gx*C+DIRS[p.dir][0]*p.t,hy=p.gy*C+DIRS[p.dir][1]*p.t;
+    let sx=hx,sy=hy,s=0;
+    ctx.lineCap='round';
+    for(let i=p.pts.length-1;i>=0&&s<p.len;i--){
+      const a=p.pts[i];let ex=a.x,ey=a.y;
+      const seg=Math.hypot(ex-sx,ey-sy);
+      if(seg<.01)continue;
+      let s1=s+seg;
+      if(s1>p.len){const k=(p.len-s)/seg;ex=sx+(ex-sx)*k;ey=sy+(ey-sy)*k;s1=p.len}
+      const a0=Math.pow(1-s/p.len,1.7)*fade,a1=Math.pow(1-s1/p.len,1.7)*fade;
+      const g1=ctx.createLinearGradient(sx,sy,ex,ey);
+      g1.addColorStop(0,rgba(col.r,col.g,col.b,a0));g1.addColorStop(1,rgba(col.r,col.g,col.b,a1));
+      ctx.strokeStyle=g1;ctx.lineWidth=7;ctx.globalAlpha=.2;line(ctx,sx,sy,ex,ey);
+      ctx.lineWidth=3;ctx.globalAlpha=.45;line(ctx,sx,sy,ex,ey);
+      const g2=ctx.createLinearGradient(sx,sy,ex,ey);
+      g2.addColorStop(0,rgba(col.cr,col.cg,col.cb,a0));g2.addColorStop(1,rgba(col.cr,col.cg,col.cb,a1));
+      ctx.strokeStyle=g2;ctx.lineWidth=1.4;ctx.globalAlpha=1;line(ctx,sx,sy,ex,ey);
+      sx=ex;sy=ey;s=s1;
+    }
+    ctx.globalAlpha=1;
+    const R=17,rg=ctx.createRadialGradient(hx,hy,0,hx,hy,R);
+    rg.addColorStop(0,rgba(col.cr,col.cg,col.cb,.98*fade));
+    rg.addColorStop(.22,rgba(col.r,col.g,col.b,.75*fade));
+    rg.addColorStop(1,rgba(col.r,col.g,col.b,0));
+    ctx.fillStyle=rg;ctx.beginPath();ctx.arc(hx,hy,R,0,TAU);ctx.fill();
+  }
+
+  function drawFlash(h,ctx,f){
+    const col=h.pal[f.ci],t=f.age/.55,a=1-t;
+    if(a<=0)return;
+    const R=9+t*9,rg=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,R);
+    rg.addColorStop(0,rgba(col.cr,col.cg,col.cb,.85*a));
+    rg.addColorStop(1,rgba(col.r,col.g,col.b,0));
+    ctx.fillStyle=rg;ctx.beginPath();ctx.arc(f.x,f.y,R,0,TAU);ctx.fill();
+    ctx.strokeStyle=rgba(col.r,col.g,col.b,.7*a);ctx.lineWidth=1.1;
+    ctx.beginPath();ctx.arc(f.x,f.y,2.5+t*13,0,TAU);ctx.stroke();
+  }
+
+  function draw(h){
+    const ctx=h.ctx;
+    ctx.setTransform(h.dpr,0,0,h.dpr,0,0);
+    ctx.globalCompositeOperation='source-over';
+    ctx.clearRect(0,0,h.w,h.h);
+    ctx.translate(.5,.5);                       /* grid hairlines are 1px wide, centred on +.5 */
+    ctx.globalCompositeOperation=light?'source-over':'lighter';
+    h.surges.forEach(s=>drawSurge(h,ctx,s));
+    h.flashes.forEach(f=>drawFlash(h,ctx,f));
+    h.pulses.forEach(p=>drawPulse(h,ctx,p));
+  }
+
+  function makeHost(el){
+    const hero=el.classList.contains('hero');
+    const cv=document.createElement('canvas');
+    cv.className='neon';cv.setAttribute('aria-hidden','true');
+    el.insertBefore(cv,el.firstChild);
+    const h={
+      el:el,cv:cv,ctx:cv.getContext('2d'),hero:hero,
+      cell:hero?72:56,dens:hero?1:.7,
+      m:hero?{cx:.5,cy:.38,rx:.85,ry:.85,a:0,b:1}:{cx:1,cy:0,rx:.9,ry:1,a:.12,b:.82},
+      sc:hero?{x:.72,y:.42}:{x:.86,y:.2},
+      w:0,h:0,dpr:1,nx:0,ny:0,target:8,pal:[],pulses:[],flashes:[],surges:[],vis:false,
+      nextSurge:performance.now()+(hero?1800:3500)
+    };
+    refresh(h);
+    if('ResizeObserver' in window)new ResizeObserver(()=>{size(h)}).observe(el);
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(es=>{
+        const on=es[es.length-1].isIntersecting;
+        if(on&&!h.vis){h.vis=true;size(h);if(!h.pulses.length&&h.w){for(let i=0;i<Math.round(h.target*.6);i++)spawn(h)}}
+        else if(!on)h.vis=false;
+      },{threshold:0}).observe(el);
+    }else{h.vis=true}
+    hosts.push(h);
+  }
+
+  $$('.hero').forEach(makeHost);
+  $$('.sec.fx-grid').forEach(makeHost);
+  if(!hosts.length)return;
+
+  new MutationObserver(()=>hosts.forEach(refresh)).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+  let last=performance.now();
+  function frame(now){
+    requestAnimationFrame(frame);
+    const dt=Math.min(.05,Math.max(0,(now-last)/1000));last=now;
+    if(document.hidden)return;
+    for(let i=0;i<hosts.length;i++){
+      const h=hosts[i];
+      if(!h.vis||!h.el.clientWidth)continue;
+      if(!size(h))continue;
+      step(h,dt,now);draw(h);
+    }
+  }
+  requestAnimationFrame(frame);
 })();
 
 /* every button gets the arrow disc unless it opts out */
