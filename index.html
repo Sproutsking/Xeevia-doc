@@ -6,7 +6,8 @@
 <meta name="theme-color" content="#060608"/>
 <script>
 document.documentElement.classList.add('js');
-try{if(localStorage.getItem('xv-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}
+/* Dark is the default. Light is only used when the visitor has explicitly chosen it (key v2 resets older saved choices). */
+try{if(localStorage.getItem('xv-theme-v2')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}
 </script>
 <title>Xeevia | A social platform for people, communities, and conversations</title>
 <meta name="description" content="Xeevia is a social platform for people, communities, and conversations, building toward a more connected and verifiable view of your online existence. Built in Africa. Designed for the World."/>
@@ -842,6 +843,53 @@ button.tile:active{transform:scale(.985)}
 .hero>.neon{-webkit-mask-image:radial-gradient(85% 85% at 50% 38%,#000,transparent);mask-image:radial-gradient(85% 85% at 50% 38%,#000,transparent)}
 .fx-grid>.neon{-webkit-mask-image:radial-gradient(90% 100% at 100% 0%,#000 12%,transparent 82%);mask-image:radial-gradient(90% 100% at 100% 0%,#000 12%,transparent 82%)}
 @media(prefers-reduced-motion:reduce){.neon{display:none}}
+
+/* ================================================================
+   TEXT LIFT · copy always reads clearly above the background art
+   The artwork is untouched in look and position; it simply yields around words.
+   1) Every piece of copy carries a soft halo in the colour of the surface it sits on
+      (--halo), so pattern lines, grids and neon pulses dim right behind the letters.
+   2) Patterns inside cards are a touch quieter and fade out before they reach the text area.
+   3) Full-width line patterns (scan, hatch) sit on the side away from the headings.
+   4) The hero text column gets a soft veil above the grid + neon current.
+   ================================================================ */
+:root{--halo:var(--bg);--lift:0 0 2px var(--halo),0 0 10px var(--halo),0 0 22px var(--halo)}
+.sec.alt{--halo:var(--s1)}
+.card,.tile,.tc{--halo:var(--s1)}
+.sec.alt .card,.sec.alt .tile{--halo:var(--bg)}
+.rung,.loop div{--halo:var(--bg)}
+.sec:not(.alt) .rung{--halo:var(--s1)}
+[data-theme="light"] .card,[data-theme="light"] .tile,[data-theme="light"] .tc,[data-theme="light"] .quote,[data-theme="light"] .rung,
+[data-theme="light"] .sec.alt .card,[data-theme="light"] .sec.alt .tile,[data-theme="light"] .sec.alt .rung,[data-theme="light"] .sec.alt .loop div,
+[data-theme="light"] .sec:not(.alt) .rung,[data-theme="light"] .access{--halo:#fff}
+[data-theme="light"] .loop div{--halo:#fff}
+
+.eb,.h1,.h2,.lead,.body,.note,.cap,.pill,.hero-meta,.link-arrow,
+.card h3,.card p,.card .tag,.tile b,.tile small,
+.row .tag,.row h3,.row p,
+.steps3 .s h3,.steps3 .s p,.steps3 .big,
+.plist b,.plist span,.tl li,.quote p,.perk,.perk small,
+.rung h3,.rung p,.rung .tag,.loop div,
+.tc h3,.tc .hd,.tc .role,.tc p,
+.cost-r span,.cost-r small,.bar-r span,.stack-r p,.formula,
+.big,.ml:not(.glow),.mf .cap{text-shadow:var(--lift)}
+/* gradient-filled and button text must stay crisp: no halo */
+.hero .h1 .l2,.ml.glow,.btn,.btn *,.st,.av,.ph-join,.logo-mark{text-shadow:none}
+
+/* 2) quieter, tighter patterns inside cards (same patterns, same corners) */
+.card::after,.tile::after,.rung::after,.loop div::after{opacity:.6}
+.card::after,.loop div::after{--mk:radial-gradient(72% 78% at var(--px,100%) var(--py,0%),#000 4%,transparent 70%)}
+@media(hover:hover){
+  .card:hover::after,.tile:hover::after,.rung:hover::after,.loop div:hover::after{opacity:.82}
+}
+
+/* 3) line-based section patterns move to the side away from headings */
+.fx-scan::before{--m:linear-gradient(270deg,#000 4%,transparent 56%)}
+.fx-hatch::before{--m:radial-gradient(85% 100% at 100% 100%,#000 12%,transparent 82%)}
+
+/* 4) hero: a soft veil behind the text column, above the grid and neon current */
+.hero-g>div:first-child{position:relative}
+.hero-g>div:first-child::before{content:"";position:absolute;inset:-8% -10% -8% -12%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 62% 58% at 46% 50%,color-mix(in srgb,var(--bg) 82%,transparent) 0%,color-mix(in srgb,var(--bg) 58%,transparent) 48%,transparent 100%)}
 </style>
 </head>
 <body>
@@ -1924,7 +1972,7 @@ document.addEventListener('click',e=>{
   const html=document.documentElement,light=html.getAttribute('data-theme')==='light';
   light?html.removeAttribute('data-theme'):html.setAttribute('data-theme','light');
   document.querySelector('meta[name="theme-color"]').content=light?'#060608':'#fbfbfd';
-  try{localStorage.setItem('xv-theme',light?'dark':'light')}catch(err){}
+  try{localStorage.setItem('xv-theme-v2',light?'dark':'light')}catch(err){}
 });
 if(document.documentElement.getAttribute('data-theme')==='light')document.querySelector('meta[name="theme-color"]').content='#fbfbfd';
 
