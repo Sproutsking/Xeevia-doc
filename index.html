@@ -2129,8 +2129,15 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
    direction at each real intersection (straight, left, right, sometimes branching), leave a fading
    comet trail, and throw a spark at every node they cross. Every few seconds a power surge
    radiates from a node: a ring of light that lights the grid lines it passes over and fires
-   fresh pulses outward along all four lines. One shared animation loop; hosts that are off-screen
-   or in a hidden view are skipped; reduced-motion users keep the static grid. */
+   fresh pulses outward along all four lines.
+
+   THE WAVE EATS: the surge is a predator. Any pulse its front touches freezes, is bitten (bright
+   burst + sparks along the grid lines) and is swallowed as the front advances, the part behind the
+   front is erased. Every meal feeds the wave: it brightens, thickens and travels further. The four
+   pulses a surge launches at its centre are immune. New pulses refill the cleared zone afterwards.
+
+   One shared animation loop; hosts that are off-screen or in a hidden view are skipped;
+   reduced-motion users keep the static grid. */
 (function(){
   if(reduce)return;
   const TAU=Math.PI*2,DIRS=[[1,0],[0,1],[-1,0],[0,-1]];
@@ -2208,16 +2215,64 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     return p;
   }
 
-  function flash(h,x,y,ci){if(h.flashes.length<90)h.flashes.push({x:x,y:y,age:0,ci:ci})}
+  /* points along a pulse's visible body, head first */
+  function trailPts(h,p){
+    const C=h.cell,hx=p.gx*C+DIRS[p.dir][0]*p.t,hy=p.gy*C+DIRS[p.dir][1]*p.t;
+    const out=[{x:hx,y:hy}];let sx=hx,sy=hy,s=0;
+    for(let i=p.pts.length-1;i>=0&&s<p.len;i--){
+      const a=p.pts[i];let ex=a.x,ey=a.y;const seg=Math.hypot(ex-sx,ey-sy);
+      if(seg<.01)continue;
+      if(s+seg>p.len){const k=(p.len-s)/seg;ex=sx+(ex-sx)*k;ey=sy+(ey-sy)*k;s=p.len}else s+=seg;
+      out.push({x:ex,y:ey});sx=ex;sy=ey;
+    }
+    return out;
+  }
+  /* how far a pulse's body is from a surge centre, and the point nearest the wave front */
+  function reach(h,p,s){
+    const pts=trailPts(h,p);let dmin=1e9,dmax=0,best=pts[0],bd=1e9;
+    const test=(x,y)=>{const d=Math.hypot(x-s.x,y-s.y);if(d<dmin)dmin=d;if(d>dmax)dmax=d;const e=Math.abs(d-s.r);if(e<bd){bd=e;best={x:x,y:y}}};
+    for(let i=0;i<pts.length;i++){test(pts[i].x,pts[i].y);if(i)test((pts[i].x+pts[i-1].x)/2,(pts[i].y+pts[i-1].y)/2)}
+    return{dmin:dmin,dmax:dmax,best:best,bd:bd};
+  }
+  function sparkAt(h,pt,ci,n){
+    const k=h.cell/72;
+    for(let d=0;d<4&&h.sparks.length<160;d++){
+      if(n===1&&Math.random()<.6)continue;
+      const sp=(160+Math.random()*180)*k;
+      h.sparks.push({x:pt.x,y:pt.y,vx:DIRS[d][0]*sp,vy:DIRS[d][1]*sp,age:0,life:.3+Math.random()*.35,ci:ci});
+    }
+  }
+  /* the wave bites a pulse: it freezes, the wave feeds on it */
+  function bite(h,s,p,pt){
+    p.eaten=s;s.e=Math.min(2.5,s.e+.7);s.fed++;
+    s.maxT=Math.min(s.base+800,s.maxT+80);
+    flash(h,pt.x,pt.y,p.ci,2.2);
+    sparkAt(h,pt,p.ci,4);
+  }
+  function drawSpark(h,ctx,sp){
+    const col=h.pal[sp.ci],a=1-sp.age/sp.life;if(a<=0)return;
+    ctx.lineCap='round';
+    ctx.strokeStyle=rgba(col.cr,col.cg,col.cb,.9*a);ctx.lineWidth=1.6;
+    line(ctx,sp.x-sp.vx*.045,sp.y-sp.vy*.045,sp.x,sp.y);
+    const g=ctx.createRadialGradient(sp.x,sp.y,0,sp.x,sp.y,7);
+    g.addColorStop(0,rgba(col.cr,col.cg,col.cb,.8*a));g.addColorStop(1,rgba(col.r,col.g,col.b,0));
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(sp.x,sp.y,7,0,TAU);ctx.fill();
+  }
+
+  function flash(h,x,y,ci,big){if(h.flashes.length<90)h.flashes.push({x:x,y:y,age:0,ci:ci,big:big||1})}
 
   function surge(h){
     const C=h.cell,sc=h.sc;
     let gx=Math.round(sc.x*h.w/C+(Math.random()-.5)*8),gy=Math.round(sc.y*h.h/C+(Math.random()-.5)*8);
     gx=Math.max(0,Math.min(h.nx-1,gx));gy=Math.max(0,Math.min(h.ny-1,gy));
-    const ci=(Math.random()*h.pal.length)|0;
-    h.surges.push({x:gx*C,y:gy*C,r:0,ci:ci,max:Math.max(380,Math.min(760,h.w*.5))});
+    const ci=(Math.random()*h.pal.length)|0,M=Math.max(380,Math.min(760,h.w*.5));
+    const s={x:gx*C,y:gy*C,r:0,ci:ci,max:M,maxT:M,base:M,e:0,fed:0};
+    h.surges.push(s);
     flash(h,gx*C,gy*C,ci);
-    for(let d=0;d<4;d++)spawn(h,gx,gy,d,{ci:ci,speed:(300+Math.random()*90)*(C/72),len:(220+Math.random()*80)*(C/72),maxd:(480+Math.random()*320)*(C/72)});
+    for(let d=0;d<4;d++){
+      const p=spawn(h,gx,gy,d,{ci:ci,speed:(300+Math.random()*90)*(C/72),len:(220+Math.random()*80)*(C/72),maxd:(480+Math.random()*320)*(C/72)});
+      if(p)p.imm=s;                         /* the wave's own children are immune */
+    }
   }
 
   function step(h,dt,now){
@@ -2227,6 +2282,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
 
     for(let i=h.pulses.length-1;i>=0;i--){
       const p=h.pulses[i];
+      if(p.eaten)continue;                  /* frozen while the wave consumes it */
       if(p.dead){
         p.len-=p.speed*dt*1.4;
         p.fade=Math.max(0,p.len/p.len0);
@@ -2249,7 +2305,10 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
         if(nd<0||p.trav>p.maxd){p.dead=true;p.t=0;p.len0=Math.max(p.len,1);break}
         if(Math.random()<.07&&h.pulses.length<h.target*1.5){
           const alts=[l,r,st].filter(d=>d!==nd&&ok(d));
-          if(alts.length)spawn(h,p.gx,p.gy,alts[(Math.random()*alts.length)|0],{ci:p.ci,speed:p.speed,len:p.len*.85,maxd:p.maxd*.5});
+          if(alts.length){
+            const c=spawn(h,p.gx,p.gy,alts[(Math.random()*alts.length)|0],{ci:p.ci,speed:p.speed,len:p.len*.85,maxd:p.maxd*.5});
+            if(c)c.imm=p.imm;
+          }
         }
         if(nd!==p.dir){p.dir=nd;p.pts.push({x:nxp,y:nyp})}
       }
@@ -2259,25 +2318,53 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
       while(sum<p.len&&j>0){sum+=Math.abs(p.pts[j].x-p.pts[j-1].x)+Math.abs(p.pts[j].y-p.pts[j-1].y);j--}
       if(j>0)p.pts.splice(0,j);
     }
+
+    /* THE WAVE EATS: any pulse the front touches is bitten, then swallowed as the front moves on */
+    for(let si=0;si<h.surges.length;si++){
+      const s=h.surges[si];
+      for(let i=h.pulses.length-1;i>=0;i--){
+        const p=h.pulses[i];
+        if(p.eaten){
+          if(p.eaten!==s)continue;
+          const m=reach(h,p,s);
+          if(m.dmax<=s.r-2){h.pulses.splice(i,1);continue}          /* fully swallowed */
+          if(m.bd<26&&Math.random()<dt*28)sparkAt(h,m.best,p.ci,1);  /* chewing sparks */
+          continue;
+        }
+        if(p.imm===s)continue;
+        const m=reach(h,p,s);
+        if(s.r>=m.dmin-5&&s.r<=m.dmax+5)bite(h,s,p,m.best);
+      }
+    }
+
     for(let i=h.flashes.length-1;i>=0;i--){h.flashes[i].age+=dt;if(h.flashes[i].age>.55)h.flashes.splice(i,1)}
-    for(let i=h.surges.length-1;i>=0;i--){const s=h.surges[i];s.r+=dt*(h.hero?460:380);if(s.r>s.max+60)h.surges.splice(i,1)}
+    for(let i=h.sparks.length-1;i>=0;i--){const k=h.sparks[i];k.age+=dt;k.x+=k.vx*dt;k.y+=k.vy*dt;k.vx*=.96;k.vy*=.96;if(k.age>=k.life)h.sparks.splice(i,1)}
+    for(let i=h.surges.length-1;i>=0;i--){
+      const s=h.surges[i];
+      s.r+=dt*(h.hero?460:380);
+      s.e=Math.max(0,s.e-dt*.5);
+      s.max+=(s.maxT-s.max)*Math.min(1,dt*3);            /* fed waves travel further */
+      if(s.r>s.max+60){h.pulses=h.pulses.filter(q=>q.eaten!==s);h.surges.splice(i,1)}
+    }
   }
 
   function line(ctx,ax,ay,bx,by){ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke()}
 
+  /* the wave swells and brightens as it feeds */
   function drawSurge(h,ctx,s){
-    const C=h.cell,band=40,fade=Math.pow(1-Math.min(1,s.r/s.max),1.3);
+    const C=h.cell,e=Math.min(s.e,2),band=40+16*e;
+    const fade=Math.min(1.3,Math.pow(1-Math.min(1,s.r/s.max),1.3)*(1+.35*e));
     if(fade<=0)return;
     const col=h.pal[s.ci];
     ctx.save();
     ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r+band,0,TAU);
-    ctx.arc(s.x,s.y,Math.max(0,s.r-band),0,TAU);
+    ctx.moveTo(s.x+s.r+band,s.y);ctx.arc(s.x,s.y,s.r+band,0,TAU);
+    ctx.moveTo(s.x+Math.max(0,s.r-band),s.y);ctx.arc(s.x,s.y,Math.max(0,s.r-band),0,TAU);
     ctx.clip('evenodd');
     const x0=Math.max(0,Math.floor((s.x-s.r-band)/C)),x1=Math.min(h.nx-1,Math.ceil((s.x+s.r+band)/C));
     const y0=Math.max(0,Math.floor((s.y-s.r-band)/C)),y1=Math.min(h.ny-1,Math.ceil((s.y+s.r+band)/C));
     for(let pass=0;pass<2;pass++){
-      ctx.lineWidth=pass?1.4:4;
+      ctx.lineWidth=pass?1.4+e*.6:4+e*1.8;
       ctx.strokeStyle=pass?rgba(col.cr,col.cg,col.cb,.85*fade):rgba(col.r,col.g,col.b,.22*fade);
       ctx.beginPath();
       for(let k=x0;k<=x1;k++){ctx.moveTo(k*C,0);ctx.lineTo(k*C,h.h)}
@@ -2287,7 +2374,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     ctx.restore();
   }
 
-  function drawPulse(h,ctx,p){
+  function drawPulseBody(h,ctx,p){
     const C=h.cell,col=h.pal[p.ci],fade=p.dead?p.fade:1;
     if(fade<=0)return;
     const hx=p.gx*C+DIRS[p.dir][0]*p.t,hy=p.gy*C+DIRS[p.dir][1]*p.t;
@@ -2317,15 +2404,27 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     ctx.fillStyle=rg;ctx.beginPath();ctx.arc(hx,hy,R,0,TAU);ctx.fill();
   }
 
+  function drawPulse(h,ctx,p){
+    if(!p.eaten){drawPulseBody(h,ctx,p);return}
+    const s=p.eaten;                         /* erase everything the wave has already passed over */
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(-2,-2,h.w+4,h.h+4);
+    ctx.moveTo(s.x+s.r,s.y);ctx.arc(s.x,s.y,s.r,0,TAU);
+    ctx.clip('evenodd');
+    drawPulseBody(h,ctx,p);
+    ctx.restore();
+  }
+
   function drawFlash(h,ctx,f){
     const col=h.pal[f.ci],t=f.age/.55,a=1-t;
     if(a<=0)return;
-    const R=9+t*9,rg=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,R);
+    const R=(9+t*9)*(f.big||1),rg=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,R);
     rg.addColorStop(0,rgba(col.cr,col.cg,col.cb,.85*a));
     rg.addColorStop(1,rgba(col.r,col.g,col.b,0));
     ctx.fillStyle=rg;ctx.beginPath();ctx.arc(f.x,f.y,R,0,TAU);ctx.fill();
     ctx.strokeStyle=rgba(col.r,col.g,col.b,.7*a);ctx.lineWidth=1.1;
-    ctx.beginPath();ctx.arc(f.x,f.y,2.5+t*13,0,TAU);ctx.stroke();
+    ctx.beginPath();ctx.arc(f.x,f.y,(2.5+t*13)*(f.big||1),0,TAU);ctx.stroke();
   }
 
   function draw(h){
@@ -2337,6 +2436,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     ctx.globalCompositeOperation=light?'source-over':'lighter';
     h.surges.forEach(s=>drawSurge(h,ctx,s));
     h.flashes.forEach(f=>drawFlash(h,ctx,f));
+    h.sparks.forEach(k=>drawSpark(h,ctx,k));
     h.pulses.forEach(p=>drawPulse(h,ctx,p));
   }
 
@@ -2350,7 +2450,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
       cell:hero?72:56,dens:hero?1:.7,
       m:hero?{cx:.5,cy:.38,rx:.85,ry:.85,a:0,b:1}:{cx:1,cy:0,rx:.9,ry:1,a:.12,b:.82},
       sc:hero?{x:.72,y:.42}:{x:.86,y:.2},
-      w:0,h:0,dpr:1,nx:0,ny:0,target:8,pal:[],pulses:[],flashes:[],surges:[],vis:false,
+      w:0,h:0,dpr:1,nx:0,ny:0,target:8,pal:[],pulses:[],flashes:[],surges:[],sparks:[],vis:false,
       nextSurge:performance.now()+(hero?1800:3500)
     };
     refresh(h);
