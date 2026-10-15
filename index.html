@@ -890,6 +890,225 @@ button.tile:active{transform:scale(.985)}
 /* 4) hero: a soft veil behind the text column, above the grid and neon current */
 .hero-g>div:first-child{position:relative}
 .hero-g>div:first-child::before{content:"";position:absolute;inset:-8% -10% -8% -12%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 62% 58% at 46% 50%,color-mix(in srgb,var(--bg) 82%,transparent) 0%,color-mix(in srgb,var(--bg) 58%,transparent) 48%,transparent 100%)}
+
+/* ================================================================
+   ALIVE SECTION BACKGROUNDS
+   The section backgrounds keep their look, position and masks. They now live.
+   A) CIRCUIT  (01 Inside the app, and every section that carries the circuit-trace background):
+      live current runs along the traces themselves. A canvas sits exactly on the trace tile
+      (script below), glowing pulses travel the copper, throw a spark at every node, and the
+      traces breathe softly underneath.
+   B) RINGS    (03 Where people gather, and every section that carries the ring background):
+      the rings expand outward like ripples, and a bright wave rolls out through them
+      from the corner every few seconds, lighting each ring as it passes.
+   C) AURORA   (the soft colour glow behind those sections) breathes slowly.
+   Registered custom properties (--o ring offset, --rw wave radius) make every loop seamless.
+   Off-screen sections pause (class .on is set by the observer in the script).
+   Reduced-motion visitors keep the still backgrounds.
+   ================================================================ */
+@property --o{syntax:'<length>';inherits:false;initial-value:0px}
+@property --rw{syntax:'<length>';inherits:false;initial-value:-300px}
+@keyframes ringdrift{to{--o:81px}}
+@keyframes ringwave{0%{--rw:-300px}72%{--rw:1900px}100%{--rw:1900px}}
+@keyframes cirglow{from{opacity:var(--fxc)}to{opacity:calc(var(--fxc) * 1.7)}}
+@keyframes aurb{from{opacity:.62}to{opacity:1}}
+
+/* A) circuit: canvas lies exactly over the trace tile, same origin, same corner mask */
+.cir{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;display:block;-webkit-mask-image:radial-gradient(90% 100% at 100% 100%,#000 12%,transparent 80%);mask-image:radial-gradient(90% 100% at 100% 100%,#000 12%,transparent 80%)}
+@media(prefers-reduced-motion:reduce){.cir{display:none}}
+.fx-circuit::before{animation:cirglow 6s ease-in-out infinite alternate}
+
+/* B) rings: same 81px rings and same corner, now expanding, with a travelling wave of light */
+.fx-rings::before{
+  background:repeating-radial-gradient(circle at 96% 6%,transparent var(--o) calc(var(--o) + 80px),color-mix(in srgb,var(--a) 62%,transparent) calc(var(--o) + 80px) calc(var(--o) + 81px));
+  --m:radial-gradient(circle at 96% 6%,rgba(0,0,0,.42) calc(var(--rw) - 320px),#000 var(--rw),rgba(0,0,0,.42) calc(var(--rw) + 36px)),radial-gradient(95% 105% at 96% 6%,#000 15%,transparent 85%);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+  animation:ringdrift 7s linear infinite,ringwave 9s cubic-bezier(.3,.1,.5,1) infinite;
+}
+[data-theme="light"] .fx-rings::before{background:repeating-radial-gradient(circle at 96% 6%,transparent var(--o) calc(var(--o) + 80px),color-mix(in srgb,var(--a) 72%,transparent) calc(var(--o) + 80px) calc(var(--o) + 81px))}
+
+/* C) aurora glow */
+.fx-aurora::after{animation:aurb 10s ease-in-out infinite alternate}
+
+/* pause everything that is not on screen */
+.sec:not(.on).fx-circuit::before,.sec:not(.on).fx-rings::before,.sec:not(.on).fx-aurora::after{animation-play-state:paused}
+
+/* ================================================================
+   06 · JOIN THE FIRST WAVE · a firm, solid surface
+   Fully opaque panel (the floor grid no longer shows through the text), a crisp hairline
+   border with an inset highlight, a faint masked grid inside, a slow light beam along the
+   top edge, and two clear columns: the invitation on the left, the perks as solid rows
+   on the right.
+   ================================================================ */
+.access{
+  --halo:var(--s1);
+  border:1px solid color-mix(in srgb,var(--lime) 38%,var(--line2));
+  border-radius:28px;
+  padding:clamp(28px,4.6vw,60px);
+  background:
+    radial-gradient(60% 80% at 100% 0,color-mix(in srgb,var(--lime) 15%,transparent),transparent 70%),
+    radial-gradient(50% 70% at 0 100%,color-mix(in srgb,var(--ion) 9%,transparent),transparent 72%),
+    linear-gradient(180deg,var(--s2),var(--s1));
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--t1) 10%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--lime) 6%,transparent),0 44px 80px -44px rgba(0,0,0,.65);
+}
+.access-grid{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(color-mix(in srgb,var(--lime) 18%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--lime) 18%,transparent) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(70% 90% at 100% 0,#000 5%,transparent 75%);mask-image:radial-gradient(70% 90% at 100% 0,#000 5%,transparent 75%);opacity:.55}
+.beam{position:absolute;left:0;right:0;top:0;height:2px;z-index:3;pointer-events:none;overflow:hidden;border-radius:28px 28px 0 0;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--lime) 55%,transparent),transparent)}
+.beam::before{content:"";position:absolute;top:0;bottom:0;left:0;width:34%;background:linear-gradient(90deg,transparent,var(--lime),transparent);animation:beam 5.5s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes beam{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
+.access-g{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,5vw,72px);align-items:center}
+@media(max-width:900px){.access-g{grid-template-columns:1fr}}
+.access .h2{max-width:14ch}
+.access .ctas{margin-top:34px}
+.access .perks{list-style:none;display:grid;grid-template-columns:1fr;gap:12px;margin:0}
+.perk{display:flex;align-items:center;gap:16px;padding:18px 20px;border:1px solid var(--line2);border-radius:18px;background:var(--bg);font-size:15.5px;line-height:1.5;transition:border-color .25s,transform .25s}
+.perk .pk-ic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--lime) 14%,var(--bg));border:1px solid color-mix(in srgb,var(--lime) 55%,transparent);color:var(--lime)}
+.perk .pk-ic .ic{width:18px;height:18px;margin:0;stroke-width:2.2}
+.perk b{display:block;font-size:16px;font-weight:600;color:var(--t1);line-height:1.3}
+.perk small{display:block;color:var(--t3);font-size:13.5px;margin-top:2px}
+@media(hover:hover){.perk:hover{border-color:var(--lime);transform:translateX(4px)}}
+@media(max-width:760px){.access{padding:26px 22px;border-radius:22px}.beam{border-radius:22px 22px 0 0}.access .perks{gap:10px;margin-top:6px}.perk{padding:15px 16px;gap:14px}}
+[data-theme="light"] .access{border-color:color-mix(in srgb,var(--lime) 40%,var(--line2));background:radial-gradient(60% 80% at 100% 0,rgba(16,185,129,.16),transparent 70%),radial-gradient(50% 70% at 0 100%,rgba(56,150,255,.1),transparent 72%),#fff;box-shadow:var(--soft-lg),inset 0 1px 0 #fff}
+[data-theme="light"] .perk{background:var(--s1);box-shadow:none}
+[data-theme="light"] .perk .pk-ic{background:color-mix(in srgb,var(--lime) 12%,#fff)}
+[data-theme="light"] .access-grid{opacity:.4}
+
+/* ================================================================
+   MOBILE FLOW · one clean column on phones
+   Card grids no longer squeeze into two narrow columns on a phone. Tablets keep two columns,
+   phones get one full-width column, so text, numbers and patterns always have room.
+   (The earlier 640px rule was being overridden by the tablet rule; this one comes last and wins.)
+   ================================================================ */
+@media(max-width:640px){
+  .g2,.g3,.g4{grid-template-columns:1fr;gap:12px}
+  .bento{grid-template-columns:1fr;gap:12px}
+  .bento .card:nth-child(n){grid-column:span 1}
+  .tiles,.team,.ladder,.loop{grid-template-columns:1fr}
+  .tiles,.team,.loop,.ladder{gap:12px}
+  .card{padding:20px 22px}
+  .g4 .card h3,.g3 .card h3,.g2 .card h3{font-size:18px}
+}
+
+/* ================================================================
+   XEEVIA PREMIUM · Silver, Gold, Diamond
+   Three tier cards, each with its own metal. A billing switch flips every price between monthly
+   and yearly. A boost meter shows how strong the profile boost is at each level.
+   ================================================================ */
+:root{--sil:#d3dae8;--gld:#f6c453;--dia:#7de8ff;--on-c:#07080c;--on-ember:#1b0c02}
+[data-theme="light"]{--sil:#66708a;--gld:#a56500;--dia:#06599f;--on-c:#ffffff;--on-ember:#ffffff}
+.bill{display:inline-flex;gap:4px;padding:4px;margin:34px 0 28px;border:1px solid var(--line2);border-radius:100px;background:color-mix(in srgb,var(--t1) 4%,transparent)}
+.bill button{height:42px;padding:0 22px;border:0;border-radius:100px;background:transparent;color:var(--t2);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:10px;transition:background .3s,color .3s}
+.bill button small{font-family:var(--fm);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.bill button[aria-pressed="true"]{background:var(--t1);color:var(--bg)}
+.bill button[aria-pressed="true"] small{color:inherit;opacity:.7}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.tiers{grid-template-columns:1fr}}
+.tier{--tc:var(--sil);position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;border:1px solid color-mix(in srgb,var(--tc) 40%,var(--line));border-radius:26px;padding:clamp(24px,2.8vw,36px);background:linear-gradient(180deg,color-mix(in srgb,var(--tc) 10%,var(--bg)) 0%,var(--bg) 72%);transition:border-color .3s,transform .45s cubic-bezier(.16,1,.3,1)}
+.tier.gold{--tc:var(--gld)}.tier.dia{--tc:var(--dia)}
+.tier::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(70% 46% at 100% 0,color-mix(in srgb,var(--tc) 26%,transparent),transparent 70%),repeating-linear-gradient(135deg,color-mix(in srgb,var(--tc) 18%,transparent) 0 1px,transparent 1px 12px);-webkit-mask-image:radial-gradient(90% 70% at 100% 0,#000 6%,transparent 72%);mask-image:radial-gradient(90% 70% at 100% 0,#000 6%,transparent 72%)}
+.tier::after{content:"";position:absolute;left:24px;right:24px;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--tc),transparent);opacity:.8;pointer-events:none}
+@media(hover:hover){.tier:hover{border-color:var(--tc);transform:translateY(-5px)}}
+.tier.dia .sheen{position:absolute;top:0;bottom:0;left:0;width:38%;z-index:-1;pointer-events:none;background:linear-gradient(100deg,transparent,color-mix(in srgb,var(--tc) 20%,transparent),transparent);transform:translateX(-170%) skewX(-18deg);animation:tsheen 7s ease-in-out infinite}
+@keyframes tsheen{0%,55%{transform:translateX(-170%) skewX(-18deg)}100%{transform:translateX(420%) skewX(-18deg)}}
+.t-top{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.t-gem{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;flex:none;color:var(--tc);border:1px solid color-mix(in srgb,var(--tc) 55%,transparent);background:color-mix(in srgb,var(--tc) 13%,var(--bg))}
+.t-gem .ic{width:25px;height:25px;stroke-width:1.9}
+.t-lv{display:block;font-family:var(--fm);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tc);margin-bottom:3px}
+.t-top h3{font-family:var(--fd);font-weight:400;font-size:36px;letter-spacing:.05em;line-height:1;text-transform:uppercase;color:var(--t1)}
+.t-price{display:flex;align-items:baseline;gap:10px}
+.t-price b{font-family:var(--fd);font-weight:400;font-size:clamp(60px,6.2vw,80px);line-height:.9;color:var(--tc)}
+.t-price span{font-size:15px;color:var(--t3)}
+.t-sub{font-size:13.5px;line-height:1.6;color:var(--t3);margin:10px 0 26px;min-height:44px}
+.t-boost{border-top:1px solid var(--line);padding-top:20px}
+.t-bh{display:flex;justify-content:space-between;gap:12px;font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:12px}
+.t-bh em{font-style:normal;color:var(--tc)}
+.meter{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.meter i{height:10px;border-radius:100px;background:var(--s2);border:1px solid var(--line)}
+.meter i.on{border-color:transparent;background:linear-gradient(90deg,color-mix(in srgb,var(--tc) 62%,transparent),var(--tc))}
+.t-list{list-style:none;margin-top:22px;display:grid;gap:11px}
+.t-list li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;line-height:1.5;color:var(--t2)}
+.t-list .ic{width:16px;height:16px;margin-top:3px;color:var(--tc);stroke-width:2.3}
+
+/* ================================================================
+   AD POOL FLOW · budget → protocol commission → Ad Pool (100%) → creator shares
+   ================================================================ */
+.adflow{position:relative;isolation:isolate;overflow:hidden;margin-top:40px;border:1px solid var(--line2);border-radius:26px;padding:clamp(22px,3.6vw,48px);background:linear-gradient(180deg,var(--s2),var(--s1));--halo:var(--s1)}
+.adflow::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(color-mix(in srgb,var(--a) 16%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--a) 16%,transparent) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(80% 90% at 100% 0,#000 5%,transparent 72%);mask-image:radial-gradient(80% 90% at 100% 0,#000 5%,transparent 72%)}
+.af-hd{display:flex;justify-content:space-between;align-items:flex-end;gap:14px 24px;flex-wrap:wrap}
+.af-k{display:flex;align-items:center;gap:12px;font-family:var(--fm);font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--a)}
+.af-k .n{border:1px solid currentColor;border-radius:6px;padding:3px 8px;line-height:1.2}
+.af-d{margin-top:8px;font-size:14px;color:var(--t3);max-width:46ch}
+.af-v{font-family:var(--fd);font-size:clamp(40px,5vw,64px);line-height:.9;color:var(--t1);letter-spacing:.01em}
+.af-v small{font-family:var(--fm);font-size:11px;letter-spacing:.12em;color:var(--t3);margin-left:10px;text-transform:uppercase;vertical-align:middle}
+.af-bar{display:flex;height:56px;margin-top:18px;border-radius:15px;overflow:hidden;border:1px solid var(--line2);background:var(--bg)}
+.af-bar i{display:flex;align-items:center;justify-content:center;font-style:normal;font-family:var(--fm);font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--on-c);white-space:nowrap;overflow:hidden;clip-path:inset(0 100% 0 0);transition:clip-path 1.3s cubic-bezier(.16,1,.3,1) var(--d,0s)}
+.adflow.in .af-bar i{clip-path:inset(0 0 0 0)}
+.af-bar i+i{box-shadow:-1px 0 0 var(--bg)}
+.af-bar .cm{background:repeating-linear-gradient(135deg,var(--ember) 0 5px,color-mix(in srgb,var(--ember) 70%,#000) 5px 10px)}
+.af-bar .pl{background:linear-gradient(90deg,color-mix(in srgb,var(--lime) 82%,#fff),var(--lime))}
+.af-bar .s1{background:var(--lime)}.af-bar .s2{background:var(--ion)}.af-bar .s3{background:var(--violet)}.af-bar .s4{background:var(--signal)}.af-bar .s5{background:var(--t3)}
+.af-leg{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;margin-top:18px}
+@media(max-width:700px){.af-leg{grid-template-columns:1fr}}
+.af-leg>div{display:grid;grid-template-columns:auto 1fr;column-gap:12px;row-gap:2px;font-size:14px;color:var(--t2)}
+.af-leg b{color:var(--t1);font-weight:600;font-size:15px}
+.af-leg span{grid-column:2;font-family:var(--fm);font-size:12px;letter-spacing:.04em;color:var(--t3)}
+.dot{display:inline-block;width:12px;height:12px;border-radius:4px;margin-top:5px;flex:none}
+.dot.cm{background:var(--ember)}.dot.pl{background:var(--lime)}
+.af-fun{position:relative;height:96px;margin:26px 0 22px;display:grid;place-items:center}
+.af-fun::before{content:"";position:absolute;inset:0;clip-path:polygon(5% 0,100% 0,100% 100%,0 100%);background:linear-gradient(180deg,color-mix(in srgb,var(--lime) 34%,transparent),color-mix(in srgb,var(--lime) 7%,transparent))}
+.af-fun::after{content:"";position:absolute;inset:0;clip-path:polygon(5% 0,100% 0,100% 100%,0 100%);background:repeating-linear-gradient(180deg,transparent 0 9px,color-mix(in srgb,var(--lime) 30%,transparent) 9px 10px);animation:funflow 1.8s linear infinite;opacity:.7}
+@keyframes funflow{to{background-position:0 10px}}
+.af-fun span{position:relative;z-index:2;display:inline-flex;align-items:center;gap:12px;padding:9px 18px;border:1px solid color-mix(in srgb,var(--lime) 55%,transparent);border-radius:100px;background:var(--s1);font-family:var(--fm);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);text-align:center;line-height:1.5}
+.af-sum{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline;font-size:14px;color:var(--t3);line-height:1.7}
+.af-sum b{font-family:var(--fm);font-size:12.5px;font-weight:700;letter-spacing:.06em;color:var(--lime)}
+.af-sum p{flex:1 1 360px;max-width:64ch}
+
+/* ================================================================
+   AD POOL · RADIAL LEDGER (two-ring chart)
+   Ring 01 is the campaign budget, split into protocol commission and what remains. Ring 02 is
+   that remainder re-based to 100% and shared by qualifying contribution. Segments draw in,
+   respond to hover or tap, and every total is computed from the same data, so it always sums.
+   ================================================================ */
+.pie-w{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:clamp(24px,4vw,60px);align-items:center;margin-top:22px;border:1px solid var(--line2);border-radius:26px;padding:clamp(48px,5vw,64px) clamp(20px,3.6vw,48px) clamp(34px,4vw,48px);background:linear-gradient(180deg,var(--s2),var(--s1));--halo:var(--s1)}
+@media(max-width:900px){.pie-w{grid-template-columns:1fr}}
+.pie-w::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(50% 60% at 28% 50%,color-mix(in srgb,var(--lime) 11%,transparent),transparent 72%),radial-gradient(40% 50% at 100% 100%,color-mix(in srgb,var(--ion) 9%,transparent),transparent 74%)}
+.pie{position:relative;width:min(100%,520px);aspect-ratio:1;margin:0 auto}
+.pie svg{display:block;width:100%;height:100%;overflow:visible}
+.pie .trk{fill:none;stroke:var(--line)}
+.pie .tk{fill:none;stroke:var(--line2);transform-origin:260px 260px;animation:orb 120s linear infinite}
+.pie .dash{fill:none;stroke:color-mix(in srgb,var(--lime) 45%,transparent);stroke-dasharray:2 9;transform-origin:260px 260px;animation:orb 60s linear infinite reverse}
+.pie .seg{fill:none;cursor:pointer;stroke-width:var(--sw);stroke-dashoffset:var(--o);stroke-dasharray:0 2000;transition:stroke-dasharray 1.4s cubic-bezier(.16,1,.3,1) var(--dl,0s),stroke-width .25s,opacity .25s}
+.pie.live .seg{stroke-dasharray:var(--d)}
+.pie.has-a .seg{opacity:.3}
+.pie.has-a .seg.act{opacity:1;stroke-width:calc(var(--sw) + 12px)}
+.seg.cm{stroke:var(--ember)}.seg.pl{stroke:color-mix(in srgb,var(--lime) 58%,transparent)}
+.seg.c1{stroke:var(--lime)}.seg.c2{stroke:var(--ion)}.seg.c3{stroke:var(--violet)}.seg.c4{stroke:var(--signal)}.seg.c5{stroke:var(--t3)}
+.pie-c{position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
+.pie-c>div{width:38%;display:grid;gap:6px}
+.pc-k{font-family:var(--fm);font-size:clamp(9.5px,1.1vw,11.5px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+.pc-v{font-family:var(--fd);font-weight:400;font-size:clamp(34px,5.4vw,62px);line-height:.92;color:var(--t1)}
+.pc-s{font-size:clamp(11px,1.2vw,13px);line-height:1.45;color:var(--t3)}
+.ledger{display:grid;gap:8px}
+.lg-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:14px 0 4px;font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
+.lg-h:first-child{margin-top:0}
+.lg-h .n{border:1px solid currentColor;border-radius:6px;padding:2px 7px;color:var(--lime)}
+.lg-h b{margin-left:auto;font-weight:700;color:var(--t1)}
+.lg-r{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;width:100%;text-align:left;padding:13px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--t1);font:inherit;transition:border-color .25s,transform .25s,background .25s}
+.lg-r .dot{margin:0}
+.lg-r .nm{font-size:15px;font-weight:600;line-height:1.3}
+.lg-r .nm small{display:block;font-size:12.5px;font-weight:400;color:var(--t3);margin-top:1px}
+.lg-r .pc{font-family:var(--fd);font-size:26px;line-height:1;letter-spacing:.02em;min-width:3.4ch;text-align:right}
+.lg-r .am{font-family:var(--fm);font-size:12px;color:var(--t3);min-width:9ch;text-align:right}
+.lg-r.act,.lg-r:focus-visible{border-color:var(--lime);background:color-mix(in srgb,var(--lime) 7%,var(--bg))}
+@media(hover:hover){.lg-r:hover{border-color:var(--lime);transform:translateX(3px)}}
+@media(max-width:560px){.lg-r{grid-template-columns:auto 1fr auto;gap:12px;padding:12px 14px}.lg-r .am{grid-column:2/-1;text-align:left;margin-top:-6px}}
+.dot.c1{background:var(--lime)}.dot.c2{background:var(--ion)}.dot.c3{background:var(--violet)}.dot.c4{background:var(--signal)}.dot.c5{background:var(--t3)}
+.lg-f{margin-top:10px;padding:14px 16px;border:1px dashed var(--line2);border-radius:14px;display:grid;gap:6px;font-family:var(--fm);font-size:12px;letter-spacing:.04em;line-height:1.6;color:var(--t3)}
+.lg-f b{color:var(--lime);font-weight:700}
+[data-theme="light"] .adflow,[data-theme="light"] .pie-w{background:#fff;box-shadow:var(--soft-lg)}
+[data-theme="light"] .adflow,[data-theme="light"] .pie-w{--halo:#fff}
+[data-theme="light"] .lg-r{background:var(--s1)}
+[data-theme="light"] .tier{background:linear-gradient(180deg,color-mix(in srgb,var(--tc) 10%,#fff) 0%,#fff 72%);box-shadow:var(--soft)}
+[data-theme="light"] .af-fun span{background:#fff}
 </style>
 </head>
 <body>
@@ -910,6 +1129,7 @@ button.tile:active{transform:scale(.985)}
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
     <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></symbol>
+    <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M9 3 7.5 9 12 21l4.5-12L15 3"/></symbol>
   </defs>
 </svg>
 
@@ -1100,11 +1320,12 @@ button.tile:active{transform:scale(.985)}
         <div>
           <div class="eb rv"><span class="n">05</span>How interaction works</div>
           <h2 class="h2 rv">Engage. Participate. <em>Connect.</em></h2>
-          <p class="lead rv">Xeevia uses <b>Engagement Points (EP)</b>, a single operating currency, to support interactions throughout the platform. A small cost keeps engagement genuine, and a good comment can earn its own share of what a post makes.</p>
+          <p class="lead rv">Xeevia uses <b>Engagement Points (EP)</b>, a single operating currency, to support interactions throughout the platform. A small cost keeps engagement genuine, posting is always free, and a good comment earns its share instantly.</p>
           <p class="note rv">Early-access rates. Xeevia's economy is still taking shape, and these settings may be refined as the platform grows.</p>
           <div class="ctas"><a class="btn s" href="#product/ep">Learn about EP <svg class="ic"><use href="#i-arrow"/></svg></a></div>
         </div>
         <div class="cost rv brk" role="table" aria-label="EP costs at early access">
+          <div class="cost-r" role="row"><span role="cell"><svg class="ic"><use href="#i-send"/></svg><i style="font-style:normal">Post<small>Sharing is always free</small></i></span><b role="cell" style="color:var(--lime)">Free</b></div>
           <div class="cost-r" role="row"><span role="cell"><svg class="ic"><use href="#i-heart"/></svg><i style="font-style:normal">Like<small>A small cost that keeps engagement genuine</small></i></span><b role="cell">2 EP</b></div>
           <div class="cost-r" role="row"><span role="cell"><svg class="ic"><use href="#i-feed"/></svg><i style="font-style:normal">Comment<small>Carries more weight, and can earn</small></i></span><b role="cell">4 EP</b></div>
           <div class="cost-r hl" role="row"><span role="cell"><svg class="ic"><use href="#i-spark"/></svg><i style="font-style:normal">Add funds<small>$1 becomes 100 EP</small></i></span><b role="cell">$1 = 100</b></div>
@@ -1117,15 +1338,21 @@ button.tile:active{transform:scale(.985)}
   <section class="sec fx-floor fx-aurora" id="home-access">
     <div class="wrap" style="--a:var(--lime)">
       <div class="access rv brk">
-        <div class="eb"><span class="n">06</span>Join the first wave</div>
-        <h2 class="h2">Be among <em>the first.</em></h2>
-        <p class="lead">Xeevia is opening its doors gradually, starting with a limited group of early users and communities.</p>
-        <div class="perks">
-          <div class="perk"><svg class="ic"><use href="#i-check"/></svg><div>Bonus EP<small>Early-access packages</small></div></div>
-          <div class="perk"><svg class="ic"><use href="#i-check"/></svg><div>Profile Boost<small>Free for 6 months</small></div></div>
-          <div class="perk"><svg class="ic"><use href="#i-check"/></svg><div>Early-user standing<small>In every community you join</small></div></div>
+        <span class="access-grid" aria-hidden="true"></span>
+        <span class="beam" aria-hidden="true"></span>
+        <div class="access-g">
+          <div class="access-main">
+            <div class="eb"><span class="n">06</span>Join the first wave</div>
+            <h2 class="h2">Be among <em>the first.</em></h2>
+            <p class="lead">Xeevia is opening its doors gradually, starting with a limited group of early users and communities.</p>
+            <div class="ctas"><button class="btn p" type="button" data-soon="join">Join early access <svg class="ic"><use href="#i-arrow"/></svg></button></div>
+          </div>
+          <ul class="perks" aria-label="Early-access perks">
+            <li class="perk"><span class="pk-ic"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div><b>Bonus EP</b><small>Early-access packages</small></div></li>
+            <li class="perk"><span class="pk-ic"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div><b>Xeevia Premium</b><small>Free for 6 months</small></div></li>
+            <li class="perk"><span class="pk-ic"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div><b>Early-user standing</b><small>In every community you join</small></div></li>
+          </ul>
         </div>
-        <div class="ctas"><button class="btn p" type="button" data-soon="join">Join early access <svg class="ic"><use href="#i-arrow"/></svg></button></div>
       </div>
     </div>
   </section>
@@ -1264,22 +1491,22 @@ button.tile:active{transform:scale(.985)}
     <div class="wrap" style="--a:var(--ember)">
       <div class="eb"><span class="n">Product</span>How Xeevia works</div>
       <h1 class="h1" style="max-width:16ch">The systems <em>underneath the app.</em></h1>
-      <p class="lead mt-s">A closer look at Engagement Points, the EP Wallet, Network Ownership, Reputation, Identity, Records, XEV and Profile Boost.</p>
+      <p class="lead mt-s">A closer look at Engagement Points, the EP Wallet, Network Ownership, Reputation, Identity, Records, XEV and Xeevia Premium.</p>
     </div>
   </section>
   <nav class="subnav" aria-label="Product sections"><div class="subnav-in">
-    <a href="#product/ep">Engagement Points</a><a href="#product/wallet">EP Wallet</a><a href="#product/ownership">Network Ownership</a><a href="#product/reputation">Reputation</a><a href="#product/identity">Identity</a><a href="#product/records">Records</a><a href="#product/xev">XEV</a><a href="#product/boost">Profile Boost</a>
+    <a href="#product/ep">Engagement Points</a><a href="#product/wallet">EP Wallet</a><a href="#product/ownership">Network Ownership</a><a href="#product/reputation">Reputation</a><a href="#product/identity">Identity</a><a href="#product/records">Records</a><a href="#product/xev">XEV</a><a href="#product/premium">Xeevia Premium</a>
   </div></nav>
 
   <section class="sec" id="product-ep" data-spy>
     <div class="wrap" style="--a:var(--ember)">
       <div class="eb rv"><span class="n">01</span>Engagement Points</div>
       <h2 class="h2 rv">Participation <em>with weight.</em></h2>
-      <p class="lead rv">EP is what makes engagement on Xeevia mean something. Every meaningful action, liking, commenting, replying, posting, costs a small amount of EP. It's not about gating the platform; it's about making sure engagement reflects real intent instead of empty noise.</p>
+      <p class="lead rv">EP is what makes engagement on Xeevia mean something. Engaging with someone's content, liking, commenting, replying, costs a small amount of EP. Posting is always free. It's not about gating the platform; it's about making sure engagement reflects real intent instead of empty noise.</p>
       <p class="body rv mt-s">EP is the operating economy of Xeevia, the one currency behind social activity, creator earnings and, as it develops, the advertising economy. When a conversation you took part in creates real value, you can share in that value, weighted by your reputation and the quality of what you contributed, not just how often you show up.</p>
       <div class="g4 mt">
         <article class="card rv"><span class="tag">01</span><h3>Add funds</h3><p>$1 becomes 100 EP, giving you the capacity to take part in the platform.</p></article>
-        <article class="card rv"><span class="tag">02</span><h3>Spend to engage</h3><p>Posting, commenting and replying use EP, priced engagement, not free-for-all noise.</p></article>
+        <article class="card rv"><span class="tag">02</span><h3>Spend to engage</h3><p>Liking, commenting and replying use EP, priced engagement, not free-for-all noise. Posting costs nothing.</p></article>
         <article class="card rv"><span class="tag">03</span><h3>Conversations create value</h3><p>A post and everything it draws, comments, replies, form one shared conversation.</p></article>
         <article class="card rv"><span class="tag">04</span><h3>Contribution decides the share</h3><p>How much you helped a conversation, not how often you posted, decides your share.</p></article>
       </div>
@@ -1294,20 +1521,20 @@ button.tile:active{transform:scale(.985)}
         <div>
           <div class="eb rv"><span class="n">Earn</span>Comments earn their share</div>
           <h3 class="h2 rv" style="font-size:clamp(26px,3vw,38px)">A good comment <em>gets paid too.</em></h3>
-          <p class="lead rv">A meaningful comment doesn't just add to a conversation, it can share in the value that conversation creates.</p>
+          <p class="lead rv">A meaningful comment doesn't just add to a conversation, it earns its share of the value that conversation creates, instantly.</p>
           <div class="quote sm rv mt-s">
-            <p>A comment doesn't draw from the post's total earnings, it generates its own. The likes and replies a comment earns create their own revenue, separate from what the post itself earned. At the end of each day, that specific amount is split between the post owner and the comment owner. Nothing is pooled; every comment is settled on exactly what it earned.</p>
+            <p>A comment doesn't draw from the post's total earnings, it generates its own. Every like and reply a comment earns is handled the moment it happens by a smart contract, which splits that engagement between the post owner and the comment owner on the spot. Nothing waits for a daily payout and nothing is pooled; every comment is settled on exactly what it earned.</p>
           </div>
         </div>
         <ol class="tl rv">
           <li>Someone <b>likes or replies</b> to your comment on a post.</li>
-          <li>That engagement <b>generates its own revenue</b>, attributed to your comment alone.</li>
-          <li>At the <b>end of the day</b>, that comment-specific revenue is settled.</li>
-          <li>The <b>post owner and the comment owner split that exact amount</b>.</li>
+          <li>That engagement is <b>routed to a smart contract</b> the instant it happens, attributed to your comment alone.</li>
+          <li>The contract <b>splits it between the post owner and the comment owner</b>, down to the last unit, on the spot.</li>
+          <li>Both shares are <b>credited immediately</b>. There is no end-of-day settlement to wait for.</li>
           <li>Every comment is rewarded for <b>precisely what it earned</b>; no contribution is diluted across the conversation.</li>
         </ol>
       </div>
-      <p class="note rv">Not daily login rewards, not post-to-earn, not comment farming. EP rewards genuine contribution, down to the exact comment that earns it.</p>
+      <p class="note rv">Not daily login rewards, not post-to-earn, not comment farming. EP rewards genuine contribution, down to the exact comment that earns it, and settles through a smart contract the moment it happens. Early-access settings, they may be refined as the economy matures.</p>
     </div>
   </section>
 
@@ -1387,21 +1614,61 @@ button.tile:active{transform:scale(.985)}
   <section class="sec" id="product-xev" data-spy>
     <div class="wrap" style="--a:var(--violet)">
       <div class="eb rv"><span class="n">07</span>XEV</div>
-      <h2 class="h2 rv">Pure <em>ownership.</em></h2>
-      <p class="lead rv" style="margin-bottom:44px">XEV is reserved for ownership of Xeevia itself, and is kept fully separate from EP, the everyday operating economy. XEV is not used for engagement, creator earnings, advertising or follower rewards, it exists for one purpose only.</p>
+      <h2 class="h2 rv">Tokenizing <em>Xeevia.</em></h2>
+      <span class="st plan">Coming soon · not live yet</span>
+      <p class="lead rv" style="margin-bottom:44px">XEV is how Xeevia itself is planned to be tokenized. It is coming soon, it is not live today. When it arrives it is reserved for ownership of Xeevia, and kept fully separate from EP, the everyday operating economy. XEV is not used for engagement, creator earnings, advertising or follower rewards, it exists for one purpose only.</p>
       <div class="vs rv">
-        <div class="vs-h"><div>EP: operating economy</div><div>XEV: company ownership</div></div>
-        <div class="vs-r"><div><b>What it's for</b>Social and platform participation, creator earnings, advertising economy, follower rewards.</div><div><b>What it's for</b>Equity / ownership representation only. Represents ownership rights as legally structured.</div></div>
-        <div class="vs-r"><div><b>Where it lives</b>Circulates entirely within Xeevia.</div><div><b>What it's not</b>Not used for creator earnings, advertising or follower rewards.</div></div>
+        <div class="vs-h"><div>EP: operating economy</div><div>XEV: Xeevia ownership token</div></div>
+        <div class="vs-r"><div><b>What it's for</b>Social and platform participation, creator earnings, advertising economy, follower rewards.</div><div><b>What it's for</b>Tokenized ownership of Xeevia itself. Represents ownership rights as legally structured.</div></div>
+        <div class="vs-r"><div><b>Where it stands</b>Live in early access, and still evolving. Circulates entirely within Xeevia.</div><div><b>Where it stands</b>Coming soon. Terms and structure are confirmed before anything is described as live.</div></div>
+        <div class="vs-r"><div><b>What it's not</b>Not an ownership stake in Xeevia.</div><div><b>What it's not</b>Not used for creator earnings, advertising or follower rewards.</div></div>
       </div>
     </div>
   </section>
 
-  <section class="sec alt" id="product-boost" data-spy>
+  <section class="sec alt" id="product-premium" data-spy>
     <div class="wrap" style="--a:var(--ember)">
-      <div class="eb rv"><span class="n">08</span>Profile Boost</div>
-      <h2 class="h2 rv">Extra visibility <em>for your profile.</em></h2>
-      <p class="lead rv">Profile Boost gives your profile extra visibility in discovery and community feeds, included free for 6 months with early access.</p>
+      <div class="eb rv"><span class="n">08</span>Xeevia Premium</div>
+      <h2 class="h2 rv">Your profile, <em>upgraded.</em></h2>
+      <p class="lead rv">Xeevia Premium is an upgrade to the traditional profile. Each level carries a profile boost, extra visibility in discovery and community feeds, and the higher the level, the stronger the boost. Three levels: Silver, Gold and Diamond.</p>
+      <div class="bill rv" role="group" aria-label="Billing period"><button type="button" data-b="m" aria-pressed="true">Monthly</button><button type="button" data-b="y" aria-pressed="false">Yearly <small>3 months free</small></button></div>
+      <div class="tiers">
+        <article class="tier rv">
+          <div class="t-top"><span class="t-gem"><svg class="ic" aria-hidden="true"><use href="#i-gem"/></svg></span><div><span class="t-lv">Level 1</span><h3>Silver</h3></div></div>
+          <div class="t-price"><b>$1</b><span>/ month</span></div>
+          <p class="t-sub">Billed monthly. Or $9 a year if you pay yearly.</p>
+          <div class="t-boost"><div class="t-bh"><span>Profile boost</span><em>Entry</em></div><div class="meter" aria-label="Boost strength: 1 of 3"><i class="on"></i><i></i><i></i></div></div>
+          <ul class="t-list">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Boost in discovery and community feeds</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>The entry level of profile boost</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Monthly or yearly billing</li>
+          </ul>
+        </article>
+        <article class="tier gold rv">
+          <div class="t-top"><span class="t-gem"><svg class="ic" aria-hidden="true"><use href="#i-gem"/></svg></span><div><span class="t-lv">Level 2</span><h3>Gold</h3></div></div>
+          <div class="t-price"><b>$2</b><span>/ month</span></div>
+          <p class="t-sub">Billed monthly. Or $18 a year if you pay yearly.</p>
+          <div class="t-boost"><div class="t-bh"><span>Profile boost</span><em>Stronger</em></div><div class="meter" aria-label="Boost strength: 2 of 3"><i class="on"></i><i class="on"></i><i></i></div></div>
+          <ul class="t-list">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Boost in discovery and community feeds</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>A stronger boost than Silver</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Monthly or yearly billing</li>
+          </ul>
+        </article>
+        <article class="tier dia rv">
+          <span class="sheen" aria-hidden="true"></span>
+          <div class="t-top"><span class="t-gem"><svg class="ic" aria-hidden="true"><use href="#i-gem"/></svg></span><div><span class="t-lv">Level 3</span><h3>Diamond</h3></div></div>
+          <div class="t-price"><b>$3</b><span>/ month</span></div>
+          <p class="t-sub">Billed monthly. Or $27 a year if you pay yearly.</p>
+          <div class="t-boost"><div class="t-bh"><span>Profile boost</span><em>Maximum</em></div><div class="meter" aria-label="Boost strength: 3 of 3"><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+          <ul class="t-list">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Boost in discovery and community feeds</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>The strongest boost, above Gold</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Monthly or yearly billing</li>
+          </ul>
+        </article>
+      </div>
+      <p class="note rv">Prices are in USD. Yearly billing means paying for nine months and getting twelve. Early-access members get Xeevia Premium free for 6 months.</p>
       <div class="ctas"><button class="btn p" type="button" data-soon="join">Join early access <svg class="ic"><use href="#i-arrow"/></svg></button></div>
     </div>
   </section>
@@ -1522,12 +1789,14 @@ button.tile:active{transform:scale(.985)}
   <section class="sec" id="vision-xev" data-spy>
     <div class="wrap" style="--a:var(--violet)">
       <div class="eb rv"><span class="n">07</span>Separate, on purpose</div>
-      <h2 class="h2 rv">XEV: pure <em>ownership.</em></h2>
-      <p class="lead rv" style="margin-bottom:44px">EP represents activity and value flow inside the Xeevia operating economy. <b>XEV is reserved for ownership of Xeevia itself, and is not used as the everyday engagement or platform economy.</b></p>
+      <h2 class="h2 rv">XEV: tokenizing <em>Xeevia.</em></h2>
+      <span class="st plan">Coming soon · not live yet</span>
+      <p class="lead rv" style="margin-bottom:44px">EP represents activity and value flow inside the Xeevia operating economy. <b>XEV is how Xeevia itself is planned to be tokenized: coming soon, reserved for ownership of Xeevia, and not used as the everyday engagement or platform economy.</b></p>
       <div class="vs rv">
-        <div class="vs-h"><div>EP: operating economy</div><div>XEV: company ownership</div></div>
-        <div class="vs-r"><div><b>Purpose</b>Social and platform participation, creator earnings, the advertising economy, follower rewards.</div><div><b>Purpose</b>Equity / ownership representation, as legally structured.</div></div>
+        <div class="vs-h"><div>EP: operating economy</div><div>XEV: Xeevia ownership token</div></div>
+        <div class="vs-r"><div><b>Purpose</b>Social and platform participation, creator earnings, the advertising economy, follower rewards.</div><div><b>Purpose</b>Tokenized ownership of Xeevia itself, as legally structured.</div></div>
         <div class="vs-r"><div><b>Structure</b>A small set of intentional EP account purposes. Circulates entirely within Xeevia.</div><div><b>Structure</b>A separate ownership layer. Not used for creator earnings, advertising or follower rewards.</div></div>
+        <div class="vs-r"><div><b>Status</b>Live in early access, still evolving.</div><div><b>Status</b>Coming soon. Not live today. Terms and structure are confirmed before anything is described as live.</div></div>
       </div>
     </div>
   </section>
@@ -1549,9 +1818,9 @@ button.tile:active{transform:scale(.985)}
         <li><b>Eligible creators are identified</b> according to campaign-specific qualification.</li>
         <li>The campaign <b>runs through those creator networks.</b></li>
         <li>Xeevia <b>measures</b> the defined campaign results.</li>
-        <li>The creator allocation becomes a <b>100% equilibrium pool.</b></li>
-        <li>Each creator receives a share based on <b>qualifying contribution.</b></li>
-        <li>Xeevia takes its <b>defined platform commission.</b></li>
+        <li>The <b>protocol commission is removed</b> from the campaign budget first.</li>
+        <li>What remains becomes the <b>Ad Pool, and the Ad Pool is 100%.</b></li>
+        <li>Each creator receives a share of that pool based on <b>qualifying contribution.</b></li>
       </ol>
     </div>
   </section>
@@ -1561,13 +1830,41 @@ button.tile:active{transform:scale(.985)}
       <div class="eb rv"><span class="n">09</span>Closed, fair, by construction</div>
       <h2 class="h2 rv">The equilibrium <em>principle.</em></h2>
       <span class="st plan">Planned · figures below are illustrative</span>
-      <p class="lead rv">The equilibrium model is a closed allocation system. If a campaign creates a creator pool, that pool represents 100%, shares assigned to eligible creators must resolve back to 100%, determined by qualifying contribution.</p>
-      <div class="formula rv mt-s" style="margin-top:28px">Creator share = <em>creator qualifying value</em> ÷ <em>total qualifying value</em> × 100% of the creator pool</div>
-      <div class="bars rv" style="margin-top:20px" aria-label="Illustrative campaign split">
-        <div class="bar-r"><span>Example campaign budget</span><div class="bar"><i class="a" style="width:100%"></i></div><b>₦1M</b></div>
-        <div class="bar-r"><span>Illustrative commission</span><div class="bar"><i class="c" style="width:5%"></i></div><b>5%</b></div>
-        <div class="bar-r"><span>Creator pool, all shares</span><div class="bar"><i class="a" style="width:8%"></i><i class="b" style="width:92%"></i></div><b>100%</b></div>
-        <p style="font-size:13.5px;color:var(--t3);margin:-8px 0 0">Example: Creator A's qualifying contribution resolves to an 8% share; the remaining 92% is divided among other eligible creators.</p>
+      <p class="lead rv">The equilibrium model is a closed allocation system. <b>The protocol commission comes off the campaign budget first. Whatever remains becomes the Ad Pool, and that pool is 100%.</b> Every creator share is a slice of that pool, determined by qualifying contribution, and all shares resolve back to exactly 100%.</p>
+      <div class="formula rv mt-s" style="margin-top:28px">Ad Pool = <em>campaign budget</em> − <em>protocol commission</em></div>
+      <div class="formula rv" style="margin-top:10px">Creator share = <em>creator qualifying value</em> ÷ <em>total qualifying value</em> × <em>Ad Pool (100%)</em></div>
+
+      <div class="adflow rv" aria-label="Illustrative campaign flow from budget to creator shares">
+        <div class="af-step">
+          <div class="af-hd">
+            <div><span class="af-k"><span class="n">01</span>Campaign budget</span><p class="af-d">What the advertiser commits to the campaign. This is where everything starts.</p></div>
+            <div class="af-v">₦1,000,000<small>100%</small></div>
+          </div>
+          <div class="af-bar"><i class="cm" style="width:5%"></i><i class="pl" style="width:95%;--d:.3s">95%</i></div>
+          <div class="af-leg">
+            <div><i class="dot cm"></i><b>Protocol commission</b><span>5% · ₦50,000 · illustrative · removed first</span></div>
+            <div><i class="dot pl"></i><b>Remaining after commission</b><span>95% · ₦950,000</span></div>
+          </div>
+        </div>
+        <div class="af-fun" aria-hidden="true"><span>After commission, the remainder becomes the Ad Pool = 100%</span></div>
+        <div class="af-step">
+          <div class="af-hd">
+            <div><span class="af-k"><span class="n">02</span>Ad Pool</span><p class="af-d">All shares, added together, resolve to exactly 100% of what remains.</p></div>
+            <div class="af-v">₦950,000<small>100%</small></div>
+          </div>
+          <div class="af-bar"><i class="s1" style="width:8%;--d:.5s">8%</i><i class="s2" style="width:22%;--d:.65s">22%</i><i class="s3" style="width:18%;--d:.8s">18%</i><i class="s4" style="width:16%;--d:.95s">16%</i><i class="s5" style="width:36%;--d:1.1s">36%</i></div>
+          <div class="af-sum"><b>Σ 8 + 22 + 18 + 16 + 36 = 100%</b><p>Example: Creator A's qualifying contribution resolves to an 8% share (₦76,000); the remaining 92% is divided among other eligible creators. Nothing is left over.</p></div>
+        </div>
+      </div>
+
+      <div class="pie-w brk rv">
+        <span class="hud" style="top:16px;left:30px"><i class="ld"></i>Ad Pool · Radial ledger</span>
+        <span class="hud" style="bottom:14px;right:30px">Illustrative</span>
+        <div class="pie" id="pie" role="img" aria-label="Two-ring chart. The outer ring splits the campaign budget into a 5 percent protocol commission and the 95 percent that remains. The inner ring shows that remainder re-based to 100 percent as the Ad Pool, shared among five example creators.">
+          <svg viewBox="0 0 520 520" aria-hidden="true"></svg>
+          <div class="pie-c" aria-live="polite"><div><span class="pc-k">Ad Pool</span><b class="pc-v">100%</b><span class="pc-s">₦950,000 after the protocol commission</span></div></div>
+        </div>
+        <div class="ledger" id="ledger"></div>
       </div>
 
       <div class="eb mt rv"><span class="n">Reverse</span>The reverse network economy</div>
@@ -1609,7 +1906,7 @@ button.tile:active{transform:scale(.985)}
         <div class="rv"><b>Sources stay visible</b><span>A record should never hide where it came from or what it does and doesn't establish.</span></div>
         <div class="rv"><b>Ownership must have meaning</b><span>Network ownership should eventually produce participation in network-generated value.</span></div>
         <div class="rv"><b>One operating currency</b><span>EP is the unified operating economy of Xeevia.</span></div>
-        <div class="rv"><b>Separate ownership</b><span>XEV is reserved for Xeevia company ownership, not everyday platform economics.</span></div>
+        <div class="rv"><b>Separate ownership</b><span>XEV, the coming token for Xeevia itself, is reserved for company ownership, not everyday platform economics.</span></div>
         <div class="rv"><b>Closed equilibrium</b><span>Creator and follower pools should resolve to 100% distribution.</span></div>
         <div class="rv"><b>Small platform extraction</b><span>Xeevia can take a small commission while allowing most value to remain with participants.</span></div>
         <div class="rv"><b>Value should circulate</b><span>Creator earnings can return 10% to the strongest qualifying participants in the creator's network.</span></div>
@@ -2122,6 +2419,15 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
   const mf=$('.mf');if(mf)mf.style.setProperty('--a','var(--lime)');
 })();
 
+/* ---------- LIVING BACKGROUNDS: pause what is off screen ----------
+   The ring wave, trace glow and aurora animations are CSS. This only marks which sections are on
+   screen (.on) so everything outside the viewport stops animating and costs nothing. */
+(function(){
+  if(!('IntersectionObserver' in window))return;
+  const o=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('on',e.isIntersecting)),{rootMargin:'120px 0px'});
+  $$('.sec,.mf').forEach(s=>o.observe(s));
+})();
+
 /* ---------- NEON CURRENT ----------
    A neon current network running through the background grid lines.
    One canvas per grid host (the hero, plus every .fx-grid section), laid exactly over the CSS grid:
@@ -2484,6 +2790,273 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     }
   }
   requestAnimationFrame(frame);
+})();
+
+/* ---------- CIRCUIT CURRENT ----------
+   Live current in the circuit-trace section backgrounds (01 Inside the app and every other section
+   that carries that background). One canvas per section, laid exactly over the 180px trace tile:
+   same origin, same corner mask. The routes below are the real trace paths of the tile, so every
+   pulse follows copper that is actually drawn: it glows along the trace, turns the corner with it,
+   branches where the trace branches, flares at every node it reaches and fades at the open end.
+   Every few seconds a power-up fires several pulses at once. Hidden or off-screen sections are
+   skipped; reduced-motion visitors keep the still traces. */
+(function(){
+  if(reduce)return;
+  const T=180,TAU=Math.PI*2;
+  /* tile geometry, identical to the SVG used by the background mask; n = vertex indexes that are nodes */
+  const BASE=[
+    {p:[[0,90],[44,90],[64,70],[112,70],[112,16]],n:[1,4]},
+    {p:[[68,180],[68,136],[88,116],[180,116]],n:[]},
+    {p:[[68,180],[68,136],[88,116],[140,116],[140,80]],n:[4]}
+  ];
+  const ROUTES=[];
+  function mk(p,n){const cum=[0];for(let i=1;i<p.length;i++)cum.push(cum[i-1]+Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1]));return{p:p,n:n,cum:cum,L:cum[cum.length-1]}}
+  BASE.forEach(b=>{const m=b.p.length-1;ROUTES.push(mk(b.p,b.n));ROUTES.push(mk(b.p.slice().reverse(),b.n.map(i=>m-i)))});
+
+  const hosts=[];let light=false;
+  function toRGB(s){
+    s=String(s||'').trim();
+    let m=s.match(/^#([0-9a-f]{3})$/i);
+    if(m){const h=m[1];return[parseInt(h[0]+h[0],16),parseInt(h[1]+h[1],16),parseInt(h[2]+h[2],16)]}
+    m=s.match(/^#([0-9a-f]{6})/i);
+    if(m){const h=m[1];return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+    m=s.match(/rgba?\(\s*(\d+)[ ,]+(\d+)[ ,]+(\d+)/i);
+    if(m)return[+m[1],+m[2],+m[3]];
+    return[200,245,58];
+  }
+  function tone(rgb){const c=light?rgb:rgb.map(v=>Math.round(v+(255-v)*.55));return{r:rgb[0],g:rgb[1],b:rgb[2],cr:c[0],cg:c[1],cb:c[2]}}
+  const rgba=(r,g,b,a)=>'rgba('+r+','+g+','+b+','+Math.max(0,Math.min(1,a)).toFixed(3)+')';
+  function refresh(h){
+    light=document.documentElement.getAttribute('data-theme')==='light';
+    const acc=toRGB(getComputedStyle(h.el).getPropertyValue('--a'));
+    const ion=toRGB(getComputedStyle(document.documentElement).getPropertyValue('--ion'));
+    h.pal=[acc,acc,acc,ion].map(tone);
+  }
+  /* strength of the section's corner mask at a point, used to place pulses where the circuit is visible */
+  function inten(h,x,y){
+    const dx=(x/h.w-1)/.9,dy=(y/h.h-1)/1,d=Math.sqrt(dx*dx+dy*dy);
+    return Math.max(0,Math.min(1,1-(d-.12)/.68));
+  }
+  function size(h){
+    const w=h.el.clientWidth,hh=h.el.clientHeight;
+    if(!w||!hh){h.w=0;return false}
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    if(w===h.w&&hh===h.h&&dpr===h.dpr)return true;
+    h.w=w;h.h=hh;h.dpr=dpr;
+    h.cv.width=Math.round(w*dpr);h.cv.height=Math.round(hh*dpr);
+    h.cols=Math.ceil(w/T);h.rows=Math.ceil(hh/T);
+    h.target=Math.max(5,Math.min(16,Math.round(h.cols*h.rows/2.6*(w<760?.6:1))));
+    return true;
+  }
+  function pointAt(rt,s){
+    if(s<=0)return rt.p[0];
+    if(s>=rt.L)return rt.p[rt.p.length-1];
+    let i=1;while(rt.cum[i]<s)i++;
+    const k=(s-rt.cum[i-1])/(rt.cum[i]-rt.cum[i-1]),a=rt.p[i-1],b=rt.p[i];
+    return[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k];
+  }
+  /* visible body of a pulse, head first, in tile coordinates */
+  function trailPts(rt,s,len){
+    const s0=Math.max(0,s-len),pts=[pointAt(rt,s)];
+    for(let i=rt.cum.length-1;i>=0;i--){if(rt.cum[i]<s&&rt.cum[i]>s0)pts.push(rt.p[i])}
+    pts.push(pointAt(rt,s0));
+    return pts;
+  }
+  function spawn(h,o){
+    o=o||{};
+    let cx=o.cx,cy=o.cy;
+    if(cx==null){
+      let ok=false;
+      for(let t=0;t<40&&!ok;t++){cx=(Math.random()*h.cols)|0;cy=(Math.random()*h.rows)|0;ok=Math.random()<inten(h,cx*T+90,cy*T+90)}
+      if(!ok)return;
+    }
+    h.pulses.push({
+      cx:cx,cy:cy,r:(Math.random()*ROUTES.length)|0,s:0,
+      speed:o.speed||(80+Math.random()*80),
+      len:o.len||(60+Math.random()*60),
+      ci:o.ci!=null?o.ci:(Math.random()*h.pal.length)|0,
+      dead:false,len0:0
+    });
+  }
+  function flash(h,x,y,ci){if(h.flashes.length<60)h.flashes.push({x:x,y:y,age:0,ci:ci})}
+  function burst(h){
+    const ci=(Math.random()*h.pal.length)|0;
+    const bx=Math.max(0,Math.min(h.cols-1,h.cols-2+((Math.random()*3)|0)-1)),by=Math.max(0,Math.min(h.rows-1,h.rows-2+((Math.random()*3)|0)-1));
+    for(let i=0;i<7;i++){
+      const cx=Math.max(0,Math.min(h.cols-1,bx+((Math.random()*5)|0)-2)),cy=Math.max(0,Math.min(h.rows-1,by+((Math.random()*5)|0)-2));
+      spawn(h,{cx:cx,cy:cy,ci:ci,speed:150+Math.random()*60,len:90+Math.random()*50});
+    }
+  }
+  function step(h,dt,now){
+    if(h.pulses.length<h.target&&Math.random()<dt*3)spawn(h);
+    if(now>=h.nextBurst){burst(h);h.nextBurst=now+6500+Math.random()*4000}
+    for(let i=h.pulses.length-1;i>=0;i--){
+      const p=h.pulses[i],rt=ROUTES[p.r];
+      if(p.dead){p.len-=p.speed*dt*1.5;if(p.len<=1)h.pulses.splice(i,1);continue}
+      const s0=p.s;p.s=Math.min(rt.L,p.s+p.speed*dt);
+      for(let k=0;k<rt.n.length;k++){const c=rt.cum[rt.n[k]];if(c>s0&&c<=p.s){const q=rt.p[rt.n[k]];flash(h,p.cx*T+q[0],p.cy*T+q[1],p.ci)}}
+      if(p.s>=rt.L){p.dead=true;p.len0=Math.max(p.len,1)}
+    }
+    for(let i=h.flashes.length-1;i>=0;i--){h.flashes[i].age+=dt;if(h.flashes[i].age>.6)h.flashes.splice(i,1)}
+  }
+  function seg(ctx,ax,ay,bx,by){ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke()}
+  function drawPulse(h,ctx,p){
+    const rt=ROUTES[p.r],ox=p.cx*T,oy=p.cy*T,col=h.pal[p.ci],fade=p.dead?Math.max(0,p.len/p.len0):1;
+    if(fade<=0)return;
+    const pts=trailPts(rt,p.s,p.len);let s=0;
+    ctx.lineCap='round';ctx.lineJoin='round';
+    for(let i=0;i<pts.length-1;i++){
+      const a=pts[i],b=pts[i+1],sl=Math.hypot(b[0]-a[0],b[1]-a[1]);
+      if(sl<.01)continue;
+      const s1=s+sl,a0=Math.pow(Math.max(0,1-s/p.len),1.6)*fade,a1=Math.pow(Math.max(0,1-s1/p.len),1.6)*fade;
+      const ax=ox+a[0],ay=oy+a[1],bx=ox+b[0],by=oy+b[1];
+      const g1=ctx.createLinearGradient(ax,ay,bx,by);
+      g1.addColorStop(0,rgba(col.r,col.g,col.b,a0));g1.addColorStop(1,rgba(col.r,col.g,col.b,a1));
+      ctx.strokeStyle=g1;ctx.lineWidth=6;ctx.globalAlpha=.22;seg(ctx,ax,ay,bx,by);
+      ctx.lineWidth=3;ctx.globalAlpha=.5;seg(ctx,ax,ay,bx,by);
+      const g2=ctx.createLinearGradient(ax,ay,bx,by);
+      g2.addColorStop(0,rgba(col.cr,col.cg,col.cb,a0));g2.addColorStop(1,rgba(col.cr,col.cg,col.cb,a1));
+      ctx.strokeStyle=g2;ctx.lineWidth=1.6;ctx.globalAlpha=1;seg(ctx,ax,ay,bx,by);
+      s=s1;
+    }
+    ctx.globalAlpha=1;
+    const hp=pts[0],hx=ox+hp[0],hy=oy+hp[1],R=13,rg=ctx.createRadialGradient(hx,hy,0,hx,hy,R);
+    rg.addColorStop(0,rgba(col.cr,col.cg,col.cb,.98*fade));rg.addColorStop(.25,rgba(col.r,col.g,col.b,.7*fade));rg.addColorStop(1,rgba(col.r,col.g,col.b,0));
+    ctx.fillStyle=rg;ctx.beginPath();ctx.arc(hx,hy,R,0,TAU);ctx.fill();
+  }
+  function drawFlash(h,ctx,f){
+    const col=h.pal[f.ci],t=f.age/.6,a=1-t;if(a<=0)return;
+    const R=8+t*12,rg=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,R);
+    rg.addColorStop(0,rgba(col.cr,col.cg,col.cb,.9*a));rg.addColorStop(1,rgba(col.r,col.g,col.b,0));
+    ctx.fillStyle=rg;ctx.beginPath();ctx.arc(f.x,f.y,R,0,TAU);ctx.fill();
+    ctx.strokeStyle=rgba(col.r,col.g,col.b,.75*a);ctx.lineWidth=1.2;
+    ctx.beginPath();ctx.arc(f.x,f.y,3+t*13,0,TAU);ctx.stroke();
+  }
+  function draw(h){
+    const ctx=h.ctx;
+    ctx.setTransform(h.dpr,0,0,h.dpr,0,0);
+    ctx.globalCompositeOperation='source-over';
+    ctx.clearRect(0,0,h.w,h.h);
+    ctx.globalCompositeOperation=light?'source-over':'lighter';
+    h.flashes.forEach(f=>drawFlash(h,ctx,f));
+    h.pulses.forEach(p=>drawPulse(h,ctx,p));
+  }
+  function makeHost(el){
+    const cv=document.createElement('canvas');
+    cv.className='cir';cv.setAttribute('aria-hidden','true');
+    el.insertBefore(cv,el.firstChild);
+    const h={el:el,cv:cv,ctx:cv.getContext('2d'),w:0,h:0,dpr:1,cols:0,rows:0,target:6,pal:[],pulses:[],flashes:[],vis:false,nextBurst:performance.now()+2200};
+    refresh(h);
+    if('ResizeObserver' in window)new ResizeObserver(()=>{size(h)}).observe(el);
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(es=>{
+        const on=es[es.length-1].isIntersecting;
+        if(on&&!h.vis){h.vis=true;size(h);if(!h.pulses.length&&h.w){for(let i=0;i<Math.round(h.target*.6);i++){spawn(h);const q=h.pulses[h.pulses.length-1];if(q)q.s=Math.random()*ROUTES[q.r].L*.7}}}
+        else if(!on)h.vis=false;
+      },{threshold:0}).observe(el);
+    }else{h.vis=true}
+    hosts.push(h);
+  }
+  $$('.sec.fx-circuit').forEach(makeHost);
+  if(!hosts.length)return;
+  new MutationObserver(()=>hosts.forEach(refresh)).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  let last=performance.now();
+  function frame(now){
+    requestAnimationFrame(frame);
+    const dt=Math.min(.05,Math.max(0,(now-last)/1000));last=now;
+    if(document.hidden)return;
+    for(let i=0;i<hosts.length;i++){
+      const h=hosts[i];
+      if(!h.vis||!h.el.clientWidth)continue;
+      if(!size(h))continue;
+      step(h,dt,now);draw(h);
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ---------- AD POOL · RADIAL LEDGER ----------
+   Builds the two-ring chart and its ledger from one data set, so every percentage and amount is
+   computed, never typed twice. Ring 01: campaign budget = protocol commission + what remains.
+   Ring 02: what remains, re-based to 100% (the Ad Pool), split by qualifying contribution.
+   All figures are illustrative. */
+(function(){
+  const host=$('#pie'),led=$('#ledger');
+  if(!host||!led)return;
+  const fmt=n=>'₦'+String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  const BUDGET=1000000,COM_PCT=5,COM=BUDGET*COM_PCT/100,POOL=BUDGET-COM;
+  const SHARES=[['Creator A',8,'c1','The worked example: an 8% share of the Ad Pool'],['Creator B',22,'c2','Qualifying contribution resolves to 22%'],['Creator C',18,'c3','Qualifying contribution resolves to 18%'],['Creator D',16,'c4','Qualifying contribution resolves to 16%'],['Creator E',36,'c5','Qualifying contribution resolves to 36%']];
+  const R1=[
+    {id:'com',name:'Protocol commission',note:'Illustrative. Removed first',pct:COM_PCT,amt:COM,cls:'cm',of:'of the campaign budget',ring:'Ring 01 · Budget'},
+    {id:'pool',name:'Ad Pool',note:'Everything that remains',pct:100-COM_PCT,amt:POOL,cls:'pl',of:'of the campaign budget',ring:'Ring 01 · Budget'}
+  ];
+  const R2=SHARES.map(s=>({id:s[2],name:s[0],note:s[3],pct:s[1],amt:POOL*s[1]/100,cls:s[2],of:'of the Ad Pool',ring:'Ring 02 · Ad Pool'}));
+  const sum2=R2.reduce((a,b)=>a+b.pct,0);
+
+  const CX=260,rings=[{r:212,w:30,items:R1},{r:160,w:46,items:R2}];
+  let svg='';
+  const TICKS=120,TR=250,tc=2*Math.PI*TR;
+  svg+='<circle class="tk" cx="260" cy="260" r="'+TR+'" style="stroke-width:9px;stroke-dasharray:1.3 '+(tc/TICKS-1.3).toFixed(3)+'"/>';
+  svg+='<circle class="dash" cx="260" cy="260" r="118" style="stroke-width:1.4px"/>';
+  rings.forEach(rg=>{svg+='<circle class="trk" cx="260" cy="260" r="'+rg.r+'" style="stroke-width:'+rg.w+'px"/>'});
+  rings.forEach((rg,ri)=>{
+    const C=2*Math.PI*rg.r,gap=2.6;let acc=0;
+    rg.items.forEach((it,i)=>{
+      const len=C*it.pct/100,seg=Math.max(0,len-gap),off=-(acc*C/100+gap/2);
+      svg+='<circle class="seg '+it.cls+'" data-k="'+it.id+'" cx="260" cy="260" r="'+rg.r+'" transform="rotate(-90 260 260)" style="--sw:'+rg.w+'px;--d:'+seg.toFixed(2)+' '+C.toFixed(2)+';--o:'+off.toFixed(2)+';--dl:'+(ri*.35+i*.12).toFixed(2)+'s"/>';
+      acc+=it.pct;
+    });
+  });
+  $('svg',host).innerHTML=svg;
+
+  const all=R1.concat(R2),byId={};all.forEach(i=>byId[i.id]=i);
+  let h='<div class="lg-h"><span class="n">01</span>Campaign budget<b>'+fmt(BUDGET)+'</b></div>';
+  R1.forEach(i=>{h+=row(i,i.pct+'%')});
+  h+='<div class="lg-h"><span class="n">02</span>Ad Pool, re-based to 100%<b>'+fmt(POOL)+'</b></div>';
+  R2.forEach(i=>{h+=row(i,i.pct+'%')});
+  h+='<div class="lg-f"><span><b>Σ ring 01</b> '+COM_PCT+'% + '+(100-COM_PCT)+'% = 100% of '+fmt(BUDGET)+'</span><span><b>Σ ring 02</b> '+R2.map(i=>i.pct).join(' + ')+' = '+sum2+'% of '+fmt(POOL)+'</span><span>Commission is removed first. What remains is the Ad Pool, and every unit of it is distributed.</span></div>';
+  led.innerHTML=h;
+  function row(i,p){return '<button type="button" class="lg-r" data-k="'+i.id+'"><i class="dot '+i.cls+'"></i><span class="nm">'+i.name+'<small>'+i.note+'</small></span><span class="pc">'+p+'</span><span class="am">'+fmt(i.amt)+'</span></button>'}
+
+  const K=$('.pc-k',host),V=$('.pc-v',host),S=$('.pc-s',host),segs=$$('.seg',host),rows=$$('.lg-r',led);
+  const D={k:'Ad Pool',v:'100%',s:fmt(POOL)+' after the protocol commission'};
+  function rest(){host.classList.remove('has-a');segs.forEach(s=>s.classList.remove('act'));rows.forEach(r=>r.classList.remove('act'));K.textContent=D.k;V.textContent=D.v;S.textContent=D.s}
+  function act(k){
+    const it=byId[k];if(!it)return;
+    host.classList.add('has-a');
+    segs.forEach(s=>s.classList.toggle('act',s.dataset.k===k));
+    rows.forEach(r=>r.classList.toggle('act',r.dataset.k===k));
+    K.textContent=it.name;V.textContent=it.pct+'%';S.textContent=fmt(it.amt)+' · '+it.of;
+  }
+  [].concat(segs,rows).forEach(el=>{
+    el.addEventListener('mouseenter',()=>act(el.dataset.k));
+    el.addEventListener('focus',()=>act(el.dataset.k));
+    el.addEventListener('click',()=>act(el.dataset.k));
+    el.addEventListener('mouseleave',rest);
+    el.addEventListener('blur',rest);
+  });
+  if('IntersectionObserver' in window){
+    const o=new IntersectionObserver(es=>{if(es[0].isIntersecting){host.classList.add('live');o.disconnect()}},{threshold:.25});
+    o.observe(host);
+  }else host.classList.add('live');
+})();
+
+/* ---------- XEEVIA PREMIUM · billing switch ----------
+   Silver $1 a month or $9 a year, Gold $2 or $18, Diamond $3 or $27. */
+(function(){
+  const bill=$('.bill');if(!bill)return;
+  const P={m:[1,2,3],y:[9,18,27]};
+  function set(m){
+    $$('button',bill).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.b===m)));
+    $$('.tier').forEach((t,i)=>{
+      $('.t-price b',t).textContent='$'+P[m][i];
+      $('.t-price span',t).textContent=m==='m'?'/ month':'/ year';
+      $('.t-sub',t).textContent=m==='m'
+        ?'Billed monthly. Or $'+P.y[i]+' a year if you pay yearly.'
+        :'About $'+(P.y[i]/12).toFixed(2)+' a month. You save $'+(P.m[i]*12-P.y[i])+' a year.';
+    });
+  }
+  bill.addEventListener('click',e=>{const b=e.target.closest('button');if(b)set(b.dataset.b)});
 })();
 
 /* every button gets the arrow disc unless it opts out */
