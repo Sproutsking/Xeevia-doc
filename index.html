@@ -1053,11 +1053,6 @@ button.tile:active{transform:scale(.985)}
 .af-leg span{grid-column:2;font-family:var(--fm);font-size:12px;letter-spacing:.04em;color:var(--t3)}
 .dot{display:inline-block;width:12px;height:12px;border-radius:4px;margin-top:5px;flex:none}
 .dot.cm{background:var(--ember)}.dot.pl{background:var(--lime)}
-.af-fun{position:relative;height:96px;margin:26px 0 22px;display:grid;place-items:center}
-.af-fun::before{content:"";position:absolute;inset:0;clip-path:polygon(5% 0,100% 0,100% 100%,0 100%);background:linear-gradient(180deg,color-mix(in srgb,var(--lime) 34%,transparent),color-mix(in srgb,var(--lime) 7%,transparent))}
-.af-fun::after{content:"";position:absolute;inset:0;clip-path:polygon(5% 0,100% 0,100% 100%,0 100%);background:repeating-linear-gradient(180deg,transparent 0 9px,color-mix(in srgb,var(--lime) 30%,transparent) 9px 10px);animation:funflow 1.8s linear infinite;opacity:.7}
-@keyframes funflow{to{background-position:0 10px}}
-.af-fun span{position:relative;z-index:2;display:inline-flex;align-items:center;gap:12px;padding:9px 18px;border:1px solid color-mix(in srgb,var(--lime) 55%,transparent);border-radius:100px;background:var(--s1);font-family:var(--fm);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);text-align:center;line-height:1.5}
 .af-sum{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline;font-size:14px;color:var(--t3);line-height:1.7}
 .af-sum b{font-family:var(--fm);font-size:12.5px;font-weight:700;letter-spacing:.06em;color:var(--lime)}
 .af-sum p{flex:1 1 360px;max-width:64ch}
@@ -1076,12 +1071,22 @@ button.tile:active{transform:scale(.985)}
 .pie .trk{fill:none;stroke:var(--line)}
 .pie .tk{fill:none;stroke:var(--line2);transform-origin:260px 260px;animation:orb 120s linear infinite}
 .pie .dash{fill:none;stroke:color-mix(in srgb,var(--lime) 45%,transparent);stroke-dasharray:2 9;transform-origin:260px 260px;animation:orb 60s linear infinite reverse}
-.pie .seg{fill:none;cursor:pointer;stroke-width:var(--sw);stroke-dashoffset:var(--o);stroke-dasharray:0 2000;transition:stroke-dasharray 1.4s cubic-bezier(.16,1,.3,1) var(--dl,0s),stroke-width .25s,opacity .25s}
-.pie.live .seg{stroke-dasharray:var(--d)}
-.pie.has-a .seg{opacity:.3}
-.pie.has-a .seg.act{opacity:1;stroke-width:calc(var(--sw) + 12px)}
-.seg.cm{stroke:var(--ember)}.seg.pl{stroke:color-mix(in srgb,var(--lime) 58%,transparent)}
-.seg.c1{stroke:var(--lime)}.seg.c2{stroke:var(--ion)}.seg.c3{stroke:var(--violet)}.seg.c4{stroke:var(--signal)}.seg.c5{stroke:var(--t3)}
+.pie .gd{fill:none;stroke:var(--line2)}
+.pie .sg{transform-origin:260px 260px;transform:scale(.3) rotate(-18deg);opacity:0;cursor:pointer;transition:transform 1.2s cubic-bezier(.16,1,.3,1) var(--dl,0s),opacity .7s ease var(--dl,0s)}
+.pie.live .sg{transform:none;opacity:1}
+.pie .seg{stroke:var(--bg);stroke-width:1.4;stroke-linejoin:round;filter:drop-shadow(0 8px 10px rgba(0,0,0,.45));transition:filter .35s}
+.pie .sg>*{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.pie .gl{fill:url(#gloss);stroke:none;pointer-events:none}
+.pie .cap{fill:none;stroke:#fff;stroke-opacity:.55;stroke-width:1.8;stroke-linecap:round;pointer-events:none}
+.pie .sl{font-family:var(--fm);font-size:12.5px;font-weight:700;letter-spacing:.04em;pointer-events:none;text-anchor:middle;dominant-baseline:central}
+.pie.live.has-a .sg{opacity:.26}
+.pie.live.has-a .sg.act{opacity:1}
+.sg.act>*{transform:translate(var(--tx),var(--ty))}
+.sg.act .seg{filter:drop-shadow(0 0 16px currentColor) brightness(1.15)}
+.seg.cm{fill:var(--ember);color:var(--ember)}
+.seg.pl{fill:color-mix(in srgb,var(--lime) 50%,transparent);color:var(--lime)}
+.seg.c1{fill:url(#gr-c1);color:var(--lime)}.seg.c2{fill:url(#gr-c2);color:var(--ion)}.seg.c3{fill:url(#gr-c3);color:var(--violet)}.seg.c4{fill:url(#gr-c4);color:var(--signal)}.seg.c5{fill:url(#gr-c5);color:var(--t3)}
+.sl.cm{fill:var(--on-ember)}.sl.pl{fill:var(--t1)}.sl.cc{fill:var(--on-c)}
 .pie-c{position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
 .pie-c>div{width:38%;display:grid;gap:6px}
 .pc-k{font-family:var(--fm);font-size:clamp(9.5px,1.1vw,11.5px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
@@ -1109,6 +1114,36 @@ button.tile:active{transform:scale(.985)}
 [data-theme="light"] .lg-r{background:var(--s1)}
 [data-theme="light"] .tier{background:linear-gradient(180deg,color-mix(in srgb,var(--tc) 10%,#fff) 0%,#fff 72%);box-shadow:var(--soft)}
 [data-theme="light"] .af-fun span{background:#fff}
+
+/* the step between the two stages: a clean equation panel, no animation */
+.af-eq{display:grid;justify-items:center;margin:6px 0 4px}
+.eq-line{width:1px;height:28px;background:repeating-linear-gradient(180deg,var(--lime) 0 4px,transparent 4px 8px)}
+.eq-card{display:grid;grid-template-columns:1fr auto 1fr auto 1.1fr;width:100%;border:1px solid var(--line2);border-radius:20px;overflow:hidden;background:var(--bg)}
+.eq-c{display:grid;gap:5px;align-content:center;padding:20px 24px}
+.eq-c small{font-family:var(--fm);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.eq-c b{font-family:var(--fd);font-weight:400;font-size:clamp(30px,3.6vw,44px);line-height:1;color:var(--t1)}
+.eq-c em{font-style:normal;font-family:var(--fm);font-size:11.5px;letter-spacing:.06em;color:var(--lime)}
+.eq-c.cm b{color:var(--ember)}
+.eq-c.pl{background:color-mix(in srgb,var(--lime) 9%,var(--bg))}
+.eq-c.pl b{color:var(--lime)}
+.eq-op{display:grid;place-items:center;padding:0 14px;font-family:var(--fd);font-size:38px;color:var(--t3);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.eq-note{margin-top:14px;max-width:62ch;text-align:center;font-size:14px;line-height:1.65;color:var(--t3)}
+.eq-note b{color:var(--t1);font-weight:600}
+@media(max-width:760px){.eq-card{grid-template-columns:1fr}.eq-op{padding:2px 0;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:30px}.eq-c{padding:16px 20px}}
+[data-theme="light"] .eq-card{background:var(--s1)}
+[data-theme="light"] .eq-c.pl{background:color-mix(in srgb,var(--lime) 9%,#fff)}
+
+/* premium finish: rotating core, scale labels, radar sweep over the rings */
+.pie .arc1{fill:none;stroke:var(--lime);stroke-opacity:.75;transform-origin:260px 260px;animation:orb 26s linear infinite}
+.pie .scan{fill:none;stroke:var(--lime);stroke-linecap:round;transform-origin:260px 260px;animation:orb 6s linear infinite;filter:drop-shadow(0 0 5px var(--lime))}
+.pie .od{transform-origin:260px 260px;animation:orb 14s linear infinite reverse}
+.pie .od2{transform-origin:260px 260px;animation:orb 40s linear infinite}
+.pie .sc{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.1em;fill:var(--t3);text-anchor:middle;dominant-baseline:central}
+.pie::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:conic-gradient(from 0deg,transparent 0 290deg,color-mix(in srgb,var(--lime) 13%,transparent) 350deg,color-mix(in srgb,var(--lime) 32%,transparent) 360deg);-webkit-mask-image:radial-gradient(circle closest-side,transparent 44%,#000 46%,#000 93%,transparent 99%);mask-image:radial-gradient(circle closest-side,transparent 44%,#000 46%,#000 93%,transparent 99%);mix-blend-mode:screen;animation:orb 9s linear infinite}
+.pie-c>div{position:relative}
+[data-theme="light"] .pie::after{mix-blend-mode:multiply;opacity:.5}
+[data-theme="light"] .pie .seg{filter:drop-shadow(0 6px 8px rgba(22,28,72,.22))}
+[data-theme="light"] .pie .cap{stroke:#fff;stroke-opacity:.8}
 </style>
 </head>
 <body>
@@ -1846,7 +1881,18 @@ button.tile:active{transform:scale(.985)}
             <div><i class="dot pl"></i><b>Remaining after commission</b><span>95% · ₦950,000</span></div>
           </div>
         </div>
-        <div class="af-fun" aria-hidden="true"><span>After commission, the remainder becomes the Ad Pool = 100%</span></div>
+        <div class="af-eq">
+          <span class="eq-line" aria-hidden="true"></span>
+          <div class="eq-card" role="group" aria-label="Budget minus protocol commission equals the Ad Pool">
+            <div class="eq-c"><small>Campaign budget</small><b>₦1,000,000</b></div>
+            <span class="eq-op" aria-hidden="true">−</span>
+            <div class="eq-c cm"><small>Protocol commission · 5%</small><b>₦50,000</b></div>
+            <span class="eq-op" aria-hidden="true">=</span>
+            <div class="eq-c pl"><small>Ad Pool</small><b>₦950,000</b><em>re-based to 100%</em></div>
+          </div>
+          <p class="eq-note"><b>The commission is removed first.</b> What remains becomes the Ad Pool, and the Ad Pool is 100%.</p>
+          <span class="eq-line" aria-hidden="true"></span>
+        </div>
         <div class="af-step">
           <div class="af-hd">
             <div><span class="af-k"><span class="n">02</span>Ad Pool</span><p class="af-d">All shares, added together, resolve to exactly 100% of what remains.</p></div>
@@ -2993,19 +3039,55 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
   const R2=SHARES.map(s=>({id:s[2],name:s[0],note:s[3],pct:s[1],amt:POOL*s[1]/100,cls:s[2],of:'of the Ad Pool',ring:'Ring 02 · Ad Pool'}));
   const sum2=R2.reduce((a,b)=>a+b.pct,0);
 
-  const CX=260,rings=[{r:212,w:30,items:R1},{r:160,w:46,items:R2}];
-  let svg='';
-  const TICKS=120,TR=250,tc=2*Math.PI*TR;
-  svg+='<circle class="tk" cx="260" cy="260" r="'+TR+'" style="stroke-width:9px;stroke-dasharray:1.3 '+(tc/TICKS-1.3).toFixed(3)+'"/>';
-  svg+='<circle class="dash" cx="260" cy="260" r="118" style="stroke-width:1.4px"/>';
-  rings.forEach(rg=>{svg+='<circle class="trk" cx="260" cy="260" r="'+rg.r+'" style="stroke-width:'+rg.w+'px"/>'});
-  rings.forEach((rg,ri)=>{
-    const C=2*Math.PI*rg.r,gap=2.6;let acc=0;
-    rg.items.forEach((it,i)=>{
-      const len=C*it.pct/100,seg=Math.max(0,len-gap),off=-(acc*C/100+gap/2);
-      svg+='<circle class="seg '+it.cls+'" data-k="'+it.id+'" cx="260" cy="260" r="'+rg.r+'" transform="rotate(-90 260 260)" style="--sw:'+rg.w+'px;--d:'+seg.toFixed(2)+' '+C.toFixed(2)+';--o:'+off.toFixed(2)+';--dl:'+(ri*.35+i*.12).toFixed(2)+'s"/>';
-      acc+=it.pct;
-    });
+  /* polar-area chart: every segment keeps its own angle (its share) AND its own depth (also its share),
+     so bigger shares reach further out. The commission is pushed outward: it is removed from the pool. */
+  const P=(r,a)=>{const t=a*Math.PI/180;return[260+r*Math.sin(t),260-r*Math.cos(t)]};
+  const f2=n=>n.toFixed(2);
+  function sector(r0,r1,a0,a1){
+    const lg=(a1-a0)>180?1:0,A=P(r1,a0),B=P(r1,a1),C=P(r0,a1),D=P(r0,a0);
+    return 'M'+f2(A[0])+' '+f2(A[1])+'A'+r1+' '+r1+' 0 '+lg+' 1 '+f2(B[0])+' '+f2(B[1])+'L'+f2(C[0])+' '+f2(C[1])+'A'+r0+' '+r0+' 0 '+lg+' 0 '+f2(D[0])+' '+f2(D[1])+'Z';
+  }
+  const COL={c1:'--lime',c2:'--ion',c3:'--violet',c4:'--signal',c5:'--t3'};
+  const IN=118,MIN_D=28,SPAN_D=42,MAXP=Math.max.apply(null,R2.map(i=>i.pct));
+  let svg='<defs>';
+  Object.keys(COL).forEach(k=>{svg+='<radialGradient id="gr-'+k+'" cx="260" cy="260" r="190" gradientUnits="userSpaceOnUse"><stop offset=".58" style="stop-color:var('+COL[k]+');stop-opacity:.34"/><stop offset="1" style="stop-color:var('+COL[k]+')"/></radialGradient>'});
+  svg+='<linearGradient id="gloss" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>';
+  svg+='<radialGradient id="core" cx="260" cy="260" r="118" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:var(--bg)"/><stop offset=".72" style="stop-color:var(--s1)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--lime) 16%,var(--s1))"/></radialGradient>';
+  svg+='</defs>';
+  const TICKS=120,TR=252,tc=2*Math.PI*TR;
+  svg+='<circle class="tk" cx="260" cy="260" r="'+TR+'" style="stroke-width:8px;stroke-dasharray:1.3 '+(tc/TICKS-1.3).toFixed(3)+'"/>';
+  /* scale rings behind ring 02, and four spokes */
+  [IN,146,167,188].forEach((r,i)=>{svg+='<circle class="gd" cx="260" cy="260" r="'+r+'" style="stroke-width:1px;'+(i?'stroke-dasharray:2 6':'')+'"/>'});
+  [0,90,180,270].forEach(a=>{const p=P(IN,a),q=P(188,a);svg+='<line class="gd" x1="'+f2(p[0])+'" y1="'+f2(p[1])+'" x2="'+f2(q[0])+'" y2="'+f2(q[1])+'" style="stroke-width:1px;stroke-dasharray:2 6"/>'});
+  /* major ticks and scale labels */
+  svg+='<circle class="tk" cx="260" cy="260" r="'+TR+'" style="stroke-width:15px;stroke-dasharray:1.8 '+(tc/12-1.8).toFixed(3)+'"/>';
+  [[0,'0%'],[90,'25%'],[180,'50%'],[270,'75%']].forEach(s=>{const p=P(272,s[0]);svg+='<text class="sc" x="'+f2(p[0])+'" y="'+f2(p[1])+'">'+s[1]+'</text>'});
+  /* the rotating core: glass disc, counter-rotating dotted ring, segmented ring, scanner arc, orbiting nodes */
+  svg+='<circle cx="260" cy="260" r="116" fill="url(#core)" style="stroke:var(--line2);stroke-width:1px"/>';
+  svg+='<circle class="dash" cx="260" cy="260" r="108" style="stroke-width:1.5px"/>';
+  svg+='<circle class="arc1" cx="260" cy="260" r="101" style="stroke-width:2px;stroke-dasharray:64 16 20 16 8 16"/>';
+  svg+='<circle class="scan" cx="260" cy="260" r="93" style="stroke-width:3px;stroke-dasharray:84 500"/>';
+  svg+='<circle class="gd" cx="260" cy="260" r="85" style="stroke-width:1px;stroke-dasharray:1 5"/>';
+  svg+='<g class="od"><circle cx="260" cy="144" r="3.6" style="fill:var(--lime);filter:drop-shadow(0 0 6px var(--lime))"/></g>';
+  svg+='<g class="od2"><circle cx="260" cy="8" r="3.6" style="fill:var(--ion);filter:drop-shadow(0 0 6px var(--ion))"/></g>';
+  function seg(it,r0,r1,a0,a1,gap,dl,lc){
+    const mid=(a0+a1)/2,am=mid*Math.PI/180,tx=Math.sin(am)*9,ty=-Math.cos(am)*9,lp=P(lc,mid);
+    const lab=it.cls==='cm'?'cm':it.cls==='pl'?'pl':'cc',d=sector(r0,r1,a0+gap,a1-gap);
+    const A=P(r1-1,a0+gap),B=P(r1-1,a1-gap),lg=((a1-gap)-(a0+gap))>180?1:0;
+    const cap='M'+f2(A[0])+' '+f2(A[1])+'A'+(r1-1)+' '+(r1-1)+' 0 '+lg+' 1 '+f2(B[0])+' '+f2(B[1]);
+    return '<g class="sg" data-k="'+it.id+'" style="--dl:'+f2(dl)+'s;--tx:'+f2(tx)+'px;--ty:'+f2(ty)+'px"><path class="seg '+it.cls+'" d="'+d+'"/><path class="gl" d="'+d+'"/><path class="cap" d="'+cap+'"/><text class="sl '+lab+'" x="'+f2(lp[0])+'" y="'+f2(lp[1])+'">'+it.pct+'%</text></g>';
+  }
+  let acc=0;
+  R1.forEach((it,i)=>{
+    const a0=acc*3.6,a1=(acc+it.pct)*3.6,deep=it.id==='com';
+    svg+=seg(it,197,deep?244:227,a0,a1,.5,i*.1,deep?221:212);
+    acc+=it.pct;
+  });
+  acc=0;
+  R2.forEach((it,i)=>{
+    const a0=acc*3.6,a1=(acc+it.pct)*3.6,r1=IN+MIN_D+it.pct/MAXP*SPAN_D;
+    svg+=seg(it,IN,r1,a0,a1,.9,.3+i*.12,r1-17);
+    acc+=it.pct;
   });
   $('svg',host).innerHTML=svg;
 
@@ -3018,7 +3100,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
   led.innerHTML=h;
   function row(i,p){return '<button type="button" class="lg-r" data-k="'+i.id+'"><i class="dot '+i.cls+'"></i><span class="nm">'+i.name+'<small>'+i.note+'</small></span><span class="pc">'+p+'</span><span class="am">'+fmt(i.amt)+'</span></button>'}
 
-  const K=$('.pc-k',host),V=$('.pc-v',host),S=$('.pc-s',host),segs=$$('.seg',host),rows=$$('.lg-r',led);
+  const K=$('.pc-k',host),V=$('.pc-v',host),S=$('.pc-s',host),segs=$$('.sg',host),rows=$$('.lg-r',led);
   const D={k:'Ad Pool',v:'100%',s:fmt(POOL)+' after the protocol commission'};
   function rest(){host.classList.remove('has-a');segs.forEach(s=>s.classList.remove('act'));rows.forEach(r=>r.classList.remove('act'));K.textContent=D.k;V.textContent=D.v;S.textContent=D.s}
   function act(k){
