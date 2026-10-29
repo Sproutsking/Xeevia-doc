@@ -834,10 +834,6 @@ button.tile:active{transform:scale(.985)}
 
 /* ================================================================
    NEON CURRENT · live energy running through the grid lines
-   A canvas sits exactly on top of the CSS grid (same cell size, same origin, same mask),
-   so every pulse travels along a real grid line, turns only at real intersections,
-   and fades out with the same radial mask as the grid itself.
-   Hosts: the hero (72px grid) and every .fx-grid section (56px grid).
    ================================================================ */
 .neon{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;display:block}
 .hero>.neon{-webkit-mask-image:radial-gradient(85% 85% at 50% 38%,#000,transparent);mask-image:radial-gradient(85% 85% at 50% 38%,#000,transparent)}
@@ -846,12 +842,6 @@ button.tile:active{transform:scale(.985)}
 
 /* ================================================================
    TEXT LIFT · copy always reads clearly above the background art
-   The artwork is untouched in look and position; it simply yields around words.
-   1) Every piece of copy carries a soft halo in the colour of the surface it sits on
-      (--halo), so pattern lines, grids and neon pulses dim right behind the letters.
-   2) Patterns inside cards are a touch quieter and fade out before they reach the text area.
-   3) Full-width line patterns (scan, hatch) sit on the side away from the headings.
-   4) The hero text column gets a soft veil above the grid + neon current.
    ================================================================ */
 :root{--halo:var(--bg);--lift:0 0 2px var(--halo),0 0 10px var(--halo),0 0 22px var(--halo)}
 .sec.alt{--halo:var(--s1)}
@@ -873,38 +863,22 @@ button.tile:active{transform:scale(.985)}
 .tc h3,.tc .hd,.tc .role,.tc p,
 .cost-r span,.cost-r small,.bar-r span,.stack-r p,.formula,
 .big,.ml:not(.glow),.mf .cap{text-shadow:var(--lift)}
-/* gradient-filled and button text must stay crisp: no halo */
 .hero .h1 .l2,.ml.glow,.btn,.btn *,.st,.av,.ph-join,.logo-mark{text-shadow:none}
 
-/* 2) quieter, tighter patterns inside cards (same patterns, same corners) */
 .card::after,.tile::after,.rung::after,.loop div::after{opacity:.6}
 .card::after,.loop div::after{--mk:radial-gradient(72% 78% at var(--px,100%) var(--py,0%),#000 4%,transparent 70%)}
 @media(hover:hover){
   .card:hover::after,.tile:hover::after,.rung:hover::after,.loop div:hover::after{opacity:.82}
 }
 
-/* 3) line-based section patterns move to the side away from headings */
 .fx-scan::before{--m:linear-gradient(270deg,#000 4%,transparent 56%)}
 .fx-hatch::before{--m:radial-gradient(85% 100% at 100% 100%,#000 12%,transparent 82%)}
 
-/* 4) hero: a soft veil behind the text column, above the grid and neon current */
 .hero-g>div:first-child{position:relative}
 .hero-g>div:first-child::before{content:"";position:absolute;inset:-8% -10% -8% -12%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 62% 58% at 46% 50%,color-mix(in srgb,var(--bg) 82%,transparent) 0%,color-mix(in srgb,var(--bg) 58%,transparent) 48%,transparent 100%)}
 
 /* ================================================================
    ALIVE SECTION BACKGROUNDS
-   The section backgrounds keep their look, position and masks. They now live.
-   A) CIRCUIT  (01 Inside the app, and every section that carries the circuit-trace background):
-      live current runs along the traces themselves. A canvas sits exactly on the trace tile
-      (script below), glowing pulses travel the copper, throw a spark at every node, and the
-      traces breathe softly underneath.
-   B) RINGS    (03 Where people gather, and every section that carries the ring background):
-      the rings expand outward like ripples, and a bright wave rolls out through them
-      from the corner every few seconds, lighting each ring as it passes.
-   C) AURORA   (the soft colour glow behind those sections) breathes slowly.
-   Registered custom properties (--o ring offset, --rw wave radius) make every loop seamless.
-   Off-screen sections pause (class .on is set by the observer in the script).
-   Reduced-motion visitors keep the still backgrounds.
    ================================================================ */
 @property --o{syntax:'<length>';inherits:false;initial-value:0px}
 @property --rw{syntax:'<length>';inherits:false;initial-value:-300px}
@@ -913,12 +887,10 @@ button.tile:active{transform:scale(.985)}
 @keyframes cirglow{from{opacity:var(--fxc)}to{opacity:calc(var(--fxc) * 1.7)}}
 @keyframes aurb{from{opacity:.62}to{opacity:1}}
 
-/* A) circuit: canvas lies exactly over the trace tile, same origin, same corner mask */
 .cir{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;display:block;-webkit-mask-image:radial-gradient(90% 100% at 100% 100%,#000 12%,transparent 80%);mask-image:radial-gradient(90% 100% at 100% 100%,#000 12%,transparent 80%)}
 @media(prefers-reduced-motion:reduce){.cir{display:none}}
 .fx-circuit::before{animation:cirglow 6s ease-in-out infinite alternate}
 
-/* B) rings: same 81px rings and same corner, now expanding, with a travelling wave of light */
 .fx-rings::before{
   background:repeating-radial-gradient(circle at 96% 6%,transparent var(--o) calc(var(--o) + 80px),color-mix(in srgb,var(--a) 62%,transparent) calc(var(--o) + 80px) calc(var(--o) + 81px));
   --m:radial-gradient(circle at 96% 6%,rgba(0,0,0,.42) calc(var(--rw) - 320px),#000 var(--rw),rgba(0,0,0,.42) calc(var(--rw) + 36px)),radial-gradient(95% 105% at 96% 6%,#000 15%,transparent 85%);
@@ -927,18 +899,12 @@ button.tile:active{transform:scale(.985)}
 }
 [data-theme="light"] .fx-rings::before{background:repeating-radial-gradient(circle at 96% 6%,transparent var(--o) calc(var(--o) + 80px),color-mix(in srgb,var(--a) 72%,transparent) calc(var(--o) + 80px) calc(var(--o) + 81px))}
 
-/* C) aurora glow */
 .fx-aurora::after{animation:aurb 10s ease-in-out infinite alternate}
 
-/* pause everything that is not on screen */
 .sec:not(.on).fx-circuit::before,.sec:not(.on).fx-rings::before,.sec:not(.on).fx-aurora::after{animation-play-state:paused}
 
 /* ================================================================
-   06 · JOIN THE FIRST WAVE · a firm, solid surface
-   Fully opaque panel (the floor grid no longer shows through the text), a crisp hairline
-   border with an inset highlight, a faint masked grid inside, a slow light beam along the
-   top edge, and two clear columns: the invitation on the left, the perks as solid rows
-   on the right.
+   06 · JOIN THE FIRST WAVE
    ================================================================ */
 .access{
   --halo:var(--s1);
@@ -974,9 +940,6 @@ button.tile:active{transform:scale(.985)}
 
 /* ================================================================
    MOBILE FLOW · one clean column on phones
-   Card grids no longer squeeze into two narrow columns on a phone. Tablets keep two columns,
-   phones get one full-width column, so text, numbers and patterns always have room.
-   (The earlier 640px rule was being overridden by the tablet rule; this one comes last and wins.)
    ================================================================ */
 @media(max-width:640px){
   .g2,.g3,.g4{grid-template-columns:1fr;gap:12px}
@@ -990,8 +953,6 @@ button.tile:active{transform:scale(.985)}
 
 /* ================================================================
    XEEVIA PREMIUM · Silver, Gold, Diamond
-   Three tier cards, each with its own metal. A billing switch flips every price between monthly
-   and yearly. A boost meter shows how strong the profile boost is at each level.
    ================================================================ */
 :root{--sil:#d3dae8;--gld:#f6c453;--dia:#7de8ff;--on-c:#07080c;--on-ember:#1b0c02}
 [data-theme="light"]{--sil:#66708a;--gld:#a56500;--dia:#06599f;--on-c:#ffffff;--on-ember:#ffffff}
@@ -1030,9 +991,6 @@ button.tile:active{transform:scale(.985)}
 
 /* ================================================================
    AD POOL · RADIAL LEDGER (two-ring chart)
-   Ring 01 is the campaign budget, split into protocol commission and what remains. Ring 02 is
-   that remainder re-based to 100% and shared by qualifying contribution. Segments draw in,
-   respond to hover or tap, and every total is computed from the same data, so it always sums.
    ================================================================ */
 .pie-w{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:clamp(24px,4vw,60px);align-items:center;margin-top:22px;border:1px solid var(--line2);border-radius:26px;padding:clamp(48px,5vw,64px) clamp(20px,3.6vw,48px) clamp(34px,4vw,48px);background:linear-gradient(180deg,var(--s2),var(--s1));--halo:var(--s1)}
 @media(max-width:900px){.pie-w{grid-template-columns:1fr}}
@@ -1065,7 +1023,6 @@ button.tile:active{transform:scale(.985)}
 .pc-s{font-size:clamp(11px,1.2vw,13px);line-height:1.45;color:var(--t3)}
 [data-theme="light"] .tier{background:linear-gradient(180deg,color-mix(in srgb,var(--tc) 10%,#fff) 0%,#fff 72%);box-shadow:var(--soft)}
 
-/* premium finish: rotating core, scale labels, radar sweep over the rings */
 .pie .arc1{fill:none;stroke:var(--lime);stroke-opacity:.75;transform-origin:260px 260px;animation:orb 26s linear infinite}
 .pie .scan{fill:none;stroke:var(--lime);stroke-linecap:round;transform-origin:260px 260px;animation:orb 6s linear infinite;filter:drop-shadow(0 0 5px var(--lime))}
 .pie .od{transform-origin:260px 260px;animation:orb 14s linear infinite reverse}
@@ -1080,8 +1037,7 @@ button.tile:active{transform:scale(.985)}
 [data-theme="light"] .pipe,[data-theme="light"] .pie-w,[data-theme="light"] .mf-card{background:#fff;box-shadow:var(--soft-lg);--halo:#fff}
 
 /* ================================================================
-   SETTLEMENT PIPELINE · budget − protocol commission = Ad Pool, then shared out
-   A compact, dense layout: three linked cards on one row, and the distribution strip below.
+   SETTLEMENT PIPELINE
    ================================================================ */
 .pipe{position:relative;isolation:isolate;overflow:hidden;margin-top:34px;border:1px solid var(--line2);border-radius:24px;padding:clamp(16px,2.4vw,28px);background:linear-gradient(180deg,var(--s2),var(--s1));--halo:var(--s1)}
 .pipe::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(color-mix(in srgb,var(--a) 14%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--a) 14%,transparent) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(80% 90% at 100% 0,#000 5%,transparent 70%);mask-image:radial-gradient(80% 90% at 100% 0,#000 5%,transparent 70%)}
@@ -1157,14 +1113,13 @@ button.tile:active{transform:scale(.985)}
 [data-theme="light"] .pp-c,[data-theme="light"] .pp-dist{background:var(--s1)}
 [data-theme="light"] .pp-c.pl{background:color-mix(in srgb,var(--lime) 8%,#fff)}
 
-/* chart: permanent soft glow on each segment, tip nodes, halo behind the whole chart */
 .pie .seg{filter:drop-shadow(0 8px 10px rgba(0,0,0,.45)) drop-shadow(0 0 9px color-mix(in srgb,currentColor 32%,transparent))}
 .pie .tip{fill:#fff;opacity:.9;filter:drop-shadow(0 0 4px #fff);pointer-events:none}
 .pie::before{content:"";position:absolute;inset:-6%;border-radius:50%;pointer-events:none;background:radial-gradient(circle closest-side,color-mix(in srgb,var(--lime) 14%,transparent),transparent 74%);z-index:-1}
 [data-theme="light"] .pie .tip{fill:var(--t1);filter:none}
 
 /* ================================================================
-   MANIFESTO · compact card (replaces the oversized stacked lines)
+   MANIFESTO · compact card
    ================================================================ */
 .mf{padding:clamp(44px,5.5vw,76px) 0;text-align:left}
 .mf-card{position:relative;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);border:1px solid var(--line2);border-radius:24px;overflow:hidden;background:linear-gradient(180deg,var(--s2),var(--s1));--halo:var(--s1)}
@@ -1182,6 +1137,111 @@ button.tile:active{transform:scale(.985)}
 .mf-f .lead{margin:0;flex:1 1 240px;max-width:46ch;text-align:left;font-size:13.5px;line-height:1.5}
 .mf-f .cap{font-size:10px;letter-spacing:.1em}
 @media(max-width:820px){.mf-card{grid-template-columns:1fr}.mf-l{border-right:0;border-bottom:1px solid var(--line)}}
+
+/* ================================================================
+   ★ TEAM + LANDING UPGRADE (loaded last, overrides everything above)
+   ================================================================ */
+
+/* ---------- TEAM AVATAR: no inner circle, photo fills the whole circle ---------- */
+.team .tc:nth-child(1){--op:50% 26%}   /* Emmanuel */
+.team .tc:nth-child(2){--op:50% 18%}   /* Nenkang  */
+.team .tc:nth-child(3){--op:50% 16%}   /* Douna    */
+.team .tc:nth-child(4){--op:50% 22%}   /* YCEE     */
+
+.tc{--cy:86px;padding-top:30px}
+.tc-av{
+  width:112px;height:112px;padding:0;border:0;margin-bottom:22px;
+  border-radius:50%;cursor:zoom-in;background:none;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .45s cubic-bezier(.16,1,.3,1);
+}
+@media(hover:hover){.tc-av:hover{transform:scale(1.04)}}
+.tc-av:focus-visible{outline:2px solid var(--ac);outline-offset:8px}
+.tc-av>div{
+  position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;
+  display:grid;place-items:center;background:var(--s2);
+  font-family:var(--fd);font-size:40px;color:var(--ac);
+}
+/* the photo is pinned, so the fallback letter can never push it down */
+.tc-av>div img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:var(--op,50% 22%);
+  filter:contrast(1.05) saturate(1.06) brightness(1.02);
+  image-rendering:auto;transform:none;
+}
+/* single soft outer halo only (the inner ring is gone) */
+.tc-av::before{inset:-7px}
+.tc-av::after{inset:-4px}
+[data-theme="light"] .tc-av,[data-theme="light"] .tc-av div{background:var(--s1)}
+[data-theme="light"] .tc-av{background:none}
+
+/* ---------- MOBILE: same card design as desktop, just one column ---------- */
+@media(max-width:760px){
+  .tc{--cx:50%;--cy:82px;padding:30px 22px 24px;align-items:center;text-align:center;border-radius:24px}
+  .tc::before{
+    -webkit-mask-image:radial-gradient(75% 62% at var(--cx) var(--cy),#000 8%,transparent 78%);
+    mask-image:radial-gradient(75% 62% at var(--cx) var(--cy),#000 8%,transparent 78%);
+  }
+  .tc-av{width:104px;height:104px;margin-bottom:20px}
+  .tc-av>div{font-size:36px}
+  .tc details summary{justify-content:center}
+  .tc details{text-align:center}
+  .tc p{font-size:15px}
+}
+@media(max-width:560px){
+  .team{gap:14px}
+  .tc{max-width:440px;width:100%;margin-inline:auto}
+}
+
+/* ---------- PHOTO POP-UP (the circle itself rises to centre) ---------- */
+.zl{position:fixed;inset:0;z-index:6000;display:none}
+.zl.on{display:block}
+.zl-bd{position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 78%,transparent);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);opacity:0;transition:opacity .45s ease}
+.zl.go .zl-bd{opacity:1}
+.zl-c{position:fixed;border-radius:50%;transform-origin:50% 50%;
+  transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.zl-img{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:var(--s2);
+  display:grid;place-items:center;font-family:var(--fd);color:var(--lime);font-size:min(160px,30vw)}
+.zl-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:contrast(1.05) saturate(1.06) brightness(1.02)}
+.zl-ring{position:absolute;inset:-9px;border-radius:50%;pointer-events:none;
+  background:conic-gradient(from 0deg,var(--zc,var(--lime)),transparent 38%,var(--ion) 66%,transparent 90%,var(--zc,var(--lime)));
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.4px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.4px));
+  animation:orb 9s linear infinite}
+.zl-x{position:fixed;top:max(18px,env(safe-area-inset-top));right:18px;z-index:2;
+  width:46px;height:46px;border-radius:50%;border:1px solid var(--line2);
+  background:color-mix(in srgb,var(--bg) 80%,transparent);color:var(--t1);
+  display:grid;place-items:center;opacity:0;transition:opacity .4s .15s,border-color .25s}
+.zl-x:hover{border-color:var(--lime)}
+.zl.go .zl-x{opacity:1}
+.zl-n{position:fixed;left:0;right:0;text-align:center;opacity:0;transform:translateY(8px);
+  transition:opacity .4s .2s,transform .5s .2s cubic-bezier(.16,1,.3,1);padding:0 20px}
+.zl-n b{display:block;font-size:22px;font-weight:600;color:var(--t1);letter-spacing:-.01em}
+.zl-n span{display:block;margin-top:4px;font-family:var(--fm);font-size:11.5px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--zc,var(--lime))}
+.zl.go .zl-n{opacity:1;transform:none}
+
+/* ---------- LANDING: quieter background art so the words lead ---------- */
+:root{--fxg:11%;--fxg2:7%}
+[data-theme="light"]{--fxg:10%;--fxg2:7%}
+.hero::before{opacity:.5}
+.hero::after{opacity:.2}
+.floor{opacity:.25}
+[data-theme="light"] .floor{opacity:.3}
+.orbit{opacity:.4}
+.neon{opacity:.4}
+.cir{opacity:.5}
+.chip{opacity:.9}
+.fx-grid::before,.fx-dots::before,.fx-rings::before,.fx-hatch::before,.fx-scan::before,.fx-floor::before{opacity:.5}
+.fx-stars::after{opacity:.45}
+.hero-g>div:first-child::before{
+  background:radial-gradient(ellipse 66% 62% at 46% 50%,
+    color-mix(in srgb,var(--bg) 92%,transparent) 0%,
+    color-mix(in srgb,var(--bg) 72%,transparent) 52%,transparent 100%)}
+.card::after,.tile::after,.rung::after,.loop div::after{opacity:.4}
+@media(hover:hover){.card:hover::after,.tile:hover::after,.rung:hover::after,.loop div:hover::after{opacity:.6}}
 </style>
 </head>
 <body>
@@ -2207,29 +2267,27 @@ let reduce=false;try{reduce=matchMedia('(prefers-reduced-motion:reduce)').matche
 try{if('scrollRestoration' in history)history.scrollRestoration='manual'}catch(e){}
 
 /* ---------- STATE ---------- */
-let view=null;            // name of the view currently shown
-let shown='';             // canonical hash currently shown (e.g. "#product/ep")
-let swapT=0;              // pending view-swap timer
-let raf=0;                // running glide frame
-let animating=false;      // true while a programmatic glide is running
-let animT0=0;             // glide start time
-let navSec=null;          // null = live scroll-spy, '' = no highlight, 'id' = locked to destination
-let userMoved=false;      // user has scrolled by hand since load
-let initSec=null;         // section targeted on first load (re-aligned once fonts settle)
-let lastY=0,acc=0;        // header hide/show tracking
+let view=null;
+let shown='';
+let swapT=0;
+let raf=0;
+let animating=false;
+let animT0=0;
+let navSec=null;
+let userMoved=false;
+let initSec=null;
+let lastY=0,acc=0;
 let ticking=false;
 
 const hdrEl=$('header'),mnav=$('#mnav'),ham=$('#ham'),soon=$('#soon'),dock=$('#dock');
-const GAP=24;             // breathing room between the sticky stack and a section's content
+const GAP=24;
 
 /* ---------- SCROLL MATHS ---------- */
 const maxY=()=>Math.max(0,document.documentElement.scrollHeight-innerHeight);
 const clampY=y=>Math.min(maxY(),Math.max(0,y));
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;          // easeInOutCubic
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 function stickyH(v){const sn=v&&$('.subnav',v);return hdrEl.offsetHeight+(sn?sn.offsetHeight:0)}
 function secPad(s){return parseFloat(getComputedStyle(s).paddingTop)||0}
-/* Where to scroll so a section's content sits just below the header + sub-nav. Re-evaluated every
-   frame during a glide, so late layout shifts (fonts, images) never leave you misaligned. */
 function targetY(s){
   const v=s.closest('.view');
   return clampY(s.getBoundingClientRect().top+scrollY+secPad(s)-stickyH(v)-GAP);
@@ -2254,7 +2312,6 @@ function glide(getY,sec,done){
   raf=requestAnimationFrame(step);
   spy();
 }
-/* the user always wins: any manual scroll input cancels a running glide */
 function userTook(){userMoved=true;if(animating){stopGlide();spy()}}
 addEventListener('wheel',()=>{userMoved=true;if(animating&&performance.now()-animT0>140){stopGlide();spy()}},{passive:true});
 addEventListener('touchstart',userTook,{passive:true});
@@ -2264,11 +2321,7 @@ addEventListener('keydown',e=>{
   userTook();
 });
 
-/* ---------- ROUTER ----------
-   Navigation never depends on the browser's own hash handling. Clicks are intercepted and routed
-   straight into show(), so it works the same in a normal tab, an iframe, a sandboxed preview or a
-   file opened from disk. The address bar is updated on a best-effort basis (try/catch) so deep links
-   and the Back button still work wherever the environment allows it. */
+/* ---------- ROUTER ---------- */
 function parse(h){
   const raw=String(h||'').replace(/^#\/?/,'').split('/');
   const known=!!TITLES[raw[0]];
@@ -2294,7 +2347,6 @@ function show(hash){
   $$('[data-v]').forEach(a=>{name===a.dataset.v?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current')});
   document.title=TITLES[name];
 
-  /* same view: glide smoothly to the section (or back to the top) */
   if(!first&&cur===name){
     el.classList.remove('out');
     document.body.classList.remove('hide-h');
@@ -2305,7 +2357,6 @@ function show(hash){
     return;
   }
 
-  /* different view: fade out, swap, land exactly on the target, fade in */
   const go=()=>{
     $$('.view').forEach(v=>{v.classList.remove('out');v.classList.toggle('active',v.id==='view-'+name)});
     view=name;
@@ -2322,14 +2373,12 @@ function show(hash){
   swapT=setTimeout(go,170);
 }
 
-/* user-initiated navigation: update the address (best effort), then show */
 function navigate(h){
   const c=canon(parse(h));
   try{if(readHash()!==c)history.pushState(null,'',c)}catch(e){}
   show(c);
 }
 
-/* Back / Forward (and manual hash edits) */
 function onHistory(){
   const c=canon(parse(readHash()));
   if(c===shown)return;
@@ -2338,15 +2387,14 @@ function onHistory(){
 addEventListener('popstate',onHistory);
 addEventListener('hashchange',onHistory);
 
-/* Every internal link goes through here. Captured first, so nothing else can swallow the click. */
 document.addEventListener('click',e=>{
   const a=e.target&&e.target.closest?e.target.closest('a[href^="#"]'):null;
   if(!a)return;
   if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button)return;
-  if(a.hasAttribute('data-soon'))return;               // handled by the Coming Soon dialog below
+  if(a.hasAttribute('data-soon'))return;
   const h=a.getAttribute('href');
   e.preventDefault();
-  if(h==='#main'){focusEl($('.view.active'));return}   // skip link: focus content, don't navigate
+  if(h==='#main'){focusEl($('.view.active'));return}
   if(h==='#soon')return;
   navigate(h);
 },true);
@@ -2366,8 +2414,7 @@ document.addEventListener('click',e=>{
 });
 if(document.documentElement.getAttribute('data-theme')==='light')document.querySelector('meta[name="theme-color"]').content='#fbfbfd';
 
-/* ---------- COMING SOON PANEL ----------
-   Anything that needs the live platform (joining, communities, legal, contact) opens this panel. */
+/* ---------- COMING SOON PANEL ---------- */
 const SOON={
   join:{e:'Early access',h:'Opening soon.',p:'Xeevia is being polished for its first wave of users and communities. The doors open gradually, and early members come first.',l:['Opening in waves','Early users and communities come first','Early-access packages for the first wave']},
   community:{e:'Communities',h:'Opening soon.',p:'Communities open with the app. Finding, joining and starting them arrives with the first wave, and early members get first pick.',l:['Discover communities by interest','Start one, or bring your own','Opens with the first wave']},
@@ -2424,7 +2471,7 @@ $('#soonF').addEventListener('submit',async e=>{
   }catch(err){ok.style.color='var(--ember)';ok.textContent="Couldn't save that just now. Please try again."}
 });
 
-/* ---------- REVEAL (class-based, never fights hover transforms) ---------- */
+/* ---------- REVEAL ---------- */
 const css=document.createElement('style');
 css.textContent='.js .rv{opacity:0;translate:0 20px;transition:opacity .7s ease,translate .7s cubic-bezier(.16,1,.3,1)}.js .rv.in{opacity:1;translate:none}';
 document.head.appendChild(css);
@@ -2464,7 +2511,6 @@ function spy(){
   });
   if(on){const box=on.parentNode;const want=on.offsetLeft-box.clientWidth/2+on.clientWidth/2;if(Math.abs(box.scrollLeft-want)>40)box.scrollLeft=want}
 }
-/* header hides on scroll down and returns on scroll up (tablet + mobile); frozen during a glide */
 function hdr(){
   const y=scrollY,d=y-lastY;lastY=y;
   if(!matchMedia('(max-width:900px)').matches||mnav.classList.contains('open')){document.body.classList.remove('hide-h');return}
@@ -2473,7 +2519,6 @@ function hdr(){
   if(y<120||acc<-10)document.body.classList.remove('hide-h');
   else if(acc>22)document.body.classList.add('hide-h');
 }
-/* floating Join dock (mobile) */
 function dockUpdate(){
   const f=$('footer');
   const show=scrollY>560&&!mnav.classList.contains('open')&&!soon.classList.contains('on')&&f.getBoundingClientRect().top>innerHeight-40;
@@ -2488,9 +2533,7 @@ function onScroll(){
 addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
 addEventListener('resize',()=>{if(!animating)onScroll()});
 
-/* ---------- BACKGROUND ASSIGNMENT ----------
-   Each section takes its accent colour from its content wrapper and gets a pattern + glow pair
-   that alternates down the page, so every view feels composed, never repeated. */
+/* ---------- BACKGROUND ASSIGNMENT ---------- */
 (function(){
   const FX={
     lime:['fx-circuit fx-aurora','fx-dots fx-aurora'],
@@ -2512,31 +2555,14 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
   const mf=$('.mf');if(mf)mf.style.setProperty('--a','var(--lime)');
 })();
 
-/* ---------- LIVING BACKGROUNDS: pause what is off screen ----------
-   The ring wave, trace glow and aurora animations are CSS. This only marks which sections are on
-   screen (.on) so everything outside the viewport stops animating and costs nothing. */
+/* ---------- LIVING BACKGROUNDS: pause what is off screen ---------- */
 (function(){
   if(!('IntersectionObserver' in window))return;
   const o=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('on',e.isIntersecting)),{rootMargin:'120px 0px'});
   $$('.sec,.mf').forEach(s=>o.observe(s));
 })();
 
-/* ---------- NEON CURRENT ----------
-   A neon current network running through the background grid lines.
-   One canvas per grid host (the hero, plus every .fx-grid section), laid exactly over the CSS grid:
-   same origin, same cell size, same radial mask. Pulses travel only along real grid lines, pick a
-   direction at each real intersection (straight, left, right, sometimes branching), leave a fading
-   comet trail, and throw a spark at every node they cross. Every few seconds a power surge
-   radiates from a node: a ring of light that lights the grid lines it passes over and fires
-   fresh pulses outward along all four lines.
-
-   THE WAVE EATS: the surge is a predator. Any pulse its front touches freezes, is bitten (bright
-   burst + sparks along the grid lines) and is swallowed as the front advances, the part behind the
-   front is erased. Every meal feeds the wave: it brightens, thickens and travels further. The four
-   pulses a surge launches at its centre are immune. New pulses refill the cleared zone afterwards.
-
-   One shared animation loop; hosts that are off-screen or in a hidden view are skipped;
-   reduced-motion users keep the static grid. */
+/* ---------- NEON CURRENT ---------- */
 (function(){
   if(reduce)return;
   const TAU=Math.PI*2,DIRS=[[1,0],[0,1],[-1,0],[0,-1]];
@@ -2554,7 +2580,6 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     return[200,245,58];
   }
   function tone(rgb){
-    /* core = whiter hot centre on dark; on light backgrounds the core stays the saturated colour */
     const c=light?rgb:rgb.map(v=>Math.round(v+(255-v)*.55));
     return{r:rgb[0],g:rgb[1],b:rgb[2],cr:c[0],cg:c[1],cb:c[2]};
   }
@@ -2614,7 +2639,6 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     return p;
   }
 
-  /* points along a pulse's visible body, head first */
   function trailPts(h,p){
     const C=h.cell,hx=p.gx*C+DIRS[p.dir][0]*p.t,hy=p.gy*C+DIRS[p.dir][1]*p.t;
     const out=[{x:hx,y:hy}];let sx=hx,sy=hy,s=0;
@@ -2626,7 +2650,6 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     }
     return out;
   }
-  /* how far a pulse's body is from a surge centre, and the point nearest the wave front */
   function reach(h,p,s){
     const pts=trailPts(h,p);let dmin=1e9,dmax=0,best=pts[0],bd=1e9;
     const test=(x,y)=>{const d=Math.hypot(x-s.x,y-s.y);if(d<dmin)dmin=d;if(d>dmax)dmax=d;const e=Math.abs(d-s.r);if(e<bd){bd=e;best={x:x,y:y}}};
@@ -2641,7 +2664,6 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
       h.sparks.push({x:pt.x,y:pt.y,vx:DIRS[d][0]*sp,vy:DIRS[d][1]*sp,age:0,life:.3+Math.random()*.35,ci:ci});
     }
   }
-  /* the wave bites a pulse: it freezes, the wave feeds on it */
   function bite(h,s,p,pt){
     p.eaten=s;s.e=Math.min(2.5,s.e+.7);s.fed++;
     s.maxT=Math.min(s.base+800,s.maxT+80);
@@ -2670,7 +2692,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     flash(h,gx*C,gy*C,ci);
     for(let d=0;d<4;d++){
       const p=spawn(h,gx,gy,d,{ci:ci,speed:(300+Math.random()*90)*(C/72),len:(220+Math.random()*80)*(C/72),maxd:(480+Math.random()*320)*(C/72)});
-      if(p)p.imm=s;                         /* the wave's own children are immune */
+      if(p)p.imm=s;
     }
   }
 
@@ -2681,7 +2703,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
 
     for(let i=h.pulses.length-1;i>=0;i--){
       const p=h.pulses[i];
-      if(p.eaten)continue;                  /* frozen while the wave consumes it */
+      if(p.eaten)continue;
       if(p.dead){
         p.len-=p.speed*dt*1.4;
         p.fade=Math.max(0,p.len/p.len0);
@@ -2711,14 +2733,12 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
         }
         if(nd!==p.dir){p.dir=nd;p.pts.push({x:nxp,y:nyp})}
       }
-      /* trim vertices that lie beyond the visible trail */
       const hx=p.gx*C+DIRS[p.dir][0]*p.t,hy=p.gy*C+DIRS[p.dir][1]*p.t;
       let n=p.pts.length,sum=Math.abs(hx-p.pts[n-1].x)+Math.abs(hy-p.pts[n-1].y),j=n-1;
       while(sum<p.len&&j>0){sum+=Math.abs(p.pts[j].x-p.pts[j-1].x)+Math.abs(p.pts[j].y-p.pts[j-1].y);j--}
       if(j>0)p.pts.splice(0,j);
     }
 
-    /* THE WAVE EATS: any pulse the front touches is bitten, then swallowed as the front moves on */
     for(let si=0;si<h.surges.length;si++){
       const s=h.surges[si];
       for(let i=h.pulses.length-1;i>=0;i--){
@@ -2726,8 +2746,8 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
         if(p.eaten){
           if(p.eaten!==s)continue;
           const m=reach(h,p,s);
-          if(m.dmax<=s.r-2){h.pulses.splice(i,1);continue}          /* fully swallowed */
-          if(m.bd<26&&Math.random()<dt*28)sparkAt(h,m.best,p.ci,1);  /* chewing sparks */
+          if(m.dmax<=s.r-2){h.pulses.splice(i,1);continue}
+          if(m.bd<26&&Math.random()<dt*28)sparkAt(h,m.best,p.ci,1);
           continue;
         }
         if(p.imm===s)continue;
@@ -2742,14 +2762,13 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
       const s=h.surges[i];
       s.r+=dt*(h.hero?460:380);
       s.e=Math.max(0,s.e-dt*.5);
-      s.max+=(s.maxT-s.max)*Math.min(1,dt*3);            /* fed waves travel further */
+      s.max+=(s.maxT-s.max)*Math.min(1,dt*3);
       if(s.r>s.max+60){h.pulses=h.pulses.filter(q=>q.eaten!==s);h.surges.splice(i,1)}
     }
   }
 
   function line(ctx,ax,ay,bx,by){ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke()}
 
-  /* the wave swells and brightens as it feeds */
   function drawSurge(h,ctx,s){
     const C=h.cell,e=Math.min(s.e,2),band=40+16*e;
     const fade=Math.min(1.3,Math.pow(1-Math.min(1,s.r/s.max),1.3)*(1+.35*e));
@@ -2805,7 +2824,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
 
   function drawPulse(h,ctx,p){
     if(!p.eaten){drawPulseBody(h,ctx,p);return}
-    const s=p.eaten;                         /* erase everything the wave has already passed over */
+    const s=p.eaten;
     ctx.save();
     ctx.beginPath();
     ctx.rect(-2,-2,h.w+4,h.h+4);
@@ -2831,7 +2850,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     ctx.setTransform(h.dpr,0,0,h.dpr,0,0);
     ctx.globalCompositeOperation='source-over';
     ctx.clearRect(0,0,h.w,h.h);
-    ctx.translate(.5,.5);                       /* grid hairlines are 1px wide, centred on +.5 */
+    ctx.translate(.5,.5);
     ctx.globalCompositeOperation=light?'source-over':'lighter';
     h.surges.forEach(s=>drawSurge(h,ctx,s));
     h.flashes.forEach(f=>drawFlash(h,ctx,f));
@@ -2885,18 +2904,10 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
   requestAnimationFrame(frame);
 })();
 
-/* ---------- CIRCUIT CURRENT ----------
-   Live current in the circuit-trace section backgrounds (01 Inside the app and every other section
-   that carries that background). One canvas per section, laid exactly over the 180px trace tile:
-   same origin, same corner mask. The routes below are the real trace paths of the tile, so every
-   pulse follows copper that is actually drawn: it glows along the trace, turns the corner with it,
-   branches where the trace branches, flares at every node it reaches and fades at the open end.
-   Every few seconds a power-up fires several pulses at once. Hidden or off-screen sections are
-   skipped; reduced-motion visitors keep the still traces. */
+/* ---------- CIRCUIT CURRENT ---------- */
 (function(){
   if(reduce)return;
   const T=180,TAU=Math.PI*2;
-  /* tile geometry, identical to the SVG used by the background mask; n = vertex indexes that are nodes */
   const BASE=[
     {p:[[0,90],[44,90],[64,70],[112,70],[112,16]],n:[1,4]},
     {p:[[68,180],[68,136],[88,116],[180,116]],n:[]},
@@ -2925,7 +2936,6 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     const ion=toRGB(getComputedStyle(document.documentElement).getPropertyValue('--ion'));
     h.pal=[acc,acc,acc,ion].map(tone);
   }
-  /* strength of the section's corner mask at a point, used to place pulses where the circuit is visible */
   function inten(h,x,y){
     const dx=(x/h.w-1)/.9,dy=(y/h.h-1)/1,d=Math.sqrt(dx*dx+dy*dy);
     return Math.max(0,Math.min(1,1-(d-.12)/.68));
@@ -2948,7 +2958,6 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
     const k=(s-rt.cum[i-1])/(rt.cum[i]-rt.cum[i-1]),a=rt.p[i-1],b=rt.p[i];
     return[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k];
   }
-  /* visible body of a pulse, head first, in tile coordinates */
   function trailPts(rt,s,len){
     const s0=Math.max(0,s-len),pts=[pointAt(rt,s)];
     for(let i=rt.cum.length-1;i>=0;i--){if(rt.cum[i]<s&&rt.cum[i]>s0)pts.push(rt.p[i])}
@@ -3068,11 +3077,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
   requestAnimationFrame(frame);
 })();
 
-/* ---------- AD POOL · RADIAL LEDGER ----------
-   Builds the two-ring chart and its ledger from one data set, so every percentage and amount is
-   computed, never typed twice. Ring 01: campaign budget = protocol commission + what remains.
-   Ring 02: what remains, re-based to 100% (the Ad Pool), split by qualifying contribution.
-   All figures are illustrative. */
+/* ---------- AD POOL · RADIAL LEDGER ---------- */
 (function(){
   const host=$('#pie'),led=$('#ledger');
   if(!host||!led)return;
@@ -3086,8 +3091,6 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
   const R2=SHARES.map(s=>({id:s[2],name:s[0],note:s[3],pct:s[1],amt:POOL*s[1]/100,cls:s[2],of:'of the Ad Pool',ring:'Ring 02 · Ad Pool'}));
   const sum2=R2.reduce((a,b)=>a+b.pct,0);
 
-  /* polar-area chart: every segment keeps its own angle (its share) AND its own depth (also its share),
-     so bigger shares reach further out. The commission is pushed outward: it is removed from the pool. */
   const P=(r,a)=>{const t=a*Math.PI/180;return[260+r*Math.sin(t),260-r*Math.cos(t)]};
   const f2=n=>n.toFixed(2);
   function sector(r0,r1,a0,a1){
@@ -3103,13 +3106,10 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
   svg+='</defs>';
   const TICKS=120,TR=252,tc=2*Math.PI*TR;
   svg+='<circle class="tk" cx="260" cy="260" r="'+TR+'" style="stroke-width:8px;stroke-dasharray:1.3 '+(tc/TICKS-1.3).toFixed(3)+'"/>';
-  /* scale rings behind ring 02, and four spokes */
   [IN,146,167,188].forEach((r,i)=>{svg+='<circle class="gd" cx="260" cy="260" r="'+r+'" style="stroke-width:1px;'+(i?'stroke-dasharray:2 6':'')+'"/>'});
   [0,90,180,270].forEach(a=>{const p=P(IN,a),q=P(188,a);svg+='<line class="gd" x1="'+f2(p[0])+'" y1="'+f2(p[1])+'" x2="'+f2(q[0])+'" y2="'+f2(q[1])+'" style="stroke-width:1px;stroke-dasharray:2 6"/>'});
-  /* major ticks and scale labels */
   svg+='<circle class="tk" cx="260" cy="260" r="'+TR+'" style="stroke-width:15px;stroke-dasharray:1.8 '+(tc/12-1.8).toFixed(3)+'"/>';
   [[0,'0%'],[90,'25%'],[180,'50%'],[270,'75%']].forEach(s=>{const p=P(272,s[0]);svg+='<text class="sc" x="'+f2(p[0])+'" y="'+f2(p[1])+'">'+s[1]+'</text>'});
-  /* the rotating core: glass disc, counter-rotating dotted ring, segmented ring, scanner arc, orbiting nodes */
   svg+='<circle cx="260" cy="260" r="116" fill="url(#core)" style="stroke:var(--line2);stroke-width:1px"/>';
   svg+='<circle class="dash" cx="260" cy="260" r="108" style="stroke-width:1.5px"/>';
   svg+='<circle class="arc1" cx="260" cy="260" r="101" style="stroke-width:2px;stroke-dasharray:64 16 20 16 8 16"/>';
@@ -3173,8 +3173,7 @@ addEventListener('resize',()=>{if(!animating)onScroll()});
   }else{host.classList.add('live');led.classList.add('live')}
 })();
 
-/* ---------- XEEVIA PREMIUM · billing switch ----------
-   Silver $1 a month or $9 a year, Gold $2 or $18, Diamond $3 or $27. */
+/* ---------- XEEVIA PREMIUM · billing switch ---------- */
 (function(){
   const bill=$('.bill');if(!bill)return;
   const P={m:[1,2,3],y:[9,18,27]};
@@ -3219,11 +3218,97 @@ $$('.view [id]').forEach(s=>{if(s.classList.contains('sec'))s.setAttribute('tabi
   show(canon(p));onScroll();
 })();
 
-/* deep links (e.g. site.com/#vision/ep): once fonts and images settle, re-land exactly on the section */
+/* deep links: once fonts and images settle, re-land exactly on the section */
 (function(){
   const realign=()=>{if(initSec&&!userMoved&&!animating){window.scrollTo(0,targetY(initSec));onScroll()}};
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(realign);
   addEventListener('load',()=>{realign();setTimeout(realign,250)});
+})();
+
+/* ================================================================
+   ★ TEAM PHOTO POP-UP (the circle itself rises to centre)
+   ================================================================ */
+(function(){
+  const avs=[...document.querySelectorAll('.tc-av')];
+  if(!avs.length)return;
+
+  /* sharper loading: team photos load eagerly, no fixed tiny size hints */
+  avs.forEach(av=>{
+    const im=av.querySelector('img');
+    if(im){im.loading='eager';im.removeAttribute('width');im.removeAttribute('height');im.decoding='async'}
+    av.setAttribute('role','button');av.setAttribute('tabindex','0');
+    av.setAttribute('aria-label','View '+(av.closest('.tc').querySelector('h3').textContent)+' larger');
+  });
+
+  const lb=document.createElement('div');
+  lb.className='zl';lb.setAttribute('aria-hidden','true');
+  lb.innerHTML='<div class="zl-bd"></div>'
+    +'<button class="zl-x" type="button" aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button>'
+    +'<div class="zl-c" role="dialog" aria-modal="true" aria-label="Team photo"><div class="zl-ring"></div><div class="zl-img"></div></div>'
+    +'<p class="zl-n"><b></b><span></span></p>';
+  document.body.appendChild(lb);
+  const bd=lb.querySelector('.zl-bd'),xb=lb.querySelector('.zl-x'),c=lb.querySelector('.zl-c'),
+        im=lb.querySelector('.zl-img'),nm=lb.querySelector('.zl-n');
+
+  let cur=null,busy=false,tm=0;
+  const size=()=>Math.round(Math.min(innerWidth*.84,innerHeight*.58,460));
+  const topOf=s=>Math.max(70,(innerHeight-s)/2-34);
+
+  function place(av){
+    const s=size(),top=topOf(s),left=(innerWidth-s)/2,r=av.getBoundingClientRect();
+    c.style.width=c.style.height=s+'px';c.style.left=left+'px';c.style.top=top+'px';
+    nm.style.top=(top+s+30)+'px';
+    return 'translate('+((r.left+r.width/2)-(left+s/2))+'px,'+((r.top+r.height/2)-(top+s/2))+'px) scale('+(r.width/s)+')';
+  }
+  function open(av){
+    if(busy||cur)return;
+    busy=true;cur=av;clearTimeout(tm);
+    const card=av.closest('.tc');
+    lb.style.setProperty('--zc',getComputedStyle(card).getPropertyValue('--ac')||'var(--lime)');
+    const src=av.querySelector('img'),letter=av.textContent.trim().charAt(0);
+    im.innerHTML='';im.textContent='';
+    if(src&&src.complete&&src.naturalWidth){
+      const i=new Image();i.src=src.currentSrc||src.src;i.alt=src.alt||'';
+      i.style.objectPosition=getComputedStyle(src).objectPosition;
+      im.appendChild(i);
+    }else{im.textContent=letter}
+    nm.querySelector('b').textContent=card.querySelector('h3').textContent;
+    const role=card.querySelector('.role');nm.querySelector('span').textContent=role?role.textContent:'';
+    lb.classList.add('on');lb.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    c.style.transition='none';
+    c.style.transform=place(av);
+    void c.offsetWidth;                       /* start exactly on the small circle */
+    av.style.visibility='hidden';             /* the circle itself is what lifts off */
+    c.style.transition='';
+    lb.classList.add('go');
+    c.style.transform='none';
+    tm=setTimeout(()=>{busy=false;try{xb.focus({preventScroll:true})}catch(e){}},620);
+  }
+  function close(){
+    if(!cur||busy&&!lb.classList.contains('go'))return;
+    busy=true;clearTimeout(tm);
+    const av=cur;
+    c.style.transform=place(av);              /* fly back into the avatar slot */
+    lb.classList.remove('go');
+    tm=setTimeout(()=>{
+      av.style.visibility='';lb.classList.remove('on');lb.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';cur=null;busy=false;
+      try{av.focus({preventScroll:true})}catch(e){}
+    },560);
+  }
+  avs.forEach(av=>{
+    av.addEventListener('click',()=>open(av));
+    av.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(av)}});
+  });
+  xb.addEventListener('click',close);
+  bd.addEventListener('click',close);
+  addEventListener('keydown',e=>{
+    if(!cur)return;
+    if(e.key==='Escape')close();
+    if(e.key==='Tab'){e.preventDefault();xb.focus()}
+  });
+  addEventListener('resize',()=>{if(cur&&!busy){c.style.transition='none';place(cur);c.style.transform='none'}});
 })();
 </script>
 </body>
