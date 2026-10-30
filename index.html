@@ -1242,6 +1242,53 @@ button.tile:active{transform:scale(.985)}
     color-mix(in srgb,var(--bg) 72%,transparent) 52%,transparent 100%)}
 .card::after,.tile::after,.rung::after,.loop div::after{opacity:.4}
 @media(hover:hover){.card:hover::after,.tile:hover::after,.rung:hover::after,.loop div:hover::after{opacity:.6}}
+
+/* ================================================================
+   ★ MOBILE BUTTONS · one consistent, full-width, thumb-friendly system
+   ================================================================ */
+@media(max-width:760px){
+  .ctas{flex-direction:column;align-items:stretch;gap:10px;margin-top:28px;width:100%;max-width:440px}
+  .ctas[style*="justify-content:center"]{margin-inline:auto}
+  .ctas .btn,.ctas .btn:has(.ic){--h:54px;width:100%;justify-content:space-between;padding:0 8px 0 24px;font-size:15px;gap:12px;letter-spacing:.005em}
+  .ctas .btn .ic{width:38px;height:38px;padding:11px}
+  .dock .btn{--h:54px;padding:0 8px 0 26px}
+  .mnav .btn.block{--h:56px}
+  .mf-f .btn,.mf-f .btn:has(.ic){--h:50px;width:100%;justify-content:space-between;padding:0 6px 0 22px}
+  .mf-f .btn .ic{width:38px;height:38px;padding:11px}
+  .soon .btn{--h:54px}
+  .soon .btn.s{justify-content:center;padding:0 24px}
+  .soon-f{flex-direction:column}
+  .soon-f input{height:54px}
+  .soon-f .btn{margin:0;width:100%;justify-content:center;padding:0 24px}
+  .bill{display:flex;width:100%;margin:26px 0 22px}
+  .bill button{flex:1;justify-content:center;padding:0 10px;font-size:13.5px;gap:8px}
+  .bill button small{font-size:9.5px}
+}
+.soon-f .btn{margin:0;width:auto;flex:none}
+@media(max-width:760px){.soon-f .btn{width:100%}}
+.btn:focus-visible{outline-offset:4px}
+
+/* ================================================================
+   ★ THEME HINT · small pointer popup, 4s after load
+   ================================================================ */
+.thint{position:fixed;z-index:1500;width:min(300px,calc(100vw - 24px));padding:16px 16px 14px;border:1px solid var(--line2);border-radius:18px;
+  background:color-mix(in srgb,var(--bg) 93%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 24px 60px -24px rgba(0,0,0,.6);opacity:0;transform:translateY(-8px) scale(.97);pointer-events:none;
+  transition:opacity .45s ease,transform .6s cubic-bezier(.16,1,.3,1)}
+.thint.on{opacity:1;transform:none;pointer-events:auto}
+.thint::before{content:"";position:absolute;top:-7px;left:var(--al,calc(100% - 34px));width:12px;height:12px;background:inherit;border-left:1px solid var(--line2);border-top:1px solid var(--line2);transform:rotate(45deg);border-top-left-radius:3px}
+.thint.noarrow::before{display:none}
+.thint-h{display:flex;align-items:center;gap:12px}
+.thint-i{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;color:var(--lime);border:1px solid color-mix(in srgb,var(--lime) 50%,transparent);background:color-mix(in srgb,var(--lime) 12%,transparent)}
+.thint-i .ic{width:18px;height:18px}
+.thint-t{font-size:15px;font-weight:600;line-height:1.3;color:var(--t1)}
+.thint-p{margin:8px 0 0;font-size:13.5px;line-height:1.55;color:var(--t2)}
+.thint-p b{color:var(--t1);font-weight:600}
+.thint-r{display:flex;gap:8px;margin-top:14px}
+.thint-r button{flex:1;height:40px;border-radius:100px;font-size:13.5px;font-weight:600;border:1px solid var(--line2);transition:border-color .25s,background .25s}
+.thint-r .go{background:var(--lime);color:var(--on-lime);border-color:transparent}
+.thint-r .no:hover{border-color:var(--t1)}
+@media(prefers-reduced-motion:reduce){.thint{transition:none}}
 </style>
 </head>
 <body>
@@ -1300,7 +1347,7 @@ button.tile:active{transform:scale(.985)}
     <a href="#home" data-v="home"><small>01</small>Home</a>
     <a href="#communities" data-v="communities"><small>02</small>Communities</a>
     <a href="#product" data-v="product"><small>03</small>Product</a>
-    <a href="#about" data-v="about"><small>04</small>About</a>
+    <a href="#about" data-v="about"><small>04</small>Team</a>
     <a href="#vision" data-v="vision"><small>05</small>Vision</a>
     <a href="#docs" data-v="docs"><small>06</small>Documentation</a>
   </nav>
@@ -1608,10 +1655,7 @@ button.tile:active{transform:scale(.985)}
     <div class="wrap" style="--a:var(--lime)">
       <div class="eb rv"><span class="n">Founder</span>A note from Emmanuel</div>
       <div class="quote rv">
-        <p>I didn't set out to build another technology company. I set out to answer one question: why does a person's digital existence stay scattered across platforms, institutions and projects, and why does trust keep being rebuilt from zero every time it matters.</p>
-      </div>
-      <div class="quote sm rv">
-        <p>That question is the foundation Xeevia is built on. But the platform you can join today is simple by design, a social platform for people, communities and conversations. The deeper work reveals itself as you go, and we'll always tell you honestly where it stands.</p>
+        <p>I didn't set out to build another technology company. I set out to answer one question: why does a person's digital existence stay scattered across platforms, institutions and projects, and why does trust keep being rebuilt from zero every time it matters. Xeevia is a work in progress.</p>
       </div>
       <p class="cap" style="margin-top:22px">Emmanuel · Founder and CEO</p>
     </div>
@@ -3309,6 +3353,54 @@ $$('.view [id]').forEach(s=>{if(s.classList.contains('sec'))s.setAttribute('tabi
     if(e.key==='Tab'){e.preventDefault();xb.focus()}
   });
   addEventListener('resize',()=>{if(cur&&!busy){c.style.transition='none';place(cur);c.style.transform='none'}});
+})();
+
+/* ---------- THEME HINT: 4 seconds after load, once per visit ---------- */
+(function(){
+  const KEY='xv-hint-v1';
+  try{if(sessionStorage.getItem(KEY))return}catch(e){}
+  const el=document.createElement('div');
+  el.className='thint';el.setAttribute('role','status');
+  el.innerHTML='<div class="thint-h"><span class="thint-i"><svg class="ic"><use href="#i-sun"/></svg></span><div class="thint-t"></div></div>'
+    +'<p class="thint-p"></p>'
+    +'<div class="thint-r"><button type="button" class="go"></button><button type="button" class="no">Got it</button></div>';
+  document.body.appendChild(el);
+  const T=el.querySelector('.thint-t'),P=el.querySelector('.thint-p'),I=el.querySelector('.thint-i use'),G=el.querySelector('.go');
+  let hideT=0,shown=false;
+  const isLight=()=>document.documentElement.getAttribute('data-theme')==='light';
+  const toggle=()=>document.querySelector('header [data-theme-toggle]');
+  function fill(){
+    const l=isLight();
+    T.textContent=l?'Prefer dark mode?':'Prefer light mode?';
+    P.innerHTML='Tap the <b>'+(l?'moon':'sun')+' icon</b> up here, top right, any time.';
+    I.setAttribute('href',l?'#i-moon':'#i-sun');
+    G.textContent=l?'Go dark':'Go light';
+  }
+  function place(){
+    const b=toggle(),vis=b&&b.getBoundingClientRect().bottom>0&&!document.body.classList.contains('hide-h');
+    const w=el.offsetWidth;
+    if(vis){
+      const r=b.getBoundingClientRect(),right=Math.max(12,innerWidth-r.right-8),left=innerWidth-right-w;
+      el.style.top=(r.bottom+14)+'px';el.style.right=right+'px';el.style.left='auto';
+      el.style.setProperty('--al',Math.max(14,Math.min(w-30,r.left+r.width/2-left-6))+'px');
+      el.classList.remove('noarrow');
+    }else{
+      el.style.top='76px';el.style.right='12px';el.style.left='auto';el.classList.add('noarrow');
+    }
+  }
+  function hide(){clearTimeout(hideT);el.classList.remove('on');try{sessionStorage.setItem(KEY,'1')}catch(e){}}
+  function show(tries){
+    if(soon.classList.contains('on')||mnav.classList.contains('open')){if(tries<5)setTimeout(()=>show(tries+1),2000);return}
+    fill();place();shown=true;el.classList.add('on');
+    try{sessionStorage.setItem(KEY,'1')}catch(e){}
+    hideT=setTimeout(hide,12000);
+  }
+  G.addEventListener('click',()=>{const b=toggle();if(b)b.click();hide()});
+  el.querySelector('.no').addEventListener('click',hide);
+  document.addEventListener('click',e=>{if(shown&&e.target.closest('[data-theme-toggle]'))hide()});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&el.classList.contains('on'))hide()});
+  addEventListener('resize',()=>{if(el.classList.contains('on'))place()});
+  setTimeout(()=>show(0),4000);
 })();
 </script>
 </body>
